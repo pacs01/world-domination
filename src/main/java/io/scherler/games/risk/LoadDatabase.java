@@ -20,12 +20,9 @@ public class LoadDatabase {
 
     // todo move database initialization to Liquibase
     @Bean
-    CommandLineRunner initDatabase(GameRepository gameRepository, ContinentRepository continentRepository, TerritoryRepository territoryRepository) {
+    CommandLineRunner initDatabase(ContinentRepository continentRepository, TerritoryRepository territoryRepository) {
         return args -> {
             log.info("Preloading entities...");
-
-            log.info("Creating game...");
-            val game = gameRepository.save(new GameEntity("Test Game 1"));
 
             log.info("Creating continents...");
             val northAmerica = new ContinentEntity("North America");
