@@ -9,5 +9,5 @@ public class DeploymentResult {
 
     private String territory;
 
-    private Long totalNumberOfUnits;
+    private Integer totalNumberOfUnits;
 }

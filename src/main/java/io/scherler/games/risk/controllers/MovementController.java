@@ -1,7 +1,7 @@
 package io.scherler.games.risk.controllers;
 
 import io.scherler.games.risk.models.Movement;
-import io.scherler.games.risk.services.UnitService;
+import io.scherler.games.risk.services.ActionService;
 import javax.validation.Valid;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/players/{playerId}/movements")
 public class MovementController {
 
-    private final UnitService unitService;
+    private final ActionService actionService;
 
-    public MovementController(UnitService unitService) {
-        this.unitService = unitService;
+    public MovementController(ActionService actionService) {
+        this.actionService = actionService;
     }
 
     @PostMapping()
     public ResponseEntity<?> move(@PathVariable("playerId") Long playerId, @Valid @RequestBody Movement movement) {
-        val movementResult = unitService.move(movement, playerId);
+        val movementResult = actionService.move(movement, playerId);
         return ResponseEntity.ok().body(movementResult); //todo add hateoas
     }
 }

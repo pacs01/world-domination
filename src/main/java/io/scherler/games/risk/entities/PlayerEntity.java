@@ -37,5 +37,5 @@ public class PlayerEntity extends BaseEntity {
     private GameEntity game;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
-    private Set<UnitEntity> unitEntities = new HashSet<>();
+    private Set<TerritoryEntity> territoryEntities = new HashSet<>();
 }

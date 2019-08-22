@@ -3,16 +3,16 @@ package io.scherler.games.risk.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
 
 // todo set not-null on attributes
@@ -20,8 +20,8 @@ import lombok.ToString;
 @Data
 @Entity
 @Table(name = "territory")
-@ToString(exclude = {"continent", "adjacentTerritories"})
-@EqualsAndHashCode(callSuper = true, exclude = {"continent", "adjacentTerritories"})
+@ToString(exclude = {"continent", "player", "adjacentTerritories"})
+@EqualsAndHashCode(callSuper = true, exclude = {"continent", "player", "adjacentTerritories"})
 public class TerritoryEntity extends BaseEntity {
 
     public TerritoryEntity() {
@@ -34,8 +34,21 @@ public class TerritoryEntity extends BaseEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "territory", cascade = CascadeType.ALL)
-    private Set<UnitEntity> unitEntities = new HashSet<>();
+    @Setter(AccessLevel.NONE)
+    private int units;
+
+    public int addUnits(int numberOfUnits) {
+        units += numberOfUnits;
+        return units;
+    }
+
+    public int removeUnits(int numberOfUnits) {
+        if (units < numberOfUnits) {
+            throw new IllegalArgumentException("Not enough units available at territory '" + name + "'.");
+        }
+        units -= numberOfUnits;
+        return units;
+    }
 
     @ManyToMany
     private Set<TerritoryEntity> adjacentTerritories = new HashSet<>();
@@ -54,4 +67,9 @@ public class TerritoryEntity extends BaseEntity {
     @JsonIgnore
     @JoinColumn(name = "continentId")
     private ContinentEntity continent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "playerId")
+    private PlayerEntity player;
 }

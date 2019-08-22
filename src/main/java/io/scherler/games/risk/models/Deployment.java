@@ -1,15 +1,13 @@
 package io.scherler.games.risk.models;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class Deployment {
-
-    @NotBlank(message = "Target territory is mandatory")
-    private String target;
+@EqualsAndHashCode(callSuper = true)
+public class Deployment extends Occupation {
 
     @NotNull(message = "Number of units is mandatory")
-    private Integer numberOfUnits;
+    private int numberOfUnits;
 }

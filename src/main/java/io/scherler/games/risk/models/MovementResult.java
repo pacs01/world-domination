@@ -8,9 +8,9 @@ import lombok.Data;
 public class MovementResult {
 
     private String source;
-    private Integer totalUnitsAtSource;
+    private int totalUnitsAtSource;
 
     private String target;
-    private Integer totalUnitsAtTarget;
+    private int totalUnitsAtTarget;
 
 }
