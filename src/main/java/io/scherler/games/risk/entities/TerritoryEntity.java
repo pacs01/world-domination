@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -71,4 +72,12 @@ public class TerritoryEntity extends BaseEntity {
     @JsonIgnore
     @JoinColumn(name = "playerId")
     private PlayerEntity player;
+
+    public boolean isOccupied() {
+        return player != null;
+    }
+
+    public boolean isOccupiedBy(@NotNull PlayerEntity player) {
+        return this.player != null && this.player.getId().equals(player.getId());
+    }
 }
