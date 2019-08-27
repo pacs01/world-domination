@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -22,10 +23,8 @@ import lombok.ToString;
 @Table(name = "territory")
 @ToString(exclude = {"continent", "player", "adjacentTerritories"})
 @EqualsAndHashCode(callSuper = true, exclude = {"continent", "player", "adjacentTerritories"})
+@NoArgsConstructor
 public class TerritoryEntity extends BaseEntity {
-
-    public TerritoryEntity() {
-    }
 
     public TerritoryEntity(String name, ContinentEntity continent) {
         this.name = name;

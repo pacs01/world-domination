@@ -9,20 +9,19 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "game")
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class GameEntity extends BaseEntity {
 
     private String name;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private Set<PlayerEntity> playerEntities = new HashSet<>();
-
-    public GameEntity() {
-    }
 
     public GameEntity(String name) {
         this.name = name;

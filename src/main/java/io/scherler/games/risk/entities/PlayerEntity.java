@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
@@ -19,12 +20,10 @@ import lombok.ToString;
 @Table(name = "player")
 @ToString(exclude = "game")
 @EqualsAndHashCode(callSuper = true, exclude = "game")
+@NoArgsConstructor
 public class PlayerEntity extends BaseEntity {
 
     private String color;
-
-    public PlayerEntity() {
-    }
 
     public PlayerEntity(String color, GameEntity game) {
         this.color = color;
