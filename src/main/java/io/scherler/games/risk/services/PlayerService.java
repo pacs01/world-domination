@@ -4,6 +4,7 @@ import io.scherler.games.risk.controllers.ResourceNotFoundException;
 import io.scherler.games.risk.entities.GameEntity;
 import io.scherler.games.risk.entities.PlayerEntity;
 import io.scherler.games.risk.entities.PlayerRepository;
+import io.scherler.games.risk.models.PlayerColor;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.val;
@@ -19,13 +20,13 @@ public class PlayerService {
     }
 
     List<PlayerEntity> generatePlayers(GameEntity game, int number) {
-        val playerList = new ArrayList<PlayerEntity>();
-        if (number > Color.values().length) {
+        if (number > PlayerColor.values().length) {
             throw new IllegalArgumentException("Not enough colors available for '" + number + "' players.");
         }
 
+        val playerList = new ArrayList<PlayerEntity>();
         for (int i = 0; i < number; i++) {
-            playerList.add(new PlayerEntity(Color.values()[i].name(), game));
+            playerList.add(new PlayerEntity(PlayerColor.values()[i], game));
         }
 
         return playerList;
@@ -35,13 +36,4 @@ public class PlayerService {
         return playerRepository.findById(playerId).orElseThrow(() -> new ResourceNotFoundException(playerId));
     }
 
-}
-
-enum Color {
-    RED,
-    GREEN,
-    BLUE,
-    YELLOW,
-    ORANGE,
-    VIOLET
 }

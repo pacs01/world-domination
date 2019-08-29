@@ -1,6 +1,7 @@
 package io.scherler.games.risk.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.scherler.games.risk.models.PlayerColor;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -23,9 +24,9 @@ import lombok.ToString;
 @NoArgsConstructor
 public class PlayerEntity extends BaseEntity {
 
-    private String color;
+    private PlayerColor color;
 
-    public PlayerEntity(String color, GameEntity game) {
+    public PlayerEntity(PlayerColor color, GameEntity game) {
         this.color = color;
         this.game = game;
     }
