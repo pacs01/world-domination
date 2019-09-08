@@ -5,9 +5,10 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class DeploymentResult {
+public class MovementInfo {
 
-    private String territory;
+    private TerritoryInfo source;
 
-    private Integer totalNumberOfUnits;
+    private TerritoryInfo target;
+
 }

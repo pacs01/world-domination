@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -68,10 +69,20 @@ public class TerritoryEntity extends BaseEntity {
     @JoinColumn(name = "continentId")
     private ContinentEntity continent;
 
+    @Setter(AccessLevel.NONE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "playerId")
     private PlayerEntity player;
+
+    @Transactional
+    public void conquer(PlayerEntity player, int units) {
+        if (this.units != 0) {
+            throw new IllegalStateException("Territory " + this.name + " can't be conquered because there are still units deployed.");
+        }
+        this.player = player;
+        this.units = units;
+    }
 
     public boolean isOccupied() {
         return player != null;

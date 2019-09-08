@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/players/{playerId}/movements")
-public class MovementController {
+@RequestMapping("/players/{playerId}/attacks")
+public class AttackController {
 
     private final ActionService actionService;
 
-    public MovementController(ActionService actionService) {
+    public AttackController(ActionService actionService) {
         this.actionService = actionService;
     }
 
     @PostMapping()
-    public ResponseEntity<?> move(@PathVariable("playerId") Long playerId, @Valid @RequestBody Movement movement) {
-        val movementInfo = actionService.move(movement, playerId);
-        return ResponseEntity.ok().body(movementInfo); //todo add hateoas
+    public ResponseEntity<?> attack(@PathVariable("playerId") Long playerId, @Valid @RequestBody Movement movement) {
+        val attackInfo = actionService.attack(movement, playerId);
+        return ResponseEntity.ok().body(attackInfo); //todo add hateoas
     }
 }
