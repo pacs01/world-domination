@@ -53,7 +53,7 @@ public class GameController implements DefaultResourceController<GameEntity> {
 
     @GetMapping("/{id}")
     public Resource<GameEntity> getOne(@PathVariable Long id) {
-        return defaultResourceAssembler.toResource(gameRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id)));
+        return defaultResourceAssembler.toResource(gameRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Game", id)));
     }
 
     @DeleteMapping("/{id}")

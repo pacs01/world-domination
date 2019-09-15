@@ -33,7 +33,7 @@ public class PlayerService {
     }
 
     PlayerEntity getPlayer(Long playerId) {
-        return playerRepository.findById(playerId).orElseThrow(() -> new ResourceNotFoundException(playerId));
+        return playerRepository.findById(playerId).orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
     }
 
 }
