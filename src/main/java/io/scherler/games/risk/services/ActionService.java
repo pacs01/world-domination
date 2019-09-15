@@ -1,7 +1,5 @@
 package io.scherler.games.risk.services;
 
-import io.scherler.games.risk.controllers.ResourceNotFoundException;
-import io.scherler.games.risk.entities.PlayerEntity;
 import io.scherler.games.risk.entities.TerritoryEntity;
 import io.scherler.games.risk.entities.TerritoryRepository;
 import io.scherler.games.risk.models.AttackResult;
@@ -24,11 +22,13 @@ public class ActionService {
     private static final int MAX_NUMBER_OF_DEFEND_DICES = 2;
 
     private final PlayerService playerService;
+    private final TerritoryService territoryService;
     private final TerritoryRepository territoryRepository;
     private final DiceService diceService;
 
-    public ActionService(PlayerService playerService, TerritoryRepository territoryRepository, DiceService diceService) {
+    public ActionService(PlayerService playerService, TerritoryService territoryService, TerritoryRepository territoryRepository, DiceService diceService) {
         this.playerService = playerService;
+        this.territoryService = territoryService;
         this.territoryRepository = territoryRepository;
         this.diceService = diceService;
     }
@@ -36,7 +36,7 @@ public class ActionService {
     @Transactional
     public void occupy(Occupation occupation, Long playerId) {
         val player = playerService.getPlayer(playerId);
-        val target = getTerritory(occupation.getTarget());
+        val target = territoryService.getTerritory(occupation.getTarget());
 
         if (target.isOccupied()) {
             throw new IllegalArgumentException("The territory '" + target.getName() + "' is occupied already.");
@@ -49,9 +49,9 @@ public class ActionService {
     @Transactional
     public TerritoryInfo deploy(Deployment deployment, Long playerId) {
         val player = playerService.getPlayer(playerId); // todo add validation (number of units left to place)
-        val target = getTerritory(deployment.getTarget());
+        val target = territoryService.getTerritory(deployment.getTarget());
 
-        validateOwnTerritories(player, target);
+        territoryService.validateOwnTerritories(player, target);
 
         target.addUnits(deployment.getNumberOfUnits());
         territoryRepository.save(target);
@@ -61,11 +61,11 @@ public class ActionService {
     @Transactional
     public MovementInfo move(Movement movement, Long playerId) {
         val player = playerService.getPlayer(playerId); // todo add validation (are territories connected?)
-        val source = getTerritory(movement.getSource());
-        val target = getTerritory(movement.getTarget());
+        val source = territoryService.getTerritory(movement.getSource());
+        val target = territoryService.getTerritory(movement.getTarget());
 
-        validateOwnTerritories(player, source, target);
-        validateRemainingUnits(source, movement.getNumberOfUnits());
+        territoryService.validateOwnTerritories(player, source, target);
+        territoryService.validateRemainingUnits(source, movement.getNumberOfUnits());
 
         source.removeUnits(movement.getNumberOfUnits());
         target.addUnits(movement.getNumberOfUnits());
@@ -78,12 +78,12 @@ public class ActionService {
     @Transactional
     public AttackResult attack(Movement movement, Long playerId) {
         val player = playerService.getPlayer(playerId); // todo add validation (are territories connected?)
-        val source = getTerritory(movement.getSource());
-        val target = getTerritory(movement.getTarget());
+        val source = territoryService.getTerritory(movement.getSource());
+        val target = territoryService.getTerritory(movement.getTarget());
 
-        validateOwnTerritories(player, source);
-        validateEnemyTerritory(player, target);
-        validateRemainingUnits(source, movement.getNumberOfUnits());
+        territoryService.validateOwnTerritories(player, source);
+        territoryService.validateEnemyTerritory(player, target);
+        territoryService.validateRemainingUnits(source, movement.getNumberOfUnits());
 
         val attackDices = diceService.rollDices(Math.min(movement.getNumberOfUnits(), MAX_NUMBER_OF_ATTACK_DICES));
         val defendDices = diceService.rollDices(Math.min(target.getUnits(), MAX_NUMBER_OF_DEFEND_DICES));
@@ -115,31 +115,5 @@ public class ActionService {
             }
         }
         return attackers;
-    }
-
-    private TerritoryEntity getTerritory(String name) {
-        return territoryRepository.findByName(name).stream().findFirst().orElseThrow(() -> new ResourceNotFoundException(name));
-    }
-
-    private void validateOwnTerritories(PlayerEntity player, TerritoryEntity... territories) {
-        val foreignTerritory = Arrays.stream(territories).filter(t -> !t.isOccupiedBy(player)).findAny();
-        foreignTerritory.ifPresent(t -> {
-            throw new IllegalArgumentException("Territory '" + t.getName() + "' not occupied by player '" + player.getColor() + "'.");
-        });
-    }
-
-    private void validateEnemyTerritory(PlayerEntity player, TerritoryEntity territory) {
-        if (!territory.isOccupied() || territory.isOccupiedBy(player)) {
-            throw new IllegalArgumentException("Territory '" + territory.getName() + "' not occupied by an enemy player.");
-        }
-    }
-
-    private void validateRemainingUnits(TerritoryEntity territory, int numberOfUnits) {
-        if (territory.getUnits() < numberOfUnits + 1) {
-            throw new IllegalArgumentException(
-                "Not enough units available at territory '" + territory.getName() + "'. There must remain at least one unit at every conquered place.");
-        } else if (numberOfUnits < 1) {
-            throw new IllegalArgumentException("An action without any units is not possible.");
-        }
     }
 }
