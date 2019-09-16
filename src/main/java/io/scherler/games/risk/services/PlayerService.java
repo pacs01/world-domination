@@ -19,6 +19,10 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
+    public PlayerEntity getPlayer(Long playerId) {
+        return playerRepository.findById(playerId).orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
+    }
+
     List<PlayerEntity> generatePlayers(GameEntity game, int number) {
         if (number > PlayerColor.values().length) {
             throw new IllegalArgumentException("Not enough colors available for '" + number + "' players.");
@@ -30,10 +34,6 @@ public class PlayerService {
         }
 
         return playerList;
-    }
-
-    PlayerEntity getPlayer(Long playerId) {
-        return playerRepository.findById(playerId).orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
     }
 
 }
