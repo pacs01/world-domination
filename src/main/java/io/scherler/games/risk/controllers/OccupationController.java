@@ -3,6 +3,7 @@ package io.scherler.games.risk.controllers;
 import io.scherler.games.risk.models.Occupation;
 import io.scherler.games.risk.services.ActionService;
 import javax.validation.Valid;
+import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ public class OccupationController {
 
     @PostMapping()
     public ResponseEntity<?> occupy(@PathVariable("playerId") Long playerId, @Valid @RequestBody Occupation occupation) {
-        actionService.occupy(occupation, playerId);
-        return ResponseEntity.ok().build(); //todo add hateoas
+        val occupationResult = actionService.occupy(occupation, playerId);
+        return ResponseEntity.ok().body(occupationResult); //todo add hateoas
     }
 }

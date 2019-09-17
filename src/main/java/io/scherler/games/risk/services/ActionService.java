@@ -34,7 +34,7 @@ public class ActionService {
     }
 
     @Transactional
-    public void occupy(Occupation occupation, Long playerId) {
+    public TerritoryInfo occupy(Occupation occupation, Long playerId) {
         val player = playerService.getPlayer(playerId);
         val target = territoryService.getTerritory(occupation.getTarget());
 
@@ -44,6 +44,7 @@ public class ActionService {
 
         target.conquer(player, 1);
         territoryRepository.save(target);
+        return new TerritoryInfo(target.getName(), target.getUnits());
     }
 
     @Transactional
