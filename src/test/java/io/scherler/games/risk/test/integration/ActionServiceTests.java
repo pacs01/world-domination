@@ -33,24 +33,15 @@ class ActionServiceTests {
 
     @BeforeEach
     void init() {
-        val game = new Game();
-        game.setName("testgame");
-        game.setNumberOfPlayers(4);
-        gameService.createNew(game);
+        gameService.createNew(new Game("testgame", 4));
 
-        val occupation = new Occupation();
-        occupation.setTarget("Egypt");
-        actionService.occupy(occupation, 1L);
-
-        val otherOccupation = new Occupation();
-        otherOccupation.setTarget("Southern Europe");
-        actionService.occupy(otherOccupation, 2L);
+        actionService.occupy(new Occupation("Egypt"), 1L);
+        actionService.occupy(new Occupation("Southern Europe"), 2L);
     }
 
     @Test
     void testOccupation() {
-        val occupation = new Occupation();
-        occupation.setTarget("Peru");
+        val occupation = new Occupation("Peru");
 
         actionService.occupy(occupation, 1L);
 
