@@ -9,5 +9,5 @@ public class TerritoryInfo {
 
     private String territory;
 
-    private Integer numberOfUnits;
+    private int numberOfUnits;
 }
