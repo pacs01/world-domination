@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiceService {
 
-    List<Integer> rollDices(int numberOfDices) {
+    public List<Integer> rollDices(int numberOfDices) {
         return IntStream.generate(() -> ThreadLocalRandom.current().nextInt(6) + 1).limit(numberOfDices).boxed().collect(Collectors.toList());
     }
 }
