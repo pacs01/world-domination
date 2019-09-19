@@ -26,10 +26,13 @@ public class PlayerEntity extends BaseEntity {
 
     private PlayerColor color;
 
-    public PlayerEntity(PlayerColor color, GameEntity game) {
+    public PlayerEntity(int position, PlayerColor color, GameEntity game) {
+        this.position = position;
         this.color = color;
         this.game = game;
     }
+
+    private int position;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore

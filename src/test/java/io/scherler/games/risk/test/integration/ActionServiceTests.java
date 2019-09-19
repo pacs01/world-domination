@@ -49,7 +49,7 @@ class ActionServiceTests {
     @BeforeEach
     void init() {
         val game = gameService.createNew(new Game("testgame", 4));
-        this.firstPlayer = game.getPlayerEntities().stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("No player entity found!"));
+        firstPlayer = game.getPlayerEntities().stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("No player entity found!"));
         val secondPlayer = game.getPlayerEntities()
                                .stream()
                                .filter(p -> !p.equals(firstPlayer))

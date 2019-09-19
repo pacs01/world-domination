@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
@@ -26,6 +27,9 @@ public class GameEntity extends BaseEntity {
     public GameEntity(String name) {
         this.name = name;
     }
+
+    @ManyToOne
+    private PlayerEntity activePlayer;
 
     public void addPlayers(List<PlayerEntity> players) {
         players.forEach(this::addPlayer);

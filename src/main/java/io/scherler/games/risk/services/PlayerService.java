@@ -23,6 +23,12 @@ public class PlayerService {
         return playerRepository.findById(playerId).orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
     }
 
+    public PlayerEntity getNextPlayer(GameEntity game, Long playerId) {
+        val player = getPlayer(playerId);
+        int nextPosition = (player.getPosition() + 1) % game.getPlayerEntities().size();
+        return playerRepository.findByGameAndPosition(game, nextPosition).stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("Player", "game = " + game.getId() + " and position = " + nextPosition));
+    }
+
     List<PlayerEntity> generatePlayers(GameEntity game, int number) {
         if (number > PlayerColor.values().length) {
             throw new IllegalArgumentException("Not enough colors available for '" + number + "' players.");
@@ -30,7 +36,7 @@ public class PlayerService {
 
         val playerList = new ArrayList<PlayerEntity>();
         for (int i = 0; i < number; i++) {
-            playerList.add(new PlayerEntity(PlayerColor.values()[i], game));
+            playerList.add(new PlayerEntity(i, PlayerColor.values()[i], game));
         }
 
         return playerList;
