@@ -19,8 +19,8 @@ import lombok.ToString;
 @Data
 @Entity
 @Table(name = "player")
-@ToString(exclude = "game")
-@EqualsAndHashCode(callSuper = true, exclude = "game")
+@ToString(exclude = {"game", "user"})
+@EqualsAndHashCode(callSuper = true, exclude = {"game", "user"})
 @NoArgsConstructor
 public class PlayerEntity extends BaseEntity {
 
@@ -38,6 +38,11 @@ public class PlayerEntity extends BaseEntity {
     @JsonIgnore
     @JoinColumn(name = "gameId")
     private GameEntity game;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "userId")
+    private UserEntity user;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private Set<TerritoryEntity> territoryEntities = new HashSet<>();
