@@ -2,7 +2,6 @@ package io.scherler.games.risk.test.integration;
 
 import io.scherler.games.risk.controllers.ResourceNotFoundException;
 import io.scherler.games.risk.entities.GameEntity;
-import io.scherler.games.risk.entities.GameRepository;
 import io.scherler.games.risk.entities.PlayerEntity;
 import io.scherler.games.risk.models.Game;
 import io.scherler.games.risk.services.GameService;
@@ -24,9 +23,6 @@ class GameServiceTests {
 
     @Autowired
     private GameService gameService;
-
-    @Autowired
-    private GameRepository gameRepository;
 
     private GameEntity game;
     private PlayerEntity firstPlayer;
