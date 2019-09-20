@@ -1,11 +1,9 @@
 package io.scherler.games.risk;
 
 import io.scherler.games.risk.entities.ContinentEntity;
-import io.scherler.games.risk.entities.ContinentRepository;
-import io.scherler.games.risk.entities.GameEntity;
-import io.scherler.games.risk.entities.GameRepository;
+import io.scherler.games.risk.entities.repositories.ContinentRepository;
 import io.scherler.games.risk.entities.TerritoryEntity;
-import io.scherler.games.risk.entities.TerritoryRepository;
+import io.scherler.games.risk.entities.repositories.TerritoryRepository;
 import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;

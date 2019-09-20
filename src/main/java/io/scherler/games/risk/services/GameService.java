@@ -1,10 +1,10 @@
 package io.scherler.games.risk.services;
 
-import io.scherler.games.risk.controllers.ResourceNotFoundException;
+import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.entities.GameEntity;
-import io.scherler.games.risk.entities.GameRepository;
+import io.scherler.games.risk.entities.repositories.GameRepository;
 import io.scherler.games.risk.entities.PlayerEntity;
-import io.scherler.games.risk.models.Game;
+import io.scherler.games.risk.models.request.Game;
 import java.util.Comparator;
 import lombok.val;
 import org.springframework.stereotype.Service;

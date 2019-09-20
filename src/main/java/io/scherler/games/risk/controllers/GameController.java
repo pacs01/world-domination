@@ -3,9 +3,12 @@ package io.scherler.games.risk.controllers;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
+import io.scherler.games.risk.controllers.defaults.DefaultResourceAssembler;
+import io.scherler.games.risk.controllers.defaults.DefaultResourceController;
 import io.scherler.games.risk.entities.GameEntity;
-import io.scherler.games.risk.entities.GameRepository;
-import io.scherler.games.risk.models.Game;
+import io.scherler.games.risk.entities.repositories.GameRepository;
+import io.scherler.games.risk.exceptions.ResourceNotFoundException;
+import io.scherler.games.risk.models.request.Game;
 import io.scherler.games.risk.services.GameService;
 import java.net.URI;
 import java.net.URISyntaxException;

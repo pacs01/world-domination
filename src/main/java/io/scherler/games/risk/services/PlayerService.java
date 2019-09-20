@@ -1,9 +1,9 @@
 package io.scherler.games.risk.services;
 
-import io.scherler.games.risk.controllers.ResourceNotFoundException;
+import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.entities.GameEntity;
 import io.scherler.games.risk.entities.PlayerEntity;
-import io.scherler.games.risk.entities.PlayerRepository;
+import io.scherler.games.risk.entities.repositories.PlayerRepository;
 import io.scherler.games.risk.models.PlayerColor;
 import java.util.ArrayList;
 import java.util.List;

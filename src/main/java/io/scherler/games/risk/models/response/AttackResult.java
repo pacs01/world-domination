@@ -1,4 +1,4 @@
-package io.scherler.games.risk.models;
+package io.scherler.games.risk.models.response;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

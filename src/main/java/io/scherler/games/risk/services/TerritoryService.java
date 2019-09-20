@@ -1,9 +1,9 @@
 package io.scherler.games.risk.services;
 
-import io.scherler.games.risk.controllers.ResourceNotFoundException;
+import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.entities.PlayerEntity;
 import io.scherler.games.risk.entities.TerritoryEntity;
-import io.scherler.games.risk.entities.TerritoryRepository;
+import io.scherler.games.risk.entities.repositories.TerritoryRepository;
 import java.util.Arrays;
 import lombok.val;
 import org.springframework.stereotype.Service;

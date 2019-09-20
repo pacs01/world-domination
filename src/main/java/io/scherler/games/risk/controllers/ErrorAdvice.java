@@ -1,5 +1,6 @@
 package io.scherler.games.risk.controllers;
 
+import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -1,14 +1,14 @@
 package io.scherler.games.risk.test.integration;
 
-import io.scherler.games.risk.controllers.ResourceNotFoundException;
+import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.entities.PlayerEntity;
-import io.scherler.games.risk.models.AttackResult;
-import io.scherler.games.risk.models.Deployment;
-import io.scherler.games.risk.models.Game;
-import io.scherler.games.risk.models.Movement;
-import io.scherler.games.risk.models.MovementInfo;
-import io.scherler.games.risk.models.Occupation;
-import io.scherler.games.risk.models.TerritoryInfo;
+import io.scherler.games.risk.models.response.AttackResult;
+import io.scherler.games.risk.models.request.Deployment;
+import io.scherler.games.risk.models.request.Game;
+import io.scherler.games.risk.models.request.Movement;
+import io.scherler.games.risk.models.response.MovementInfo;
+import io.scherler.games.risk.models.request.Occupation;
+import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.services.ActionService;
 import io.scherler.games.risk.services.DiceService;
 import io.scherler.games.risk.services.GameService;

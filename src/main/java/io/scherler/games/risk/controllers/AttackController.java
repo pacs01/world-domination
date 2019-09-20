@@ -1,6 +1,6 @@
 package io.scherler.games.risk.controllers;
 
-import io.scherler.games.risk.models.Movement;
+import io.scherler.games.risk.models.request.Movement;
 import io.scherler.games.risk.services.ActionService;
 import javax.validation.Valid;
 import lombok.val;

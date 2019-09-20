@@ -1,4 +1,4 @@
-package io.scherler.games.risk.controllers;
+package io.scherler.games.risk.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package io.scherler.games.risk.controllers;
+package io.scherler.games.risk.controllers.defaults;
 
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;

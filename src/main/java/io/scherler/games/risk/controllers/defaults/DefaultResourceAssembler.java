@@ -1,4 +1,4 @@
-package io.scherler.games.risk.controllers;
+package io.scherler.games.risk.controllers.defaults;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -11,7 +11,7 @@ public class DefaultResourceAssembler<T extends BaseEntity> implements ResourceA
 
     private final DefaultResourceController<T> defaultResourceController;
 
-    DefaultResourceAssembler(DefaultResourceController<T> defaultResourceController) {
+    public DefaultResourceAssembler(DefaultResourceController<T> defaultResourceController) {
         this.defaultResourceController = defaultResourceController;
     }
 
