@@ -47,7 +47,15 @@ class GameServiceTests {
     }
 
     @Test
-    void testOccupation() {
+    void testCreateNewGame() {
+        val game = gameService.createNew(new Game("new-test-game", 4));
+
+        Assertions.assertEquals(4, game.getPlayerEntities().size());
+        Assertions.assertNotNull(game.getActivePlayer());
+    }
+
+    @Test
+    void testEndTurn() {
         val nextPlayer = gameService.endTurn(game.getId(), firstPlayer.getId());
 
         Assertions.assertEquals(secondPlayer, nextPlayer);
