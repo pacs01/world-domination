@@ -3,6 +3,7 @@ package io.scherler.games.risk.test.integration;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.entities.GameEntity;
 import io.scherler.games.risk.entities.PlayerEntity;
+import io.scherler.games.risk.models.GameState;
 import io.scherler.games.risk.models.request.Game;
 import io.scherler.games.risk.services.GameService;
 import java.util.Comparator;
@@ -48,6 +49,7 @@ class GameServiceTests {
 
         Assertions.assertEquals(4, game.getPlayerEntities().size());
         Assertions.assertNotNull(game.getActivePlayer());
+        Assertions.assertEquals(GameState.ACTIVE, game.getState());
     }
 
     @Test

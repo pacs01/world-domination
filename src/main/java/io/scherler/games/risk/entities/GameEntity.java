@@ -1,5 +1,6 @@
 package io.scherler.games.risk.entities;
 
+import io.scherler.games.risk.models.GameState;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,11 +22,14 @@ public class GameEntity extends BaseEntity {
 
     private String name;
 
+    private GameState state;
+
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private Set<PlayerEntity> playerEntities = new HashSet<>();
 
     public GameEntity(String name) {
         this.name = name;
+        this.state = GameState.ACTIVE;
     }
 
     @ManyToOne
