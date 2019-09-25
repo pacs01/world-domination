@@ -54,9 +54,10 @@ class GameServiceTests {
 
     @Test
     void testEndTurn() {
-        val nextPlayer = gameService.endTurn(game.getId(), firstPlayer.getId());
+        val turnResult = gameService.endTurn(game.getId(), firstPlayer.getId());
 
-        Assertions.assertEquals(secondPlayer, nextPlayer);
+        Assertions.assertEquals(secondPlayer, turnResult.getNextPlayer());
+        Assertions.assertNull(turnResult.getCard());
         Assertions.assertEquals(secondPlayer, game.getActivePlayer());
     }
 }

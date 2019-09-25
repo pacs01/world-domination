@@ -20,7 +20,7 @@ public class TurnController {
 
     @PostMapping()
     public ResponseEntity<?> endTurn(@PathVariable("gameId") Long gameId, @PathVariable("playerId") Long playerId) {
-        val player = gameService.endTurn(gameId, playerId);
-        return ResponseEntity.ok().body(player); //todo add hateoas
+        val turnResult = gameService.endTurn(gameId, playerId);
+        return ResponseEntity.ok().body(turnResult); //todo add hateoas
     }
 }

@@ -2,11 +2,11 @@ package io.scherler.games.risk.services;
 
 import io.scherler.games.risk.entities.TerritoryEntity;
 import io.scherler.games.risk.entities.repositories.TerritoryRepository;
-import io.scherler.games.risk.models.response.AttackResult;
 import io.scherler.games.risk.models.request.Deployment;
 import io.scherler.games.risk.models.request.Movement;
-import io.scherler.games.risk.models.response.MovementInfo;
 import io.scherler.games.risk.models.request.Occupation;
+import io.scherler.games.risk.models.response.AttackResult;
+import io.scherler.games.risk.models.response.MovementInfo;
 import io.scherler.games.risk.models.response.TerritoryInfo;
 import java.util.Arrays;
 import java.util.Collections;
