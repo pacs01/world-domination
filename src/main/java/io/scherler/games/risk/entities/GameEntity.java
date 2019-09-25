@@ -1,26 +1,36 @@
 package io.scherler.games.risk.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.scherler.games.risk.models.GameState;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Entity
 @Table(name = "game")
-@EqualsAndHashCode(callSuper = true)
+@ToString(exclude = "map")
+@EqualsAndHashCode(callSuper = true, exclude = "map")
 @NoArgsConstructor
 public class GameEntity extends BaseEntity {
 
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "mapId")
+    private MapEntity map;
 
     private GameState state;
 

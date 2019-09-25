@@ -23,6 +23,9 @@ public class UserEntity extends BaseEntity {
 
     private String name;
 
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
+    private Set<MapEntity> maps = new HashSet<>();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<PlayerEntity> playerEntities = new HashSet<>();
 }

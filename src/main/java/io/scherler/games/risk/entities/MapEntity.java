@@ -17,23 +17,27 @@ import lombok.ToString;
 
 @Data
 @Entity
-@Table(name = "continent")
-@ToString(exclude = "map")
-@EqualsAndHashCode(callSuper = true, exclude = "map")
+@Table(name = "map")
+@ToString(exclude = "creator")
+@EqualsAndHashCode(callSuper = true, exclude = "creator")
 @NoArgsConstructor
-public class ContinentEntity extends BaseEntity {
+public class MapEntity extends BaseEntity {
 
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "mapId")
-    private MapEntity map;
+    @JoinColumn(name = "creatorId")
+    private UserEntity creator;
 
-    public ContinentEntity(String name) {
+    @OneToMany(mappedBy = "map", cascade = CascadeType.ALL)
+    private Set<ContinentEntity> continents = new HashSet<>();
+
+    @OneToMany(mappedBy = "map", cascade = CascadeType.ALL)
+    private Set<GameEntity> games = new HashSet<>();
+
+    public MapEntity(String name, UserEntity creator) {
         this.name = name;
+        this.creator = creator;
     }
-
-    @OneToMany(mappedBy = "continent", cascade = CascadeType.ALL)
-    private Set<TerritoryEntity> territoryEntities = new HashSet<>();
 }
