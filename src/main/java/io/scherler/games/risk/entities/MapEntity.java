@@ -28,7 +28,7 @@ public class MapEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "creatorId")
-    private UserEntity creator;
+    private UserAccountEntity creator;
 
     @OneToMany(mappedBy = "map", cascade = CascadeType.ALL)
     private Set<ContinentEntity> continents = new HashSet<>();
@@ -36,7 +36,7 @@ public class MapEntity extends BaseEntity {
     @OneToMany(mappedBy = "map", cascade = CascadeType.ALL)
     private Set<GameEntity> games = new HashSet<>();
 
-    public MapEntity(String name, UserEntity creator) {
+    public MapEntity(String name, UserAccountEntity creator) {
         this.name = name;
         this.creator = creator;
     }

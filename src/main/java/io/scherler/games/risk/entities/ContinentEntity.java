@@ -25,12 +25,13 @@ public class ContinentEntity extends BaseEntity {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonIgnore
     @JoinColumn(name = "mapId")
     private MapEntity map;
 
-    public ContinentEntity(String name) {
+    public ContinentEntity(MapEntity map, String name) {
+        this.map = map;
         this.name = name;
     }
 

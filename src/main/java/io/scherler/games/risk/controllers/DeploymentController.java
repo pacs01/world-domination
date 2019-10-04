@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/players/{playerId}/deployments")
+@RequestMapping("/games/{gameId}/players/{playerId}/deployments")
 public class DeploymentController {
 
     private final ActionService actionService;
@@ -22,8 +22,8 @@ public class DeploymentController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> deploy(@PathVariable("playerId") Long playerId, @Valid @RequestBody Deployment deployment) {
-        val deploymentResult = actionService.deploy(deployment, playerId);
+    public ResponseEntity<?> deploy(@PathVariable("gameId") Long gameId, @PathVariable("playerId") Long playerId, @Valid @RequestBody Deployment deployment) {
+        val deploymentResult = actionService.deploy(deployment, gameId, playerId);
         return ResponseEntity.ok().body(deploymentResult); //todo add hateoas
     }
 }

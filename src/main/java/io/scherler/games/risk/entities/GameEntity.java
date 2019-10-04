@@ -27,7 +27,7 @@ public class GameEntity extends BaseEntity {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonIgnore
     @JoinColumn(name = "mapId")
     private MapEntity map;
@@ -37,8 +37,12 @@ public class GameEntity extends BaseEntity {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private Set<PlayerEntity> playerEntities = new HashSet<>();
 
-    public GameEntity(String name) {
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    private Set<OccupationEntity> occupationEntities = new HashSet<>();
+
+    public GameEntity(String name, MapEntity map) {
         this.name = name;
+        this.map = map;
         this.state = GameState.ACTIVE;
     }
 

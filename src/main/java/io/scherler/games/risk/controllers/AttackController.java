@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/players/{playerId}/attacks")
+@RequestMapping("/games/{gameId}/players/{playerId}/attacks")
 public class AttackController {
 
     private final ActionService actionService;
@@ -22,8 +22,8 @@ public class AttackController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> attack(@PathVariable("playerId") Long playerId, @Valid @RequestBody Movement movement) {
-        val attackInfo = actionService.attack(movement, playerId);
+    public ResponseEntity<?> attack(@PathVariable("gameId") Long gameId, @PathVariable("playerId") Long playerId, @Valid @RequestBody Movement movement) {
+        val attackInfo = actionService.attack(movement, gameId, playerId);
         return ResponseEntity.ok().body(attackInfo); //todo add hateoas
     }
 }

@@ -1,5 +1,6 @@
 package io.scherler.games.risk.test.integration;
 
+import io.scherler.games.risk.entities.GameEntity;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.entities.PlayerEntity;
 import io.scherler.games.risk.models.response.AttackResult;
@@ -12,7 +13,7 @@ import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.services.ActionService;
 import io.scherler.games.risk.services.DiceService;
 import io.scherler.games.risk.services.GameService;
-import io.scherler.games.risk.services.TerritoryService;
+import io.scherler.games.risk.services.OccupationService;
 import java.util.Arrays;
 import java.util.Collections;
 import lombok.val;
@@ -33,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 class ActionServiceTests {
 
     @Autowired
-    private TerritoryService territoryService;
+    private OccupationService occupationService;
 
     @Autowired
     private ActionService actionService;
@@ -44,11 +45,12 @@ class ActionServiceTests {
     @MockBean
     private DiceService mockedDiceService;
 
+    private GameEntity game;
     private PlayerEntity firstPlayer;
 
     @BeforeEach
     void init() {
-        val game = gameService.createNew(new Game("testgame", 4));
+        game = gameService.createNew(new Game("testgame", 4, "helloworld"));
         firstPlayer = game.getPlayerEntities().stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("No player entity found!"));
         val secondPlayer = game.getPlayerEntities()
                                .stream()
@@ -56,22 +58,22 @@ class ActionServiceTests {
                                .findFirst()
                                .orElseThrow(() -> new ResourceNotFoundException("No second player entity found!"));
 
-        actionService.occupy(new Occupation("Egypt"), firstPlayer.getId());
-        actionService.occupy(new Occupation("Southern Europe"), firstPlayer.getId());
-        actionService.deploy(new Deployment("Southern Europe", 5), firstPlayer.getId());
+        actionService.occupy(new Occupation("Egypt"), game.getId(), firstPlayer.getId());
+        actionService.occupy(new Occupation("Southern Europe"), game.getId(), firstPlayer.getId());
+        actionService.deploy(new Deployment("Southern Europe", 5), game.getId(), firstPlayer.getId());
 
-        actionService.occupy(new Occupation("Japan"), secondPlayer.getId());
+        actionService.occupy(new Occupation("Japan"), game.getId(), secondPlayer.getId());
     }
 
     @Test
     void testOccupation() {
         val occupation = new Occupation("Peru");
 
-        val territoryInfo = actionService.occupy(occupation, firstPlayer.getId());
+        val territoryInfo = actionService.occupy(occupation, game.getId(), firstPlayer.getId());
 
         Assertions.assertEquals(new TerritoryInfo("Peru", 1), territoryInfo);
 
-        val targetTerritory = territoryService.getTerritory("Peru");
+        val targetTerritory = occupationService.getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Peru");
         Assertions.assertTrue(targetTerritory.isOccupied());
         Assertions.assertTrue(targetTerritory.isOccupiedBy(firstPlayer));
         Assertions.assertEquals(firstPlayer, targetTerritory.getPlayer());
@@ -81,11 +83,11 @@ class ActionServiceTests {
     void testDeployment() {
         val deployment = new Deployment("Egypt", 5);
 
-        val territoryInfo = actionService.deploy(deployment, firstPlayer.getId());
+        val territoryInfo = actionService.deploy(deployment, game.getId(), firstPlayer.getId());
 
         Assertions.assertEquals(new TerritoryInfo("Egypt", 6), territoryInfo);
 
-        val targetTerritory = territoryService.getTerritory("Egypt");
+        val targetTerritory = occupationService.getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Egypt");
         Assertions.assertTrue(targetTerritory.isOccupiedBy(firstPlayer));
         Assertions.assertEquals(firstPlayer, targetTerritory.getPlayer());
         Assertions.assertEquals(6, targetTerritory.getUnits());
@@ -95,15 +97,16 @@ class ActionServiceTests {
     void testMovement() {
         val movement = new Movement("Egypt", 5, "Southern Europe");
 
-        val movementInfo = actionService.move(movement, firstPlayer.getId());
+        val movementInfo = actionService.move(movement, game.getId(), firstPlayer.getId());
 
         Assertions.assertEquals(new MovementInfo(new TerritoryInfo("Southern Europe", 1), new TerritoryInfo("Egypt", 6)), movementInfo);
 
-        val sourceTerritory = territoryService.getTerritory("Southern Europe");
+        val sourceTerritory = occupationService.getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Southern Europe");
         Assertions.assertTrue(sourceTerritory.isOccupiedBy(firstPlayer));
         Assertions.assertEquals(firstPlayer, sourceTerritory.getPlayer());
         Assertions.assertEquals(1, sourceTerritory.getUnits());
-        val targetTerritory = territoryService.getTerritory("Egypt");
+
+        val targetTerritory = occupationService.getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Egypt");
         Assertions.assertTrue(targetTerritory.isOccupiedBy(firstPlayer));
         Assertions.assertEquals(firstPlayer, targetTerritory.getPlayer());
         Assertions.assertEquals(6, targetTerritory.getUnits());
@@ -118,15 +121,16 @@ class ActionServiceTests {
 
         val movement = new Movement("Japan", 5, "Southern Europe");
 
-        val attackResult = actionService.attack(movement, firstPlayer.getId());
+        val attackResult = actionService.attack(movement, game.getId(), firstPlayer.getId());
 
         Assertions.assertEquals(new AttackResult(new MovementInfo(new TerritoryInfo("Southern Europe", 1), new TerritoryInfo("Japan", 5)), attackDices, defendDices), attackResult);
 
-        val sourceTerritory = territoryService.getTerritory("Southern Europe");
+        val sourceTerritory = occupationService.getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Southern Europe");
         Assertions.assertTrue(sourceTerritory.isOccupiedBy(firstPlayer));
         Assertions.assertEquals(firstPlayer, sourceTerritory.getPlayer());
         Assertions.assertEquals(1, sourceTerritory.getUnits());
-        val targetTerritory = territoryService.getTerritory("Japan");
+
+        val targetTerritory = occupationService.getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Japan");
         Assertions.assertTrue(targetTerritory.isOccupiedBy(firstPlayer));
         Assertions.assertEquals(firstPlayer, targetTerritory.getPlayer());
         Assertions.assertEquals(5, targetTerritory.getUnits());

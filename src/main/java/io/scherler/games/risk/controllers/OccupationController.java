@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/players/{playerId}/occupations")
+@RequestMapping("/games/{gameId}/players/{playerId}/occupations")
 public class OccupationController {
 
     private final ActionService actionService;
@@ -22,8 +22,8 @@ public class OccupationController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> occupy(@PathVariable("playerId") Long playerId, @Valid @RequestBody Occupation occupation) {
-        val occupationResult = actionService.occupy(occupation, playerId);
+    public ResponseEntity<?> occupy(@PathVariable("gameId") Long gameId, @PathVariable("playerId") Long playerId, @Valid @RequestBody Occupation occupation) {
+        val occupationResult = actionService.occupy(occupation, gameId, playerId);
         return ResponseEntity.ok().body(occupationResult); //todo add hateoas
     }
 }

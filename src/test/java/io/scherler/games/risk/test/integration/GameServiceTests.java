@@ -31,7 +31,7 @@ class GameServiceTests {
 
     @BeforeEach
     void init() {
-        game = gameService.createNew(new Game("testgame", 4));
+        game = gameService.createNew(new Game("testgame", 4, "helloworld"));
         firstPlayer = game.getPlayerEntities()
                           .stream()
                           .min(Comparator.comparing(PlayerEntity::getPosition))
@@ -45,7 +45,7 @@ class GameServiceTests {
 
     @Test
     void testCreateNewGame() {
-        val game = gameService.createNew(new Game("new-test-game", 4));
+        val game = gameService.createNew(new Game("new-test-game", 4, "helloworld"));
 
         Assertions.assertEquals(4, game.getPlayerEntities().size());
         Assertions.assertNotNull(game.getActivePlayer());

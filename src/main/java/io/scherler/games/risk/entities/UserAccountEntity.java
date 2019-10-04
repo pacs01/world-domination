@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "useraccount")
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class UserEntity extends BaseEntity {
+public class UserAccountEntity extends BaseEntity {
 
-    public UserEntity(String name) {
+    public UserAccountEntity(String name) {
         this.name = name;
     }
 
@@ -26,6 +26,6 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
     private Set<MapEntity> maps = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "useraccount", cascade = CascadeType.ALL)
     private Set<PlayerEntity> playerEntities = new HashSet<>();
 }

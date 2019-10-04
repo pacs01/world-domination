@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TerritoryRepository extends JpaRepository<TerritoryEntity, Long> {
 
-    List<TerritoryEntity> findByName(String name);
+    List<TerritoryEntity> findByContinentMapIdAndName(Long continent_map_id, String name);
 }

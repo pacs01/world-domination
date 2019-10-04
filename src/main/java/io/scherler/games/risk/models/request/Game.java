@@ -17,4 +17,6 @@ public class Game {
     @NotNull(message = "Number of players is mandatory")
     private Integer numberOfPlayers;
 
+    @NotBlank(message = "Map is mandatory")
+    private String map;
 }

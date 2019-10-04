@@ -17,15 +17,18 @@ public class GameService {
 
     private final GameRepository gameRepository;
     private final PlayerService playerService;
+    private final MapService mapService;
 
-    public GameService(GameRepository gameRepository, PlayerService playerService) {
+    public GameService(GameRepository gameRepository, PlayerService playerService, MapService mapService) {
         this.gameRepository = gameRepository;
         this.playerService = playerService;
+        this.mapService = mapService;
     }
 
     @Transactional
     public GameEntity createNew(Game newGame) {
-        val newGameEntity = new GameEntity(newGame.getName());
+        val map = mapService.getMap(newGame.getMap());
+        val newGameEntity = new GameEntity(newGame.getName(), map);
         newGameEntity.addPlayers(playerService.generatePlayers(newGameEntity, newGame.getNumberOfPlayers()));
         newGameEntity.setActivePlayer(getFirstPlayer(newGameEntity));
 
@@ -58,7 +61,7 @@ public class GameService {
         }
     }
 
-    public GameEntity getGame(Long gameId) {
+    public GameEntity getGame(long gameId) {
         return gameRepository.findById(gameId).orElseThrow(() -> new ResourceNotFoundException("Game", gameId));
     }
 }

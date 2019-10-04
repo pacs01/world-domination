@@ -1,9 +1,13 @@
 package io.scherler.games.risk;
 
 import io.scherler.games.risk.entities.ContinentEntity;
+import io.scherler.games.risk.entities.MapEntity;
+import io.scherler.games.risk.entities.UserAccountEntity;
 import io.scherler.games.risk.entities.repositories.ContinentRepository;
 import io.scherler.games.risk.entities.TerritoryEntity;
+import io.scherler.games.risk.entities.repositories.MapRepository;
 import io.scherler.games.risk.entities.repositories.TerritoryRepository;
+import io.scherler.games.risk.entities.repositories.UserRepository;
 import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -18,17 +22,25 @@ public class LoadDatabase {
 
     // todo move database initialization to Liquibase
     @Bean
-    CommandLineRunner initDatabase(ContinentRepository continentRepository, TerritoryRepository territoryRepository) {
+    CommandLineRunner initDatabase(UserRepository userRepository, MapRepository mapRepository, ContinentRepository continentRepository, TerritoryRepository territoryRepository) {
         return args -> {
             log.info("Preloading entities...");
 
+            log.info("Creating useraccount...");
+            val useraccount = new UserAccountEntity("testadmin");
+            userRepository.save(useraccount);
+
+            log.info("Creating map...");
+            val map = new MapEntity("helloworld", useraccount);
+            mapRepository.save(map);
+
             log.info("Creating continents...");
-            val northAmerica = new ContinentEntity("North America");
-            val southAmerica = new ContinentEntity("South America");
-            val europe = new ContinentEntity("Europe");
-            val asia = new ContinentEntity("Asia");
-            val australia = new ContinentEntity("Australia");
-            val africa = new ContinentEntity("Africa");
+            val northAmerica = new ContinentEntity(map, "North America");
+            val southAmerica = new ContinentEntity(map, "South America");
+            val europe = new ContinentEntity(map, "Europe");
+            val asia = new ContinentEntity(map, "Asia");
+            val australia = new ContinentEntity(map, "Australia");
+            val africa = new ContinentEntity(map, "Africa");
             List<ContinentEntity> continents = Arrays.asList(northAmerica, southAmerica, europe, asia, australia, africa);
             continentRepository.saveAll(continents);
 
