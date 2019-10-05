@@ -53,4 +53,7 @@ public class TerritoryEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "territory", cascade = CascadeType.ALL)
     private Set<OccupationEntity> occupationEntities = new HashSet<>();
+
+    @OneToMany(mappedBy = "territory", cascade = CascadeType.ALL)
+    private Set<CardEntity> cardEntities = new HashSet<>();
 }

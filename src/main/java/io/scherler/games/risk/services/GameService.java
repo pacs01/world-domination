@@ -4,6 +4,7 @@ import io.scherler.games.risk.entities.GameEntity;
 import io.scherler.games.risk.entities.PlayerEntity;
 import io.scherler.games.risk.entities.repositories.GameRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
+import io.scherler.games.risk.models.GameState;
 import io.scherler.games.risk.models.request.Game;
 import io.scherler.games.risk.models.response.Card;
 import io.scherler.games.risk.models.response.TurnResult;
@@ -18,11 +19,13 @@ public class GameService {
     private final GameRepository gameRepository;
     private final PlayerService playerService;
     private final MapService mapService;
+    private final CardService cardService;
 
-    public GameService(GameRepository gameRepository, PlayerService playerService, MapService mapService) {
+    public GameService(GameRepository gameRepository, PlayerService playerService, MapService mapService, CardService cardService) {
         this.gameRepository = gameRepository;
         this.playerService = playerService;
         this.mapService = mapService;
+        this.cardService = cardService;
     }
 
     @Transactional
@@ -45,17 +48,28 @@ public class GameService {
     @Transactional
     public TurnResult endTurn(long gameId, long playerId) {
         val game = getGame(gameId);
-        val card = drawCardIfAllowedTo(gameId, playerId);
-        val nextPlayer = playerService.getNextPlayer(game, playerId);
-        game.setActivePlayer(nextPlayer);
+        val player = playerService.getPlayer(playerId);
+        if (!player.equals(game.getActivePlayer())) {
+            throw new IllegalArgumentException("Player is not active and thus cannot end the turn!");
+        }
+
+        val card = drawCardIfAllowedTo(game, player);
+
+        PlayerEntity nextPlayer = null;
+        if (CardService.VALAR_MORGHULIS.equals(card.getTerritory())) {
+            game.setState(GameState.VALAR_MORGHULIS);
+        } else {
+            nextPlayer = playerService.getNextPlayer(game, playerId);
+            game.setActivePlayer(nextPlayer);
+        }
         gameRepository.save(game);
         return new TurnResult(nextPlayer, card);
     }
 
     @Transactional
-    public Card drawCardIfAllowedTo(long gameId, long playerId) {
-        if (false) { //todo: is allowed to draw a card? (has conquered at least one territory)
-            return new Card("test");
+    public Card drawCardIfAllowedTo(GameEntity game, PlayerEntity player) {
+        if (true) { //todo: is allowed to draw a card? (has conquered at least one territory)
+            return cardService.drawNextCard(game, player);
         } else {
             return null;
         }
@@ -63,5 +77,11 @@ public class GameService {
 
     public GameEntity getGame(long gameId) {
         return gameRepository.findById(gameId).orElseThrow(() -> new ResourceNotFoundException("Game", gameId));
+    }
+
+    public void setState(long gameId, GameState state) {
+        val game = getGame(gameId);
+        game.setState(state);
+        gameRepository.save(game);
     }
 }

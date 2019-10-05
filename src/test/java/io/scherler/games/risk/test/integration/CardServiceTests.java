@@ -1,10 +1,10 @@
 package io.scherler.games.risk.test.integration;
 
-import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.entities.GameEntity;
 import io.scherler.games.risk.entities.PlayerEntity;
-import io.scherler.games.risk.models.GameState;
+import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.request.Game;
+import io.scherler.games.risk.services.CardService;
 import io.scherler.games.risk.services.GameService;
 import java.util.Comparator;
 import lombok.val;
@@ -20,14 +20,16 @@ import org.springframework.transaction.annotation.Transactional;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
-class GameServiceTests {
+class CardServiceTests {
+
+    @Autowired
+    private CardService cardService;
 
     @Autowired
     private GameService gameService;
 
     private GameEntity game;
     private PlayerEntity firstPlayer;
-    private PlayerEntity secondPlayer;
 
     @BeforeEach
     void init() {
@@ -36,28 +38,14 @@ class GameServiceTests {
                           .stream()
                           .min(Comparator.comparing(PlayerEntity::getPosition))
                           .orElseThrow(() -> new ResourceNotFoundException("No first player entity found!"));
-        secondPlayer = game.getPlayerEntities()
-                           .stream()
-                           .filter(p -> !p.equals(firstPlayer))
-                           .min(Comparator.comparing(PlayerEntity::getPosition))
-                           .orElseThrow(() -> new ResourceNotFoundException("No second player entity found!"));
     }
 
     @Test
-    void testCreateNewGame() {
-        val game = gameService.createNew(new Game("new-test-game", 4, "helloworld"));
+    void testDrawCard() {
+        val numberOfCards = cardService.getAllCards(game.getId()).size();
+        val card = cardService.drawNextCard(game, firstPlayer);
 
-        Assertions.assertEquals(4, game.getPlayerEntities().size());
-        Assertions.assertNotNull(game.getActivePlayer());
-        Assertions.assertEquals(GameState.ACTIVE, game.getState());
-    }
-
-    @Test
-    void testEndTurn() {
-        val turnResult = gameService.endTurn(game.getId(), firstPlayer.getId());
-
-        Assertions.assertEquals(secondPlayer, turnResult.getNextPlayer());
-        Assertions.assertNotNull(turnResult.getCard());
-        Assertions.assertEquals(secondPlayer, game.getActivePlayer());
+        Assertions.assertEquals(numberOfCards + 1, cardService.getAllCards(game.getId()).size());
+        Assertions.assertTrue(cardService.getCardsByPlayer(game.getId(), firstPlayer.getId()).stream().anyMatch(c -> c.getTerritory().getName().equals(card.getTerritory())));
     }
 }
