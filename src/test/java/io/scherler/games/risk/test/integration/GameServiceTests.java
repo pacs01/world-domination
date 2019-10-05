@@ -32,11 +32,11 @@ class GameServiceTests {
     @BeforeEach
     void init() {
         game = gameService.createNew(new Game("testgame", 4, "helloworld"));
-        firstPlayer = game.getPlayerEntities()
+        firstPlayer = game.getPlayers()
                           .stream()
                           .min(Comparator.comparing(PlayerEntity::getPosition))
                           .orElseThrow(() -> new ResourceNotFoundException("No first player entity found!"));
-        secondPlayer = game.getPlayerEntities()
+        secondPlayer = game.getPlayers()
                            .stream()
                            .filter(p -> !p.equals(firstPlayer))
                            .min(Comparator.comparing(PlayerEntity::getPosition))
@@ -47,7 +47,7 @@ class GameServiceTests {
     void testCreateNewGame() {
         val game = gameService.createNew(new Game("new-test-game", 4, "helloworld"));
 
-        Assertions.assertEquals(4, game.getPlayerEntities().size());
+        Assertions.assertEquals(4, game.getPlayers().size());
         Assertions.assertNotNull(game.getActivePlayer());
         Assertions.assertEquals(GameState.ACTIVE, game.getState());
     }

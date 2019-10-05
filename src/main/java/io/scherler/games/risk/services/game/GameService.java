@@ -40,7 +40,7 @@ public class GameService {
     }
 
     private PlayerEntity getFirstPlayer(GameEntity gameEntity) {
-        return gameEntity.getPlayerEntities()
+        return gameEntity.getPlayers()
                          .stream()
                          .min(Comparator.comparing(PlayerEntity::getPosition))
                          .orElseThrow(() -> new ResourceNotFoundException("No resource of type 'Player' found!"));

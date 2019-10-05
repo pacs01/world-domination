@@ -47,8 +47,8 @@ public class PlayerEntity extends BaseEntity {
     private UserAccountEntity useraccount;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
-    private Set<OccupationEntity> occupationEntities = new HashSet<>();
+    private Set<OccupationEntity> occupations = new HashSet<>();
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
-    private Set<CardEntity> cardEntities = new HashSet<>();
+    private Set<CardEntity> cards = new HashSet<>();
 }

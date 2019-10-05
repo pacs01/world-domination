@@ -30,5 +30,5 @@ public class UserAccountEntity extends BaseEntity {
     private Set<MapEntity> maps = new HashSet<>();
 
     @OneToMany(mappedBy = "useraccount", cascade = CascadeType.ALL)
-    private Set<PlayerEntity> playerEntities = new HashSet<>();
+    private Set<PlayerEntity> players = new HashSet<>();
 }

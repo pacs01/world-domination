@@ -34,7 +34,7 @@ class CardServiceTests {
     @BeforeEach
     void init() {
         game = gameService.createNew(new Game("testgame", 4, "helloworld"));
-        firstPlayer = game.getPlayerEntities()
+        firstPlayer = game.getPlayers()
                           .stream()
                           .min(Comparator.comparing(PlayerEntity::getPosition))
                           .orElseThrow(() -> new ResourceNotFoundException("No first player entity found!"));

@@ -37,13 +37,13 @@ public class GameEntity extends BaseEntity {
     private GameState state;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-    private Set<PlayerEntity> playerEntities = new HashSet<>();
+    private Set<PlayerEntity> players = new HashSet<>();
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-    private Set<OccupationEntity> occupationEntities = new HashSet<>();
+    private Set<OccupationEntity> occupations = new HashSet<>();
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-    private Set<CardEntity> cardEntities = new HashSet<>();
+    private Set<CardEntity> cards = new HashSet<>();
 
     public GameEntity(String name, MapEntity map) {
         this.name = name;
@@ -59,12 +59,12 @@ public class GameEntity extends BaseEntity {
     }
 
     public void addPlayer(PlayerEntity player) {
-        playerEntities.add(player);
+        players.add(player);
         player.setGame(this);
     }
 
     public void removePlayer(PlayerEntity player) {
-        playerEntities.remove(player);
+        players.remove(player);
         player.setGame(null);
     }
 }

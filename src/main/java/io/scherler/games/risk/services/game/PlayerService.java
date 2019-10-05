@@ -25,7 +25,7 @@ public class PlayerService {
 
     public PlayerEntity getNextPlayer(GameEntity game, Long playerId) {
         val player = getPlayer(playerId);
-        int nextPosition = (player.getPosition() + 1) % game.getPlayerEntities().size();
+        int nextPosition = (player.getPosition() + 1) % game.getPlayers().size();
         return playerRepository.findByGameIdAndPosition(game.getId(), nextPosition).stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("Player", "game = " + game.getId() + " and position = " + nextPosition));
     }
 
