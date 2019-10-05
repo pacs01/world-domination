@@ -37,5 +37,5 @@ public class ContinentEntity extends BaseEntity {
     }
 
     @OneToMany(mappedBy = "continent", cascade = CascadeType.ALL)
-    private Set<TerritoryEntity> territoryEntities = new HashSet<>();
+    private Set<TerritoryEntity> territories = new HashSet<>();
 }

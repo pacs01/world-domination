@@ -25,6 +25,10 @@ public class MapService {
         return mapRepository.findByName(name).stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("Map", "name = " + name));
     }
 
+    public MapEntity getMap(long mapId) {
+        return mapRepository.findById(mapId).orElseThrow(() -> new ResourceNotFoundException("Map", mapId));
+    }
+
     public MapEntity createNew(Map newMap, UserAccountEntity user) {
         val map = new MapEntity(newMap.getName(), user);
         val continents = newMap.getContinents().stream().map(c -> createContinent(map, c)).collect(Collectors.toSet());
@@ -35,7 +39,7 @@ public class MapService {
     private ContinentEntity createContinent(MapEntity map, Continent continent) {
         val continentEntity = new ContinentEntity(map, continent.getName());
         val territories = continent.getTerritories().stream().map(t -> new TerritoryEntity(t.getName(), continentEntity)).collect(Collectors.toSet());
-        continentEntity.setTerritoryEntities(territories);
+        continentEntity.setTerritories(territories);
         return continentEntity;
     }
 
