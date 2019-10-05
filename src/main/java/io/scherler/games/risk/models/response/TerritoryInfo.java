@@ -9,5 +9,7 @@ public class TerritoryInfo {
 
     private String territory;
 
+    private String player;
+
     private int numberOfUnits;
 }

@@ -51,7 +51,7 @@ public class ActionService {
 
         val occupationEntity = occupationService.add(game, player, target, 1);
 
-        return new TerritoryInfo(target.getName(), occupationEntity.getUnits());
+        return new TerritoryInfo(target.getName(), occupationEntity.getPlayer().getColor().toString(), occupationEntity.getUnits());
     }
 
     @Transactional
@@ -64,7 +64,7 @@ public class ActionService {
 
         occupation.addUnits(deployment.getNumberOfUnits());
         occupationRepository.save(occupation);
-        return new TerritoryInfo(target.getName(), occupation.getUnits());
+        return new TerritoryInfo(target.getName(), occupation.getPlayer().getColor().toString(), occupation.getUnits());
     }
 
     @Transactional
@@ -83,7 +83,8 @@ public class ActionService {
         OccupationEntity[] updatedOccupations = {sourceOccupation, targetOccupation};
         occupationRepository.saveAll(Arrays.asList(updatedOccupations));
 
-        return new MovementInfo(new TerritoryInfo(source.getName(), sourceOccupation.getUnits()), new TerritoryInfo(target.getName(), targetOccupation.getUnits()));
+        return new MovementInfo(new TerritoryInfo(source.getName(), sourceOccupation.getPlayer().getColor().toString(), sourceOccupation.getUnits()),
+            new TerritoryInfo(target.getName(), targetOccupation.getPlayer().getColor().toString(), targetOccupation.getUnits()));
     }
 
     @Transactional
@@ -111,7 +112,8 @@ public class ActionService {
         OccupationEntity[] updatedOccupations = {sourceOccupation, targetOccupation};
         occupationRepository.saveAll(Arrays.asList(updatedOccupations));
 
-        val movementInfo = new MovementInfo(new TerritoryInfo(source.getName(), sourceOccupation.getUnits()), new TerritoryInfo(target.getName(), targetOccupation.getUnits()));
+        val movementInfo = new MovementInfo(new TerritoryInfo(source.getName(), sourceOccupation.getPlayer().getColor().toString(), sourceOccupation.getUnits()),
+            new TerritoryInfo(target.getName(), targetOccupation.getPlayer().getColor().toString(), targetOccupation.getUnits()));
         return new AttackResult(movementInfo, attackDices, defendDices);
     }
 

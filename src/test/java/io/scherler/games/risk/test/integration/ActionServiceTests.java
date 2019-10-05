@@ -1,14 +1,14 @@
 package io.scherler.games.risk.test.integration;
 
 import io.scherler.games.risk.entities.game.GameEntity;
-import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.entities.game.PlayerEntity;
-import io.scherler.games.risk.models.response.AttackResult;
+import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.request.Deployment;
 import io.scherler.games.risk.models.request.Game;
 import io.scherler.games.risk.models.request.Movement;
-import io.scherler.games.risk.models.response.MovementInfo;
 import io.scherler.games.risk.models.request.Territory;
+import io.scherler.games.risk.models.response.AttackResult;
+import io.scherler.games.risk.models.response.MovementInfo;
 import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.services.game.ActionService;
 import io.scherler.games.risk.services.game.DiceService;
@@ -71,7 +71,7 @@ class ActionServiceTests {
 
         val territoryInfo = actionService.occupy(occupation, game.getId(), firstPlayer.getId());
 
-        Assertions.assertEquals(new TerritoryInfo("Peru", 1), territoryInfo);
+        Assertions.assertEquals(new TerritoryInfo("Peru", firstPlayer.getColor().toString(), 1), territoryInfo);
 
         val targetTerritory = occupationService.getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Peru");
         Assertions.assertTrue(targetTerritory.isOccupied());
@@ -85,7 +85,7 @@ class ActionServiceTests {
 
         val territoryInfo = actionService.deploy(deployment, game.getId(), firstPlayer.getId());
 
-        Assertions.assertEquals(new TerritoryInfo("Egypt", 6), territoryInfo);
+        Assertions.assertEquals(new TerritoryInfo("Egypt", firstPlayer.getColor().toString(), 6), territoryInfo);
 
         val targetTerritory = occupationService.getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Egypt");
         Assertions.assertTrue(targetTerritory.isOccupiedBy(firstPlayer));
@@ -99,7 +99,9 @@ class ActionServiceTests {
 
         val movementInfo = actionService.move(movement, game.getId(), firstPlayer.getId());
 
-        Assertions.assertEquals(new MovementInfo(new TerritoryInfo("Southern Europe", 1), new TerritoryInfo("Egypt", 6)), movementInfo);
+        Assertions.assertEquals(
+            new MovementInfo(new TerritoryInfo("Southern Europe", firstPlayer.getColor().toString(), 1), new TerritoryInfo("Egypt", firstPlayer.getColor().toString(), 6)),
+            movementInfo);
 
         val sourceTerritory = occupationService.getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Southern Europe");
         Assertions.assertTrue(sourceTerritory.isOccupiedBy(firstPlayer));
@@ -123,7 +125,9 @@ class ActionServiceTests {
 
         val attackResult = actionService.attack(movement, game.getId(), firstPlayer.getId());
 
-        Assertions.assertEquals(new AttackResult(new MovementInfo(new TerritoryInfo("Southern Europe", 1), new TerritoryInfo("Japan", 5)), attackDices, defendDices), attackResult);
+        Assertions.assertEquals(new AttackResult(
+            new MovementInfo(new TerritoryInfo("Southern Europe", firstPlayer.getColor().toString(), 1), new TerritoryInfo("Japan", firstPlayer.getColor().toString(), 5)),
+            attackDices, defendDices), attackResult);
 
         val sourceTerritory = occupationService.getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Southern Europe");
         Assertions.assertTrue(sourceTerritory.isOccupiedBy(firstPlayer));
