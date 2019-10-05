@@ -1,11 +1,11 @@
 package io.scherler.games.risk.test.integration;
 
-import io.scherler.games.risk.entities.GameEntity;
-import io.scherler.games.risk.entities.PlayerEntity;
+import io.scherler.games.risk.entities.game.GameEntity;
+import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.request.Game;
-import io.scherler.games.risk.services.CardService;
-import io.scherler.games.risk.services.GameService;
+import io.scherler.games.risk.services.map.CardService;
+import io.scherler.games.risk.services.map.GameService;
 import java.util.Comparator;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;

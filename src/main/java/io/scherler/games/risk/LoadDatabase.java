@@ -1,13 +1,13 @@
 package io.scherler.games.risk;
 
-import io.scherler.games.risk.entities.ContinentEntity;
-import io.scherler.games.risk.entities.MapEntity;
-import io.scherler.games.risk.entities.UserAccountEntity;
-import io.scherler.games.risk.entities.repositories.ContinentRepository;
-import io.scherler.games.risk.entities.TerritoryEntity;
-import io.scherler.games.risk.entities.repositories.MapRepository;
-import io.scherler.games.risk.entities.repositories.TerritoryRepository;
-import io.scherler.games.risk.entities.repositories.UserRepository;
+import io.scherler.games.risk.entities.map.ContinentEntity;
+import io.scherler.games.risk.entities.map.MapEntity;
+import io.scherler.games.risk.entities.identity.UserAccountEntity;
+import io.scherler.games.risk.entities.repositories.map.ContinentRepository;
+import io.scherler.games.risk.entities.map.TerritoryEntity;
+import io.scherler.games.risk.entities.repositories.map.MapRepository;
+import io.scherler.games.risk.entities.repositories.map.TerritoryRepository;
+import io.scherler.games.risk.entities.repositories.identity.UserAccountRepository;
 import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +22,13 @@ public class LoadDatabase {
 
     // todo move database initialization to Liquibase
     @Bean
-    CommandLineRunner initDatabase(UserRepository userRepository, MapRepository mapRepository, ContinentRepository continentRepository, TerritoryRepository territoryRepository) {
+    CommandLineRunner initDatabase(UserAccountRepository userAccountRepository, MapRepository mapRepository, ContinentRepository continentRepository, TerritoryRepository territoryRepository) {
         return args -> {
             log.info("Preloading entities...");
 
             log.info("Creating useraccount...");
             val useraccount = new UserAccountEntity("testadmin");
-            userRepository.save(useraccount);
+            userAccountRepository.save(useraccount);
 
             log.info("Creating map...");
             val map = new MapEntity("helloworld", useraccount);

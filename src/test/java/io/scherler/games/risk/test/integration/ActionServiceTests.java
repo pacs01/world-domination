@@ -1,8 +1,8 @@
 package io.scherler.games.risk.test.integration;
 
-import io.scherler.games.risk.entities.GameEntity;
+import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
-import io.scherler.games.risk.entities.PlayerEntity;
+import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.models.response.AttackResult;
 import io.scherler.games.risk.models.request.Deployment;
 import io.scherler.games.risk.models.request.Game;
@@ -10,10 +10,10 @@ import io.scherler.games.risk.models.request.Movement;
 import io.scherler.games.risk.models.response.MovementInfo;
 import io.scherler.games.risk.models.request.Occupation;
 import io.scherler.games.risk.models.response.TerritoryInfo;
-import io.scherler.games.risk.services.ActionService;
-import io.scherler.games.risk.services.DiceService;
-import io.scherler.games.risk.services.GameService;
-import io.scherler.games.risk.services.OccupationService;
+import io.scherler.games.risk.services.map.ActionService;
+import io.scherler.games.risk.services.map.DiceService;
+import io.scherler.games.risk.services.map.GameService;
+import io.scherler.games.risk.services.map.OccupationService;
 import java.util.Arrays;
 import java.util.Collections;
 import lombok.val;
