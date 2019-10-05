@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Deployment extends Occupation {
+public class Deployment extends Territory {
 
     public Deployment(String target, int numberOfUnits) {
         super(target);

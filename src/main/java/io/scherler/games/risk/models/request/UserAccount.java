@@ -6,8 +6,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Occupation {
+public class UserAccount {
 
-    @NotBlank(message = "Target territory is mandatory")
-    private String target;
+    @NotBlank(message = "Username is mandatory")
+    private String name;
 }

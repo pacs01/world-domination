@@ -1,4 +1,4 @@
-package io.scherler.games.risk.controllers.game;
+package io.scherler.games.risk.controllers.action;
 
 import io.scherler.games.risk.services.map.GameService;
 import lombok.val;

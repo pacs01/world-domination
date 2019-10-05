@@ -8,7 +8,7 @@ import io.scherler.games.risk.models.request.Deployment;
 import io.scherler.games.risk.models.request.Game;
 import io.scherler.games.risk.models.request.Movement;
 import io.scherler.games.risk.models.response.MovementInfo;
-import io.scherler.games.risk.models.request.Occupation;
+import io.scherler.games.risk.models.request.Territory;
 import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.services.map.ActionService;
 import io.scherler.games.risk.services.map.DiceService;
@@ -58,16 +58,16 @@ class ActionServiceTests {
                                .findFirst()
                                .orElseThrow(() -> new ResourceNotFoundException("No second player entity found!"));
 
-        actionService.occupy(new Occupation("Egypt"), game.getId(), firstPlayer.getId());
-        actionService.occupy(new Occupation("Southern Europe"), game.getId(), firstPlayer.getId());
+        actionService.occupy(new Territory("Egypt"), game.getId(), firstPlayer.getId());
+        actionService.occupy(new Territory("Southern Europe"), game.getId(), firstPlayer.getId());
         actionService.deploy(new Deployment("Southern Europe", 5), game.getId(), firstPlayer.getId());
 
-        actionService.occupy(new Occupation("Japan"), game.getId(), secondPlayer.getId());
+        actionService.occupy(new Territory("Japan"), game.getId(), secondPlayer.getId());
     }
 
     @Test
     void testOccupation() {
-        val occupation = new Occupation("Peru");
+        val occupation = new Territory("Peru");
 
         val territoryInfo = actionService.occupy(occupation, game.getId(), firstPlayer.getId());
 

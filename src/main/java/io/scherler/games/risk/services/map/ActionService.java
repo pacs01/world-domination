@@ -4,7 +4,7 @@ import io.scherler.games.risk.entities.game.OccupationEntity;
 import io.scherler.games.risk.entities.repositories.game.OccupationRepository;
 import io.scherler.games.risk.models.request.Deployment;
 import io.scherler.games.risk.models.request.Movement;
-import io.scherler.games.risk.models.request.Occupation;
+import io.scherler.games.risk.models.request.Territory;
 import io.scherler.games.risk.models.response.AttackResult;
 import io.scherler.games.risk.models.response.MovementInfo;
 import io.scherler.games.risk.models.response.TerritoryInfo;
@@ -40,10 +40,10 @@ public class ActionService {
     }
 
     @Transactional
-    public TerritoryInfo occupy(Occupation occupation, long gameId, long playerId) {
+    public TerritoryInfo occupy(Territory territory, long gameId, long playerId) {
         val game = gameService.getGame(gameId);
         val player = playerService.getPlayer(playerId);
-        val target = territoryService.getTerritory(game.getMap().getId(), occupation.getTarget());
+        val target = territoryService.getTerritory(game.getMap().getId(), territory.getName());
 
         occupationService.getOccupationIfPresent(game.getId(), target.getName()).ifPresent(o -> {
             throw new IllegalArgumentException("The territory '" + target.getName() + "' is occupied already.");
@@ -58,7 +58,7 @@ public class ActionService {
     public TerritoryInfo deploy(Deployment deployment, long gameId, long playerId) {
         val game = gameService.getGame(gameId);
         val player = playerService.getPlayer(playerId); // todo add validation (number of units left to place)
-        val target = territoryService.getTerritory(game.getMap().getId(), deployment.getTarget());
+        val target = territoryService.getTerritory(game.getMap().getId(), deployment.getName());
 
         val occupation = occupationService.getOccupationByPlayer(game.getId(), player.getId(), target.getName());
 
@@ -72,7 +72,7 @@ public class ActionService {
         val game = gameService.getGame(gameId);
         val player = playerService.getPlayer(playerId); // todo add validation (are territories connected?)
         val source = territoryService.getTerritory(game.getMap().getId(), movement.getSource());
-        val target = territoryService.getTerritory(game.getMap().getId(), movement.getTarget());
+        val target = territoryService.getTerritory(game.getMap().getId(), movement.getName());
 
         val sourceOccupation = occupationService.getOccupationByPlayer(game.getId(), player.getId(), source.getName());
         val targetOccupation = occupationService.getOccupationByPlayer(game.getId(), player.getId(), target.getName());
@@ -91,7 +91,7 @@ public class ActionService {
         val game = gameService.getGame(gameId);
         val player = playerService.getPlayer(playerId); // todo add validation (are territories connected?)
         val source = territoryService.getTerritory(game.getMap().getId(), movement.getSource());
-        val target = territoryService.getTerritory(game.getMap().getId(), movement.getTarget());
+        val target = territoryService.getTerritory(game.getMap().getId(), movement.getName());
 
         val sourceOccupation = occupationService.getOccupationByPlayer(game.getId(), player.getId(), source.getName());
         val targetOccupation = occupationService.getOccupationByEnemy(game.getId(), player.getId(), target.getName());

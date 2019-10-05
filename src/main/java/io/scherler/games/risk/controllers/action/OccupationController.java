@@ -1,6 +1,6 @@
 package io.scherler.games.risk.controllers.action;
 
-import io.scherler.games.risk.models.request.Occupation;
+import io.scherler.games.risk.models.request.Territory;
 import io.scherler.games.risk.services.map.ActionService;
 import javax.validation.Valid;
 import lombok.val;
@@ -22,8 +22,8 @@ public class OccupationController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> occupy(@PathVariable("gameId") Long gameId, @PathVariable("playerId") Long playerId, @Valid @RequestBody Occupation occupation) {
-        val occupationResult = actionService.occupy(occupation, gameId, playerId);
+    public ResponseEntity<?> occupy(@PathVariable("gameId") Long gameId, @PathVariable("playerId") Long playerId, @Valid @RequestBody Territory territory) {
+        val occupationResult = actionService.occupy(territory, gameId, playerId);
         return ResponseEntity.ok().body(occupationResult); //todo add hateoas
     }
 }
