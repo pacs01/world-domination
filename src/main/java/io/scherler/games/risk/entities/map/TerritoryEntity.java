@@ -39,6 +39,7 @@ public class TerritoryEntity extends BaseEntity {
     private String name;
 
     @ManyToMany
+    @JsonIgnore
     private Set<TerritoryEntity> adjacentTerritories = new HashSet<>();
 
     public void addAdjacentTerritories(TerritoryEntity... territoryEntities) {
@@ -52,13 +53,15 @@ public class TerritoryEntity extends BaseEntity {
     }
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnore
     @JoinColumn(name = "continentId")
+    @JsonIgnore
     private ContinentEntity continent;
 
     @OneToMany(mappedBy = "territory", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<OccupationEntity> occupations = new HashSet<>();
 
     @OneToMany(mappedBy = "territory", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<CardEntity> cards = new HashSet<>();
 }

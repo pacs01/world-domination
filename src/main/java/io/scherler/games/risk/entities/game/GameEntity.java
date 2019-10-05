@@ -30,16 +30,18 @@ public class GameEntity extends BaseEntity {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnore
     @JoinColumn(name = "mapId")
+    @JsonIgnore
     private MapEntity map;
 
     private GameState state;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<PlayerEntity> players = new HashSet<>();
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<OccupationEntity> occupations = new HashSet<>();
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)

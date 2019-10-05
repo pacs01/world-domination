@@ -27,8 +27,8 @@ public class ContinentEntity extends BaseEntity {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnore
     @JoinColumn(name = "mapId")
+    @JsonIgnore
     private MapEntity map;
 
     public ContinentEntity(MapEntity map, String name) {

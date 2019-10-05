@@ -29,12 +29,10 @@ public class CardEntity extends BaseEntity {
     private GameEntity game;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnore
     @JoinColumn(name = "playerId")
     private PlayerEntity player;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnore
     @JoinColumn(name = "territoryId")
     private TerritoryEntity territory;
 

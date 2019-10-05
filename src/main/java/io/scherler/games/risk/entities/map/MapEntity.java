@@ -39,6 +39,7 @@ public class MapEntity extends BaseEntity {
     private Set<ContinentEntity> continents = new HashSet<>();
 
     @OneToMany(mappedBy = "map", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<GameEntity> games = new HashSet<>();
 
     public MapEntity(String name, UserAccountEntity creator) {

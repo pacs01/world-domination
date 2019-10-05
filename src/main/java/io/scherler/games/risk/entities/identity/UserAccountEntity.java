@@ -1,5 +1,6 @@
 package io.scherler.games.risk.entities.identity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.scherler.games.risk.entities.BaseEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.entities.map.MapEntity;
@@ -27,6 +28,7 @@ public class UserAccountEntity extends BaseEntity {
     private String name;
 
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<MapEntity> maps = new HashSet<>();
 
     @OneToMany(mappedBy = "useraccount", cascade = CascadeType.ALL)
