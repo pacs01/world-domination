@@ -5,7 +5,7 @@ import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.models.GameState;
 import io.scherler.games.risk.models.request.Game;
-import io.scherler.games.risk.services.map.GameService;
+import io.scherler.games.risk.services.game.GameService;
 import java.util.Comparator;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;

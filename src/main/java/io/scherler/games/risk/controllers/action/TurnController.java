@@ -1,6 +1,6 @@
 package io.scherler.games.risk.controllers.action;
 
-import io.scherler.games.risk.services.map.GameService;
+import io.scherler.games.risk.services.game.GameService;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

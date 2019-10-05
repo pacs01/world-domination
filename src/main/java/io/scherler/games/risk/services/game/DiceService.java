@@ -1,4 +1,4 @@
-package io.scherler.games.risk.services.map;
+package io.scherler.games.risk.services.game;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;

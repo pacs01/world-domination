@@ -1,7 +1,7 @@
 package io.scherler.games.risk.controllers.action;
 
 import io.scherler.games.risk.models.request.Movement;
-import io.scherler.games.risk.services.map.ActionService;
+import io.scherler.games.risk.services.game.ActionService;
 import javax.validation.Valid;
 import lombok.val;
 import org.springframework.http.ResponseEntity;

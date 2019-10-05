@@ -1,4 +1,4 @@
-package io.scherler.games.risk.services.map;
+package io.scherler.games.risk.services.game;
 
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.entities.game.GameEntity;

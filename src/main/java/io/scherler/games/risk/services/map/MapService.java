@@ -1,4 +1,4 @@
-package io.scherler.games.risk.services.game;
+package io.scherler.games.risk.services.map;
 
 import io.scherler.games.risk.entities.identity.UserAccountEntity;
 import io.scherler.games.risk.entities.map.ContinentEntity;

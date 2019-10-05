@@ -9,7 +9,7 @@ import io.scherler.games.risk.entities.map.MapEntity;
 import io.scherler.games.risk.entities.repositories.map.MapRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.request.Map;
-import io.scherler.games.risk.services.game.MapService;
+import io.scherler.games.risk.services.map.MapService;
 import io.scherler.games.risk.services.identity.UserAccountService;
 import java.net.URI;
 import java.net.URISyntaxException;

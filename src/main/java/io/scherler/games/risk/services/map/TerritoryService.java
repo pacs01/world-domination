@@ -1,4 +1,4 @@
-package io.scherler.games.risk.services.game;
+package io.scherler.games.risk.services.map;
 
 import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.entities.repositories.map.TerritoryRepository;

@@ -9,7 +9,7 @@ import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.repositories.game.GameRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.request.Game;
-import io.scherler.games.risk.services.map.GameService;
+import io.scherler.games.risk.services.game.GameService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;

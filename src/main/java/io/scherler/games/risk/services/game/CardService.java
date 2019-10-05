@@ -1,4 +1,4 @@
-package io.scherler.games.risk.services.map;
+package io.scherler.games.risk.services.game;
 
 import io.scherler.games.risk.entities.game.CardEntity;
 import io.scherler.games.risk.entities.game.GameEntity;
@@ -6,7 +6,7 @@ import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.entities.repositories.game.CardRepository;
 import io.scherler.games.risk.models.response.Card;
-import io.scherler.games.risk.services.game.TerritoryService;
+import io.scherler.games.risk.services.map.TerritoryService;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;

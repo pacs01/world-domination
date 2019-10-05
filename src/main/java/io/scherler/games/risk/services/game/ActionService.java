@@ -1,4 +1,4 @@
-package io.scherler.games.risk.services.map;
+package io.scherler.games.risk.services.game;
 
 import io.scherler.games.risk.entities.game.OccupationEntity;
 import io.scherler.games.risk.entities.repositories.game.OccupationRepository;
@@ -8,7 +8,7 @@ import io.scherler.games.risk.models.request.Territory;
 import io.scherler.games.risk.models.response.AttackResult;
 import io.scherler.games.risk.models.response.MovementInfo;
 import io.scherler.games.risk.models.response.TerritoryInfo;
-import io.scherler.games.risk.services.game.TerritoryService;
+import io.scherler.games.risk.services.map.TerritoryService;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

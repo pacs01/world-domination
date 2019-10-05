@@ -1,4 +1,4 @@
-package io.scherler.games.risk.services.map;
+package io.scherler.games.risk.services.game;
 
 import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
@@ -8,7 +8,7 @@ import io.scherler.games.risk.models.GameState;
 import io.scherler.games.risk.models.request.Game;
 import io.scherler.games.risk.models.response.Card;
 import io.scherler.games.risk.models.response.TurnResult;
-import io.scherler.games.risk.services.game.MapService;
+import io.scherler.games.risk.services.map.MapService;
 import java.util.Comparator;
 import lombok.val;
 import org.springframework.stereotype.Service;
