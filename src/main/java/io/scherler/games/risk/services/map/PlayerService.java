@@ -26,7 +26,7 @@ public class PlayerService {
     public PlayerEntity getNextPlayer(GameEntity game, Long playerId) {
         val player = getPlayer(playerId);
         int nextPosition = (player.getPosition() + 1) % game.getPlayerEntities().size();
-        return playerRepository.findByGameAndPosition(game, nextPosition).stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("Player", "game = " + game.getId() + " and position = " + nextPosition));
+        return playerRepository.findByGameIdAndPosition(game.getId(), nextPosition).stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("Player", "game = " + game.getId() + " and position = " + nextPosition));
     }
 
     List<PlayerEntity> generatePlayers(GameEntity game, int number) {
