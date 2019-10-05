@@ -6,7 +6,11 @@ import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.entities.repositories.game.OccupationRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
+import io.scherler.games.risk.models.response.TerritoryInfo;
+import io.scherler.games.risk.services.map.MapService;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +18,11 @@ import org.springframework.stereotype.Service;
 public class OccupationService {
 
     private final OccupationRepository occupationRepository;
+    private final MapService mapService;
 
-    public OccupationService(OccupationRepository occupationRepository) {
+    public OccupationService(OccupationRepository occupationRepository, MapService mapService) {
         this.occupationRepository = occupationRepository;
+        this.mapService = mapService;
     }
 
     public OccupationEntity add(GameEntity game, PlayerEntity player, TerritoryEntity territory, int units) {
@@ -48,5 +54,13 @@ public class OccupationService {
     public OccupationEntity getOccupationByEnemy(long gameId, long playerId, String territoryName) {
         return getOccupationByEnemyIfPresent(gameId, playerId, territoryName).orElseThrow(
             () -> new IllegalArgumentException("Territory '" + territoryName + "' not occupied by an enemy player of '" + playerId + "'."));
+    }
+
+    public List<TerritoryInfo> getTerritoryInfos(long gameId) {
+        return occupationRepository.findByGameId(gameId).stream().map(this::createTerritoryInfo).collect(Collectors.toList());
+    }
+
+    private TerritoryInfo createTerritoryInfo(OccupationEntity occupation) {
+        return new TerritoryInfo(occupation.getTerritory().getName(), occupation.getPlayer().getColor().toString(), occupation.getUnits());
     }
 }
