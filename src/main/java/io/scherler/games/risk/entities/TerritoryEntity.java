@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -31,6 +32,7 @@ public class TerritoryEntity extends BaseEntity {
         this.continent = continent;
     }
 
+    @Column(unique=true)
     private String name;
 
     @ManyToMany
