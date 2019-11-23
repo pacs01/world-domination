@@ -1,6 +1,6 @@
-package io.scherler.games.risk.controllers.action;
+package io.scherler.games.risk.controllers.game.action;
 
-import io.scherler.games.risk.models.request.Deployment;
+import io.scherler.games.risk.models.request.Movement;
 import io.scherler.games.risk.services.game.ActionService;
 import javax.validation.Valid;
 import lombok.val;
@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/games/{gameId}/players/{playerId}/deployments")
-public class DeploymentController {
+@RequestMapping("/games/{gameId}/players/{playerId}/movements")
+public class MovementController {
 
     private final ActionService actionService;
 
-    public DeploymentController(ActionService actionService) {
+    public MovementController(ActionService actionService) {
         this.actionService = actionService;
     }
 
     @PostMapping()
-    public ResponseEntity<?> deploy(@PathVariable("gameId") Long gameId, @PathVariable("playerId") Long playerId, @Valid @RequestBody Deployment deployment) {
-        val deploymentResult = actionService.deploy(deployment, gameId, playerId);
-        return ResponseEntity.ok().body(deploymentResult); //todo add hateoas
+    public ResponseEntity<?> move(@PathVariable("gameId") Long gameId, @PathVariable("playerId") Long playerId, @Valid @RequestBody Movement movement) {
+        val movementInfo = actionService.move(movement, gameId, playerId);
+        return ResponseEntity.ok().body(movementInfo); //todo add hateoas
     }
 }

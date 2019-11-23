@@ -1,4 +1,4 @@
-package io.scherler.games.risk.controllers;
+package io.scherler.games.risk.controllers.identity;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;

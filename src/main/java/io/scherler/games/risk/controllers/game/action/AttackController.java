@@ -1,4 +1,4 @@
-package io.scherler.games.risk.controllers.action;
+package io.scherler.games.risk.controllers.game.action;
 
 import io.scherler.games.risk.models.request.Movement;
 import io.scherler.games.risk.services.game.ActionService;
@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/games/{gameId}/players/{playerId}/movements")
-public class MovementController {
+@RequestMapping("/games/{gameId}/players/{playerId}/attacks")
+public class AttackController {
 
     private final ActionService actionService;
 
-    public MovementController(ActionService actionService) {
+    public AttackController(ActionService actionService) {
         this.actionService = actionService;
     }
 
     @PostMapping()
-    public ResponseEntity<?> move(@PathVariable("gameId") Long gameId, @PathVariable("playerId") Long playerId, @Valid @RequestBody Movement movement) {
-        val movementInfo = actionService.move(movement, gameId, playerId);
-        return ResponseEntity.ok().body(movementInfo); //todo add hateoas
+    public ResponseEntity<?> attack(@PathVariable("gameId") Long gameId, @PathVariable("playerId") Long playerId, @Valid @RequestBody Movement movement) {
+        val attackInfo = actionService.attack(movement, gameId, playerId);
+        return ResponseEntity.ok().body(attackInfo); //todo add hateoas
     }
 }
