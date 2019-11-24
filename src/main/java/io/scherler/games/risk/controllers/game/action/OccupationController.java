@@ -1,17 +1,13 @@
 package io.scherler.games.risk.controllers.game.action;
 
 import io.scherler.games.risk.models.request.Territory;
-import io.scherler.games.risk.services.game.ActionService;
 import io.scherler.games.risk.services.game.OccupationService;
-import javax.validation.Valid;
+import io.scherler.games.risk.services.game.action.ActionService;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/games/{gameId}/players/{playerId}/occupations")

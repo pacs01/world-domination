@@ -7,12 +7,15 @@ import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.entities.repositories.game.OccupationRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.response.TerritoryInfo;
+import io.scherler.games.risk.services.game.action.models.Parties;
+import io.scherler.games.risk.services.game.action.models.Route;
 import io.scherler.games.risk.services.map.MapService;
+import lombok.val;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import lombok.val;
-import org.springframework.stereotype.Service;
 
 @Service
 public class OccupationService {
@@ -44,7 +47,7 @@ public class OccupationService {
 
     public OccupationEntity getOccupationByPlayer(long gameId, long playerId, String territoryName) {
         return getOccupationByPlayerIfPresent(gameId, playerId, territoryName).orElseThrow(
-            () -> new IllegalArgumentException("Territory '" + territoryName + "' not occupied by player '" + playerId + "'."));
+                () -> new IllegalArgumentException("Territory '" + territoryName + "' not occupied by player '" + playerId + "'."));
     }
 
     public Optional<OccupationEntity> getOccupationByEnemyIfPresent(long gameId, long playerId, String territoryName) {
@@ -53,7 +56,33 @@ public class OccupationService {
 
     public OccupationEntity getOccupationByEnemy(long gameId, long playerId, String territoryName) {
         return getOccupationByEnemyIfPresent(gameId, playerId, territoryName).orElseThrow(
-            () -> new IllegalArgumentException("Territory '" + territoryName + "' not occupied by an enemy player of '" + playerId + "'."));
+                () -> new IllegalArgumentException("Territory '" + territoryName + "' not occupied by an enemy player of '" + playerId + "'."));
+    }
+
+    public OccupationEntity addUnits(OccupationEntity occupation, int units) {
+        occupation.addUnits(units);
+        return occupationRepository.save(occupation);
+    }
+
+    public Route moveUnits(Route route, int units) {
+        route.getSource().removeUnits(units);
+        route.getTarget().addUnits(units);
+        return saveRoute(route);
+    }
+
+    public Route applyAttackResult(Route route, Parties parties, PlayerEntity attacker) {
+        route.getSource().removeUnits(parties.getAttackers().getLostUnits());
+        route.getTarget().removeUnits(parties.getDefenders().getLostUnits());
+        if (parties.getDefenders().getRemainingUnits() == 0) {
+            route.getSource().removeUnits(parties.getAttackers().getRemainingUnits());
+            route.getTarget().conquer(attacker, parties.getAttackers().getRemainingUnits());
+        }
+
+        return saveRoute(route);
+    }
+
+    private Route saveRoute(Route route) {
+        return Route.fromList(occupationRepository.saveAll(route.asList()), route);
     }
 
     public List<TerritoryInfo> getTerritoryInfos(long gameId) {
@@ -62,5 +91,14 @@ public class OccupationService {
 
     private TerritoryInfo createTerritoryInfo(OccupationEntity occupation) {
         return new TerritoryInfo(occupation.getTerritory().getName(), occupation.getPlayer().getColor().toString(), occupation.getUnits());
+    }
+
+    public void validateRemainingUnits(OccupationEntity occupation, int numberOfUnits) { // todo: move out of service class -> these are strategy specific rules
+        if (occupation.getUnits() < numberOfUnits + 1) {
+            throw new IllegalArgumentException(
+                    "Not enough units available at territory '" + occupation.getTerritory().getName() + "'. There must remain at least one unit at every conquered place.");
+        } else if (numberOfUnits < 1) {
+            throw new IllegalArgumentException("An action without any units is not possible.");
+        }
     }
 }

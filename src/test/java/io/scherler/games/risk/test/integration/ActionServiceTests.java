@@ -10,7 +10,7 @@ import io.scherler.games.risk.models.request.Territory;
 import io.scherler.games.risk.models.response.AttackResult;
 import io.scherler.games.risk.models.response.MovementInfo;
 import io.scherler.games.risk.models.response.TerritoryInfo;
-import io.scherler.games.risk.services.game.ActionService;
+import io.scherler.games.risk.services.game.action.ActionService;
 import io.scherler.games.risk.services.game.DiceService;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
@@ -47,12 +47,13 @@ class ActionServiceTests {
 
     private GameEntity game;
     private PlayerEntity firstPlayer;
+    private PlayerEntity secondPlayer;
 
     @BeforeEach
     void init() {
         game = gameService.createNew(new Game("testgame", 4, "helloworld"));
         firstPlayer = game.getPlayers().stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("No player entity found!"));
-        val secondPlayer = game.getPlayers()
+        secondPlayer = game.getPlayers()
                                .stream()
                                .filter(p -> !p.equals(firstPlayer))
                                .findFirst()
@@ -115,11 +116,11 @@ class ActionServiceTests {
     }
 
     @Test
-    void testAttack() {
+    void testAttackWin() {
         val attackDices = Arrays.asList(2, 4, 6);
         val defendDices = Collections.singletonList(3);
-        Mockito.when(mockedDiceService.rollDices(3)).thenReturn(attackDices);
-        Mockito.when(mockedDiceService.rollDices(1)).thenReturn(defendDices);
+        Mockito.when(mockedDiceService.rollDices(attackDices.size())).thenReturn(attackDices);
+        Mockito.when(mockedDiceService.rollDices(defendDices.size())).thenReturn(defendDices);
 
         val movement = new Movement("Japan", 5, "Southern Europe");
 
@@ -138,5 +139,31 @@ class ActionServiceTests {
         Assertions.assertTrue(targetTerritory.isOccupiedBy(firstPlayer));
         Assertions.assertEquals(firstPlayer, targetTerritory.getPlayer());
         Assertions.assertEquals(5, targetTerritory.getUnits());
+    }
+
+    @Test
+    void testAttackLost() {
+        val attackDices = Arrays.asList(2, 4, 3);
+        val defendDices = Collections.singletonList(5);
+        Mockito.when(mockedDiceService.rollDices(attackDices.size())).thenReturn(attackDices);
+        Mockito.when(mockedDiceService.rollDices(defendDices.size())).thenReturn(defendDices);
+
+        val movement = new Movement("Japan", 5, "Southern Europe");
+
+        val attackResult = actionService.attack(movement, game.getId(), firstPlayer.getId());
+
+        Assertions.assertEquals(new AttackResult(
+                new MovementInfo(new TerritoryInfo("Southern Europe", firstPlayer.getColor().toString(), 5), new TerritoryInfo("Japan", secondPlayer.getColor().toString(), 1)),
+                attackDices, defendDices), attackResult);
+
+        val sourceTerritory = occupationService.getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Southern Europe");
+        Assertions.assertTrue(sourceTerritory.isOccupiedBy(firstPlayer));
+        Assertions.assertEquals(firstPlayer, sourceTerritory.getPlayer());
+        Assertions.assertEquals(5, sourceTerritory.getUnits());
+
+        val targetTerritory = occupationService.getOccupationByPlayer(game.getId(), secondPlayer.getId(), "Japan");
+        Assertions.assertTrue(targetTerritory.isOccupiedBy(secondPlayer));
+        Assertions.assertEquals(secondPlayer, targetTerritory.getPlayer());
+        Assertions.assertEquals(1, targetTerritory.getUnits());
     }
 }
