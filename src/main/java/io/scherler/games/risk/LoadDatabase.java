@@ -26,12 +26,12 @@ public class LoadDatabase {
         return args -> {
             log.info("Preloading entities...");
 
-            log.info("Creating useraccount...");
-            val useraccount = new UserAccountEntity("testadmin");
-            userAccountRepository.save(useraccount);
+            log.info("Creating userAccount...");
+            val userAccount = new UserAccountEntity("testadmin");
+            userAccountRepository.save(userAccount);
 
             log.info("Creating map...");
-            val map = new MapEntity("helloworld", useraccount);
+            val map = new MapEntity("helloworld", userAccount);
             mapRepository.save(map);
 
             log.info("Creating continents...");
@@ -77,11 +77,11 @@ public class LoadDatabase {
             val iceland = new TerritoryEntity("Iceland", europe);
             val scandinavia = new TerritoryEntity("Scandinavia", europe);
             val ukraine = new TerritoryEntity("Ukraine", europe);
-            val greatBritian = new TerritoryEntity("Great Britian", europe);
+            val greatBritain = new TerritoryEntity("Great Britain", europe);
             val northernEurope = new TerritoryEntity("Northern Europe", europe);
             val southernEurope = new TerritoryEntity("Southern Europe", europe);
             val westernEurope = new TerritoryEntity("Western Europe", europe);
-            List<TerritoryEntity> europeCountries = Arrays.asList(iceland, scandinavia, ukraine, greatBritian, northernEurope, southernEurope, westernEurope);
+            List<TerritoryEntity> europeCountries = Arrays.asList(iceland, scandinavia, ukraine, greatBritain, northernEurope, southernEurope, westernEurope);
             territoryRepository.saveAll(europeCountries);
 
             val indonesia = new TerritoryEntity("Indonesia", australia);
@@ -132,13 +132,13 @@ public class LoadDatabase {
             madagascar.addAdjacentTerritories(southAfrica, eastAfrica);
             territoryRepository.saveAll(africanCountries);
 
-            iceland.addAdjacentTerritories(greenland, greatBritian, scandinavia);
-            scandinavia.addAdjacentTerritories(iceland, greatBritian, northernEurope, ukraine);
+            iceland.addAdjacentTerritories(greenland, greatBritain, scandinavia);
+            scandinavia.addAdjacentTerritories(iceland, greatBritain, northernEurope, ukraine);
             ukraine.addAdjacentTerritories(scandinavia, northernEurope, southernEurope, ural, afghanistan, middleEast);
-            greatBritian.addAdjacentTerritories(iceland, scandinavia, northernEurope, westernEurope);
-            northernEurope.addAdjacentTerritories(greatBritian, scandinavia, ukraine, southernEurope, westernEurope);
+            greatBritain.addAdjacentTerritories(iceland, scandinavia, northernEurope, westernEurope);
+            northernEurope.addAdjacentTerritories(greatBritain, scandinavia, ukraine, southernEurope, westernEurope);
             southernEurope.addAdjacentTerritories(westernEurope, northernEurope, ukraine, middleEast, egypt, northAfrica);
-            westernEurope.addAdjacentTerritories(greatBritian, northernEurope, southernEurope, northAfrica);
+            westernEurope.addAdjacentTerritories(greatBritain, northernEurope, southernEurope, northAfrica);
             territoryRepository.saveAll(europeCountries);
 
             indonesia.addAdjacentTerritories(siam, newGuinea, westernAustralia);
