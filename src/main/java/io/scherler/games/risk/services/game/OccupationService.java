@@ -9,7 +9,7 @@ import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.services.game.action.models.Parties;
 import io.scherler.games.risk.services.game.action.models.Route;
-import io.scherler.games.risk.services.map.MapService;
+import io.scherler.games.risk.services.map.TerritoryService;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
 public class OccupationService {
 
     private final OccupationRepository occupationRepository;
-    private final MapService mapService;
+    private final TerritoryService territoryService;
 
-    public OccupationService(OccupationRepository occupationRepository, MapService mapService) {
+    public OccupationService(OccupationRepository occupationRepository, TerritoryService territoryService) {
         this.occupationRepository = occupationRepository;
-        this.mapService = mapService;
+        this.territoryService = territoryService;
     }
 
     public OccupationEntity add(GameEntity game, PlayerEntity player, TerritoryEntity territory, int units) {
@@ -57,6 +57,10 @@ public class OccupationService {
     public OccupationEntity getOccupationByEnemy(long gameId, long playerId, String territoryName) {
         return getOccupationByEnemyIfPresent(gameId, playerId, territoryName).orElseThrow(
                 () -> new IllegalArgumentException("Territory '" + territoryName + "' not occupied by an enemy player of '" + playerId + "'."));
+    }
+
+    public List<OccupationEntity> getOccupationsByPlayer(long gameId, long playerId) {
+        return occupationRepository.findByGameIdAndPlayerId(gameId, playerId);
     }
 
     public OccupationEntity addUnits(OccupationEntity occupation, int units) {
@@ -100,5 +104,10 @@ public class OccupationService {
         } else if (numberOfUnits < 1) {
             throw new IllegalArgumentException("An action without any units is not possible.");
         }
+    }
+
+    public boolean areConnected(long gameId, OccupationEntity source, OccupationEntity target) {
+        val occupiedTerritories = getOccupationsByPlayer(gameId, source.getPlayer().getId()).stream().map(OccupationEntity::getTerritory).collect(Collectors.toList());
+        return territoryService.areConnected(source.getTerritory(), target.getTerritory(), occupiedTerritories);
     }
 }

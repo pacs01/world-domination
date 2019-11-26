@@ -3,8 +3,9 @@ package io.scherler.games.risk.services.map;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.entities.repositories.map.TerritoryRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
-import java.util.List;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TerritoryService {
@@ -32,5 +33,18 @@ public class TerritoryService {
 
     public long count(long mapId) {
         return territoryRepository.countByContinentMapId(mapId);
+    }
+
+    public boolean areAdjacent(TerritoryEntity source, TerritoryEntity target) {
+        return source.getAdjacentTerritories().stream().anyMatch(t -> t.getId().equals(target.getId())); // todo: enable jpa caching?
+    }
+
+    public boolean areConnected(TerritoryEntity source, TerritoryEntity target, List<TerritoryEntity> passageTerritories) {
+        if (areAdjacent(source, target)) {
+            return true;
+        } else {
+            passageTerritories.remove(source);
+            return source.getAdjacentTerritories().stream().filter(passageTerritories::contains).anyMatch(nextSource -> areConnected(nextSource, target, passageTerritories));
+        }
     }
 }
