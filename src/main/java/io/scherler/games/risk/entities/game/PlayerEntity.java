@@ -44,7 +44,7 @@ public class PlayerEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "useraccountId")
-    private UserAccountEntity useraccount;
+    private UserAccountEntity useraccount; // todo add to constructor
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private Set<OccupationEntity> occupations = new HashSet<>();
