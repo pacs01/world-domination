@@ -6,49 +6,50 @@ import io.scherler.games.risk.entities.identity.UserAccountEntity;
 import io.scherler.games.risk.models.PlayerColor;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.NaturalId;
 
 @Data
 @Entity
-@Table(name = "player")
-@ToString(exclude = {"game", "useraccount"})
-@EqualsAndHashCode(callSuper = true, exclude = {"game", "useraccount"})
+@Table(name = "player", uniqueConstraints = @UniqueConstraint(columnNames = {"gameId", "userAccountId"}))
+@ToString(exclude = {"game", "userAccount"})
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class PlayerEntity extends BaseEntity {
 
-    private PlayerColor color;
-
-    public PlayerEntity(int position, PlayerColor color, GameEntity game) {
-        this.position = position;
-        this.color = color;
-        this.game = game;
-    }
-
-    private int position;
-
+    @NaturalId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnore
     @JoinColumn(name = "gameId")
+    @EqualsAndHashCode.Include
+    @JsonIgnore
     private GameEntity game;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @NaturalId
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "userAccountId")
+    @EqualsAndHashCode.Include
     @JsonIgnore
-    @JoinColumn(name = "useraccountId")
-    private UserAccountEntity useraccount; // todo add to constructor
+    private UserAccountEntity userAccount;
+
+    private PlayerColor color;
+
+    private int position;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private Set<OccupationEntity> occupations = new HashSet<>();
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private Set<CardEntity> cards = new HashSet<>();
+
+    public PlayerEntity(GameEntity game, UserAccountEntity userAccount, int position, PlayerColor color) {
+        this.game = game;
+        this.userAccount = userAccount;
+        this.position = position;
+        this.color = color;
+    }
 }

@@ -4,9 +4,12 @@ import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.request.Game;
+import io.scherler.games.risk.models.request.UserAccount;
 import io.scherler.games.risk.services.game.CardService;
 import io.scherler.games.risk.services.game.GameService;
 import java.util.Comparator;
+
+import io.scherler.games.risk.services.identity.UserAccountService;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,12 +31,16 @@ class CardServiceTests {
     @Autowired
     private GameService gameService;
 
+    @Autowired
+    private UserAccountService userAccountService;
+
     private GameEntity game;
     private PlayerEntity firstPlayer;
 
     @BeforeEach
     void init() {
-        game = gameService.createNew(new Game("testgame", 4, "helloworld"));
+        val creator = userAccountService.createNew(new UserAccount("testuser"));
+        game = gameService.createNew(new Game("testgame", 4, "helloworld"), creator);
         firstPlayer = game.getPlayers()
                           .stream()
                           .min(Comparator.comparing(PlayerEntity::getPosition))

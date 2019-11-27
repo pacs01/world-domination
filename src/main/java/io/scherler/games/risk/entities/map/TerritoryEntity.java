@@ -6,41 +6,50 @@ import io.scherler.games.risk.entities.game.CardEntity;
 import io.scherler.games.risk.entities.game.OccupationEntity;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-// todo set not-null on attributes
+import org.hibernate.annotations.NaturalId;
 
 @Data
 @Entity
-@Table(name = "territory")
+@Table(name = "territory", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "continentId"}))
 @ToString(exclude = {"continent", "adjacentTerritories"})
-@EqualsAndHashCode(callSuper = true, exclude = {"continent", "adjacentTerritories"})
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class TerritoryEntity extends BaseEntity {
+
+    @NaturalId
+    @Column(nullable = false)
+    @EqualsAndHashCode.Include
+    private String name;
+
+    @NaturalId
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "continentId")
+    @EqualsAndHashCode.Include
+    @JsonIgnore
+    private ContinentEntity continent;
+
+    @ManyToMany
+    @JsonIgnore
+    private Set<TerritoryEntity> adjacentTerritories = new HashSet<>();
+
+    @OneToMany(mappedBy = "territory", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<OccupationEntity> occupations = new HashSet<>();
+
+    @OneToMany(mappedBy = "territory", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<CardEntity> cards = new HashSet<>();
 
     public TerritoryEntity(String name, ContinentEntity continent) {
         this.name = name;
         this.continent = continent;
     }
-
-    @Column(unique=true)
-    private String name;
-
-    @ManyToMany
-    @JsonIgnore
-    private Set<TerritoryEntity> adjacentTerritories = new HashSet<>();
 
     public void addAdjacentTerritories(TerritoryEntity... territoryEntities) {
         for (TerritoryEntity territoryEntity : territoryEntities) {
@@ -51,17 +60,4 @@ public class TerritoryEntity extends BaseEntity {
     public void addAdjacentTerritory(TerritoryEntity territoryEntity) {
         adjacentTerritories.add(territoryEntity);
     }
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "continentId")
-    @JsonIgnore
-    private ContinentEntity continent;
-
-    @OneToMany(mappedBy = "territory", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Set<OccupationEntity> occupations = new HashSet<>();
-
-    @OneToMany(mappedBy = "territory", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Set<CardEntity> cards = new HashSet<>();
 }

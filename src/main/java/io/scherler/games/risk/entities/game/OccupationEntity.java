@@ -3,11 +3,8 @@ package io.scherler.games.risk.entities.game;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.scherler.games.risk.entities.BaseEntity;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -16,37 +13,40 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
-// todo set not-null on attributes
+import org.hibernate.annotations.NaturalId;
 
 @Data
 @Entity
-@Table(name = "occupation")
+@Table(name = "occupation", uniqueConstraints = @UniqueConstraint(columnNames = {"gameId", "territoryId"}))
 @ToString(exclude = {"game", "player", "territory"})
-@EqualsAndHashCode(callSuper = true, exclude = {"game", "player", "territory"})
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class OccupationEntity extends BaseEntity {
 
+    @NaturalId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnore
     @JoinColumn(name = "gameId")
+    @EqualsAndHashCode.Include
+    @JsonIgnore
     private GameEntity game;
+
+    @NaturalId
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "territoryId")
+    @EqualsAndHashCode.Include
+    private TerritoryEntity territory;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "playerId")
     private PlayerEntity player;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "territoryId")
-    private TerritoryEntity territory;
-
     @Setter(AccessLevel.NONE)
     private int units;
 
-    public OccupationEntity(GameEntity game, PlayerEntity player, TerritoryEntity territory, int units) {
+    public OccupationEntity(GameEntity game, TerritoryEntity territory, PlayerEntity player, int units) {
         this.game = game;
-        this.player = player;
         this.territory = territory;
+        this.player = player;
         this.units = units;
     }
 

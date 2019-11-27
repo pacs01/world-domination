@@ -9,12 +9,16 @@ import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.repositories.game.GameRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.request.Game;
+import io.scherler.games.risk.models.request.UserAccount;
 import io.scherler.games.risk.services.game.GameService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
+
+import io.scherler.games.risk.services.identity.UserAccountService;
+import lombok.val;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +37,12 @@ public class GameController implements DefaultResourceController<GameEntity> {
     private final GameRepository gameRepository;
     private final DefaultResourceAssembler<GameEntity> defaultResourceAssembler;
     private final GameService gameService;
+    private final UserAccountService userAccountService;
 
-    public GameController(GameRepository gameRepository, GameService gameService) {
+    public GameController(GameRepository gameRepository, GameService gameService, UserAccountService userAccountService) {
         this.gameRepository = gameRepository;
         this.gameService = gameService;
+        this.userAccountService = userAccountService;
         this.defaultResourceAssembler = new DefaultResourceAssembler<>(this);
     }
 
@@ -49,7 +55,8 @@ public class GameController implements DefaultResourceController<GameEntity> {
 
     @PostMapping()
     public ResponseEntity<?> createNew(@Valid @RequestBody Game newGame) throws URISyntaxException {
-        Resource<GameEntity> resource = defaultResourceAssembler.toResource(gameService.createNew(newGame));
+        val creator = userAccountService.createNew(new UserAccount("test")); //todo: load user from http authorization
+        Resource<GameEntity> resource = defaultResourceAssembler.toResource(gameService.createNew(newGame, creator));
 
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }

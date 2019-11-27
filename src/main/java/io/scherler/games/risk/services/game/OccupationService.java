@@ -29,7 +29,7 @@ public class OccupationService {
     }
 
     public OccupationEntity add(GameEntity game, PlayerEntity player, TerritoryEntity territory, int units) {
-        val newOccupation = new OccupationEntity(game, player, territory, units);
+        val newOccupation = new OccupationEntity(game, territory, player, units);
         return occupationRepository.save(newOccupation);
     }
 

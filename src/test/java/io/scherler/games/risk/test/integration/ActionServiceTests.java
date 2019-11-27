@@ -3,10 +3,7 @@ package io.scherler.games.risk.test.integration;
 import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
-import io.scherler.games.risk.models.request.Deployment;
-import io.scherler.games.risk.models.request.Game;
-import io.scherler.games.risk.models.request.Movement;
-import io.scherler.games.risk.models.request.Territory;
+import io.scherler.games.risk.models.request.*;
 import io.scherler.games.risk.models.response.AttackResult;
 import io.scherler.games.risk.models.response.MovementInfo;
 import io.scherler.games.risk.models.response.TerritoryInfo;
@@ -16,6 +13,8 @@ import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
 import java.util.Arrays;
 import java.util.Collections;
+
+import io.scherler.games.risk.services.identity.UserAccountService;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,13 +44,17 @@ class ActionServiceTests {
     @MockBean
     private DiceService mockedDiceService;
 
+    @Autowired
+    private UserAccountService userAccountService;
+
     private GameEntity game;
     private PlayerEntity firstPlayer;
     private PlayerEntity secondPlayer;
 
     @BeforeEach
     void init() {
-        game = gameService.createNew(new Game("testgame", 4, "helloworld"));
+        val creator = userAccountService.createNew(new UserAccount("testuser"));
+        game = gameService.createNew(new Game("testgame", 4, "helloworld"), creator);
         firstPlayer = game.getPlayers().stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("No player entity found!"));
         secondPlayer = game.getPlayers()
                                .stream()

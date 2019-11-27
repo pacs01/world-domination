@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import lombok.val;
-import lombok.var;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,7 +40,7 @@ public class CardService {
         val remainingTerritories = territoryService.getRemainingTerritories(game.getMap().getId(), cards.stream().map(c -> c.getTerritory().getId()).collect(Collectors.toList()));
 
         val numberOfTerritories = territoryService.count(game.getMap().getId());
-        var numberOfCards = remainingTerritories.size();
+        int numberOfCards = remainingTerritories.size();
         if (remainingTerritories.size() < numberOfTerritories / 2) {
             numberOfCards++;
         }
@@ -56,7 +55,7 @@ public class CardService {
     }
 
     private Card drawCard(GameEntity game, PlayerEntity player, TerritoryEntity territory) {
-        val card = new CardEntity(game, player, territory);
+        val card = new CardEntity(game, territory, player);
         cardRepository.save(card);
         return new Card(territory.getName());
     }

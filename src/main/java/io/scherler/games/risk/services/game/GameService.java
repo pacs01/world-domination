@@ -2,6 +2,7 @@ package io.scherler.games.risk.services.game;
 
 import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
+import io.scherler.games.risk.entities.identity.UserAccountEntity;
 import io.scherler.games.risk.entities.repositories.game.GameRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.GameState;
@@ -30,9 +31,9 @@ public class GameService {
     }
 
     @Transactional
-    public GameEntity createNew(Game newGame) {
+    public GameEntity createNew(Game newGame, UserAccountEntity creator) {
         val map = mapService.getMap(newGame.getMap());
-        val newGameEntity = new GameEntity(newGame.getName(), map);
+        val newGameEntity = new GameEntity(newGame.getName(), creator, map);
         newGameEntity.addPlayers(playerService.generatePlayers(newGameEntity, newGame.getNumberOfPlayers()));
         newGameEntity.setActivePlayer(getFirstPlayer(newGameEntity));
 
