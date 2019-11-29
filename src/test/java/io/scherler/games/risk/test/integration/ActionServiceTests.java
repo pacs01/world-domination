@@ -2,7 +2,6 @@ package io.scherler.games.risk.test.integration;
 
 import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
-import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.request.Deployment;
 import io.scherler.games.risk.models.request.Game;
 import io.scherler.games.risk.models.request.Movement;
@@ -14,6 +13,7 @@ import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.services.game.DiceService;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
+import io.scherler.games.risk.services.game.PlayerService;
 import io.scherler.games.risk.services.game.action.ActionService;
 import io.scherler.games.risk.services.identity.UserAccountService;
 import java.util.Arrays;
@@ -44,6 +44,9 @@ class ActionServiceTests {
     @Autowired
     private GameService gameService;
 
+    @Autowired
+    private PlayerService playerService;
+
     @MockBean
     private DiceService mockedDiceService;
 
@@ -57,27 +60,25 @@ class ActionServiceTests {
     @BeforeEach
     void init() {
         val creator = userAccountService.createNew(new UserAccount("testuser"));
-        game = gameService.createNew(new Game("testgame", 4, "helloworld"), creator);
-        firstPlayer = game.getPlayers().stream().findFirst()
-            .orElseThrow(() -> new ResourceNotFoundException("No player entity found!"));
-        secondPlayer = game.getPlayers()
-            .stream()
-            .filter(p -> !p.equals(firstPlayer))
-            .findFirst()
-            .orElseThrow(() -> new ResourceNotFoundException("No second player entity found!"));
+        game = gameService.createNew(new Game("testgame", 2, "helloworld"), creator);
+        firstPlayer = game.getActivePlayer();
+        secondPlayer = playerService.getNextPlayer(game, firstPlayer.getId());
 
         actionService.occupy(new Territory("Egypt"), game.getId(), firstPlayer.getId());
         actionService.occupy(new Territory("Southern Europe"), game.getId(), firstPlayer.getId());
         actionService
             .deploy(new Deployment("Southern Europe", 5), game.getId(), firstPlayer.getId());
+        gameService.endTurn(game.getId(), firstPlayer.getId());
 
         actionService.occupy(new Territory("Japan"), game.getId(), secondPlayer.getId());
+        gameService.endTurn(game.getId(), secondPlayer.getId());
     }
 
     @Test
     void testOccupation() {
-        val occupation = new Territory("Peru");
+        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
 
+        val occupation = new Territory("Peru");
         val territoryInfo = actionService.occupy(occupation, game.getId(), firstPlayer.getId());
 
         Assertions.assertEquals(new TerritoryInfo("Peru", firstPlayer.getColor().toString(), 1),
@@ -92,8 +93,9 @@ class ActionServiceTests {
 
     @Test
     void testDeployment() {
-        val deployment = new Deployment("Egypt", 5);
+        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
 
+        val deployment = new Deployment("Egypt", 5);
         val territoryInfo = actionService.deploy(deployment, game.getId(), firstPlayer.getId());
 
         Assertions.assertEquals(new TerritoryInfo("Egypt", firstPlayer.getColor().toString(), 6),
@@ -108,8 +110,9 @@ class ActionServiceTests {
 
     @Test
     void testMovement() {
-        val movement = new Movement("Egypt", 5, "Southern Europe");
+        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
 
+        val movement = new Movement("Egypt", 5, "Southern Europe");
         val movementInfo = actionService.move(movement, game.getId(), firstPlayer.getId());
 
         Assertions.assertEquals(
@@ -133,6 +136,8 @@ class ActionServiceTests {
 
     @Test
     void testAttackWin() {
+        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
+
         val attackDices = Arrays.asList(2, 4, 6);
         val defendDices = Collections.singletonList(3);
         Mockito.when(mockedDiceService.rollDices(attackDices.size())).thenReturn(attackDices);
@@ -163,6 +168,8 @@ class ActionServiceTests {
 
     @Test
     void testAttackLost() {
+        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
+
         val attackDices = Arrays.asList(2, 4, 3);
         val defendDices = Collections.singletonList(5);
         Mockito.when(mockedDiceService.rollDices(attackDices.size())).thenReturn(attackDices);
