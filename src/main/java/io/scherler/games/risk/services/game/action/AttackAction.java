@@ -11,11 +11,10 @@ import io.scherler.games.risk.services.game.PlayerService;
 import io.scherler.games.risk.services.game.action.models.Parties;
 import io.scherler.games.risk.services.game.action.models.Route;
 import io.scherler.games.risk.services.map.TerritoryService;
-import lombok.val;
-import org.springframework.stereotype.Service;
-
 import java.util.Collections;
 import java.util.List;
+import lombok.val;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AttackAction extends ActionStrategy<Movement, AttackResult> {
@@ -27,7 +26,9 @@ public class AttackAction extends ActionStrategy<Movement, AttackResult> {
     private final OccupationService occupationService;
     private final DiceService diceService;
 
-    public AttackAction(GameService gameService, PlayerService playerService, TerritoryService territoryService, OccupationService occupationService, DiceService diceService) {
+    public AttackAction(GameService gameService, PlayerService playerService,
+        TerritoryService territoryService, OccupationService occupationService,
+        DiceService diceService) {
         super(gameService, playerService);
         this.territoryService = territoryService;
         this.occupationService = occupationService;
@@ -41,25 +42,43 @@ public class AttackAction extends ActionStrategy<Movement, AttackResult> {
 
     @Override
     protected AttackResult apply(ActionContext<Movement> context) {
-        val source = territoryService.getTerritory(context.getGame().getMap().getId(), context.getRequest().getSource());
-        val target = territoryService.getTerritory(context.getGame().getMap().getId(), context.getRequest().getName());
+        val source = territoryService
+            .getTerritory(context.getGame().getMap().getId(), context.getRequest().getSource());
+        val target = territoryService
+            .getTerritory(context.getGame().getMap().getId(), context.getRequest().getName());
 
-        val sourceOccupation = occupationService.getOccupationByPlayer(context.getGame().getId(), context.getPlayer().getId(), source.getName());
-        val targetOccupation = occupationService.getOccupationByEnemy(context.getGame().getId(), context.getPlayer().getId(), target.getName());
-        occupationService.validateRemainingUnits(sourceOccupation, context.getRequest().getNumberOfUnits());
+        val sourceOccupation = occupationService
+            .getOccupationByPlayer(context.getGame().getId(), context.getPlayer().getId(),
+                source.getName());
+        val targetOccupation = occupationService
+            .getOccupationByEnemy(context.getGame().getId(), context.getPlayer().getId(),
+                target.getName());
+        occupationService
+            .validateRemainingUnits(sourceOccupation, context.getRequest().getNumberOfUnits());
 
-        val attackDices = diceService.rollDices(Math.min(context.getRequest().getNumberOfUnits(), MAX_NUMBER_OF_ATTACK_DICES));
-        val defendDices = diceService.rollDices(Math.min(targetOccupation.getUnits(), MAX_NUMBER_OF_DEFEND_DICES));
-        val parties = performAttacks(new Parties(context.getRequest().getNumberOfUnits(), targetOccupation.getUnits()), attackDices, defendDices);
+        val attackDices = diceService.rollDices(
+            Math.min(context.getRequest().getNumberOfUnits(), MAX_NUMBER_OF_ATTACK_DICES));
+        val defendDices = diceService
+            .rollDices(Math.min(targetOccupation.getUnits(), MAX_NUMBER_OF_DEFEND_DICES));
+        val parties = performAttacks(
+            new Parties(context.getRequest().getNumberOfUnits(), targetOccupation.getUnits()),
+            attackDices, defendDices);
 
-        val updatedRoute = occupationService.applyAttackResult(new Route(sourceOccupation, targetOccupation), parties, context.getPlayer());
+        val updatedRoute = occupationService
+            .applyAttackResult(new Route(sourceOccupation, targetOccupation), parties,
+                context.getPlayer());
 
-        val movementInfo = new MovementInfo(new TerritoryInfo(source.getName(), updatedRoute.getSource().getPlayer().getColor().toString(), updatedRoute.getSource().getUnits()),
-                new TerritoryInfo(target.getName(), updatedRoute.getTarget().getPlayer().getColor().toString(), updatedRoute.getTarget().getUnits()));
+        val movementInfo = new MovementInfo(new TerritoryInfo(source.getName(),
+            updatedRoute.getSource().getPlayer().getColor().toString(),
+            updatedRoute.getSource().getUnits()),
+            new TerritoryInfo(target.getName(),
+                updatedRoute.getTarget().getPlayer().getColor().toString(),
+                updatedRoute.getTarget().getUnits()));
         return new AttackResult(movementInfo, attackDices, defendDices);
     }
 
-    private Parties performAttacks(Parties parties, List<Integer> attackDices, List<Integer> defendDices) {
+    private Parties performAttacks(Parties parties, List<Integer> attackDices,
+        List<Integer> defendDices) {
         attackDices.sort(Collections.reverseOrder());
         defendDices.sort(Collections.reverseOrder());
 

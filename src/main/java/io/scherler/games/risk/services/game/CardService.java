@@ -37,7 +37,8 @@ public class CardService {
 
     public Card drawNextCard(GameEntity game, PlayerEntity player) {
         val cards = getAllCards(game.getId());
-        val remainingTerritories = territoryService.getRemainingTerritories(game.getMap().getId(), cards.stream().map(c -> c.getTerritory().getId()).collect(Collectors.toList()));
+        val remainingTerritories = territoryService.getRemainingTerritories(game.getMap().getId(),
+            cards.stream().map(c -> c.getTerritory().getId()).collect(Collectors.toList()));
 
         val numberOfTerritories = territoryService.count(game.getMap().getId());
         int numberOfCards = remainingTerritories.size();

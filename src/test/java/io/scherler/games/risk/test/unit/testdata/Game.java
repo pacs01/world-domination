@@ -5,16 +5,15 @@ import io.scherler.games.risk.entities.game.OccupationEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.entities.identity.UserAccountEntity;
 import io.scherler.games.risk.models.PlayerColor;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.val;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.val;
 
 @Getter
 public class Game {
@@ -146,15 +145,20 @@ public class Game {
 
     private void generateOccupations() {
         alaska = new OccupationEntity(game, world.getAlaska(), playerOne, 5);
-        northwestTerritory = new OccupationEntity(game, world.getNorthwestTerritory(), playerOne, 1);
+        northwestTerritory = new OccupationEntity(game, world.getNorthwestTerritory(), playerOne,
+            1);
         greenland = new OccupationEntity(game, world.getGreenland(), playerOne, 2);
         alberta = new OccupationEntity(game, world.getAlberta(), playerOne, 1);
         ontario = new OccupationEntity(game, world.getOntario(), playerOne, 3);
         quebec = new OccupationEntity(game, world.getQuebec(), playerOne, 4);
-        westernUnitedStates = new OccupationEntity(game, world.getWesternUnitedStates(), playerOne, 4);
-        easternUnitedStates = new OccupationEntity(game, world.getEasternUnitedStates(), playerOne, 5);
+        westernUnitedStates = new OccupationEntity(game, world.getWesternUnitedStates(), playerOne,
+            4);
+        easternUnitedStates = new OccupationEntity(game, world.getEasternUnitedStates(), playerOne,
+            5);
         centralAmerica = new OccupationEntity(game, world.getCentralAmerica(), playerTwo, 5);
-        northAmericanCountries = Arrays.asList(alaska, northwestTerritory, greenland, alberta, ontario, quebec, westernUnitedStates, easternUnitedStates, centralAmerica);
+        northAmericanCountries = Arrays
+            .asList(alaska, northwestTerritory, greenland, alberta, ontario, quebec,
+                westernUnitedStates, easternUnitedStates, centralAmerica);
 
         venezuela = new OccupationEntity(game, world.getVenezuela(), playerOne, 2);
         peru = new OccupationEntity(game, world.getPeru(), playerTwo, 9);
@@ -168,7 +172,8 @@ public class Game {
         congo = new OccupationEntity(game, world.getCongo(), playerThree, 2);
         southAfrica = new OccupationEntity(game, world.getSouthAfrica(), playerThree, 2);
         madagascar = new OccupationEntity(game, world.getMadagascar(), playerThree, 3);
-        africanCountries = Arrays.asList(northAfrica, egypt, eastAfrica, congo, southAfrica, madagascar);
+        africanCountries = Arrays
+            .asList(northAfrica, egypt, eastAfrica, congo, southAfrica, madagascar);
 
         iceland = new OccupationEntity(game, world.getIceland(), playerOne, 1);
         scandinavia = new OccupationEntity(game, world.getScandinavia(), playerThree, 6);
@@ -177,13 +182,16 @@ public class Game {
         northernEurope = new OccupationEntity(game, world.getNorthernEurope(), playerFour, 2);
         southernEurope = new OccupationEntity(game, world.getSouthernEurope(), playerFour, 1);
         westernEurope = new OccupationEntity(game, world.getWesternEurope(), playerFour, 1);
-        europeCountries = Arrays.asList(iceland, scandinavia, ukraine, greatBritain, northernEurope, southernEurope, westernEurope);
+        europeCountries = Arrays
+            .asList(iceland, scandinavia, ukraine, greatBritain, northernEurope, southernEurope,
+                westernEurope);
 
         indonesia = new OccupationEntity(game, world.getIndonesia(), playerOne, 1);
         newGuinea = new OccupationEntity(game, world.getNewGuinea(), playerOne, 5);
         westernAustralia = new OccupationEntity(game, world.getWesternAustralia(), playerOne, 3);
         easternAustralia = new OccupationEntity(game, world.getEasternAustralia(), playerOne, 4);
-        australianCountries = Arrays.asList(indonesia, newGuinea, westernAustralia, easternAustralia);
+        australianCountries = Arrays
+            .asList(indonesia, newGuinea, westernAustralia, easternAustralia);
 
         siam = new OccupationEntity(game, world.getSiam(), playerOne, 6);
         india = new OccupationEntity(game, world.getIndia(), playerOne, 1);
@@ -197,9 +205,14 @@ public class Game {
         afghanistan = new OccupationEntity(game, world.getAfghanistan(), playerThree, 7);
         ural = new OccupationEntity(game, world.getUral(), playerFour, 6);
         middleEast = new OccupationEntity(game, world.getMiddleEast(), playerFour, 5);
-        asianCountries = Arrays.asList(siam, india, china, mongolia, japan, irkutsk, yakutsk, kamchatka, siberia, afghanistan, ural, middleEast);
+        asianCountries = Arrays
+            .asList(siam, india, china, mongolia, japan, irkutsk, yakutsk, kamchatka, siberia,
+                afghanistan, ural, middleEast);
 
-        occupations = Stream.of(northAmericanCountries, southAmericanCountries, africanCountries, europeCountries, australianCountries, asianCountries).flatMap(Collection::stream).collect(Collectors.toList());
+        occupations = Stream
+            .of(northAmericanCountries, southAmericanCountries, africanCountries, europeCountries,
+                australianCountries, asianCountries).flatMap(Collection::stream)
+            .collect(Collectors.toList());
         game.setOccupations(new HashSet<>(occupations));
     }
 }

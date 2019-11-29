@@ -3,8 +3,12 @@ package io.scherler.games.risk.entities.game;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.scherler.games.risk.entities.BaseEntity;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -17,7 +21,8 @@ import org.hibernate.annotations.NaturalId;
 
 @Data
 @Entity
-@Table(name = "occupation", uniqueConstraints = @UniqueConstraint(columnNames = {"gameId", "territoryId"}))
+@Table(name = "occupation", uniqueConstraints = @UniqueConstraint(columnNames = {"gameId",
+    "territoryId"}))
 @ToString(exclude = {"game", "player", "territory"})
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
@@ -43,7 +48,8 @@ public class OccupationEntity extends BaseEntity {
     @Setter(AccessLevel.NONE)
     private int units;
 
-    public OccupationEntity(GameEntity game, TerritoryEntity territory, PlayerEntity player, int units) {
+    public OccupationEntity(GameEntity game, TerritoryEntity territory, PlayerEntity player,
+        int units) {
         this.game = game;
         this.territory = territory;
         this.player = player;
@@ -57,7 +63,8 @@ public class OccupationEntity extends BaseEntity {
 
     public int removeUnits(int numberOfUnits) {
         if (units < numberOfUnits) {
-            throw new IllegalArgumentException("Not enough units available at territory '" + territory.getName() + "'.");
+            throw new IllegalArgumentException(
+                "Not enough units available at territory '" + territory.getName() + "'.");
         }
         units -= numberOfUnits;
         return units;
@@ -66,7 +73,8 @@ public class OccupationEntity extends BaseEntity {
     @Transactional
     public void conquer(PlayerEntity player, int units) {
         if (this.units != 0) {
-            throw new IllegalStateException("Territory " + territory.getName() + " can't be conquered because there are still units deployed.");
+            throw new IllegalStateException("Territory " + territory.getName()
+                + " can't be conquered because there are still units deployed.");
         }
         this.player = player;
         this.units = units;

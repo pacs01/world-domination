@@ -7,9 +7,8 @@ import io.scherler.games.risk.models.request.Game;
 import io.scherler.games.risk.models.request.UserAccount;
 import io.scherler.games.risk.services.game.CardService;
 import io.scherler.games.risk.services.game.GameService;
-import java.util.Comparator;
-
 import io.scherler.games.risk.services.identity.UserAccountService;
+import java.util.Comparator;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,9 +41,9 @@ class CardServiceTests {
         val creator = userAccountService.createNew(new UserAccount("testuser"));
         game = gameService.createNew(new Game("testgame", 4, "helloworld"), creator);
         firstPlayer = game.getPlayers()
-                          .stream()
-                          .min(Comparator.comparing(PlayerEntity::getPosition))
-                          .orElseThrow(() -> new ResourceNotFoundException("No first player entity found!"));
+            .stream()
+            .min(Comparator.comparing(PlayerEntity::getPosition))
+            .orElseThrow(() -> new ResourceNotFoundException("No first player entity found!"));
     }
 
     @Test
@@ -53,6 +52,8 @@ class CardServiceTests {
         val card = cardService.drawNextCard(game, firstPlayer);
 
         Assertions.assertEquals(numberOfCards + 1, cardService.getAllCards(game.getId()).size());
-        Assertions.assertTrue(cardService.getCardsByPlayer(game.getId(), firstPlayer.getId()).stream().anyMatch(c -> c.getTerritory().getName().equals(card.getTerritory())));
+        Assertions.assertTrue(
+            cardService.getCardsByPlayer(game.getId(), firstPlayer.getId()).stream()
+                .anyMatch(c -> c.getTerritory().getName().equals(card.getTerritory())));
     }
 }

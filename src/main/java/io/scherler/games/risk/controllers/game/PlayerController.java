@@ -27,13 +27,16 @@ public class PlayerController {
     }
 
     @GetMapping("/{playerId}")
-    public ResponseEntity<?> getOne(@PathVariable("gameId") Long gameId, @PathVariable Long playerId) {
-        val player = playerRepository.findByIdAndGameId(playerId, gameId).stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
+    public ResponseEntity<?> getOne(@PathVariable("gameId") Long gameId,
+        @PathVariable Long playerId) {
+        val player = playerRepository.findByIdAndGameId(playerId, gameId).stream().findFirst()
+            .orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
         return ResponseEntity.ok().body(player); //todo add hateoas
     }
 
     @DeleteMapping("/{playerId}")
-    public ResponseEntity<?> delete(@PathVariable("gameId") Long gameId, @PathVariable Long playerId) {
+    public ResponseEntity<?> delete(@PathVariable("gameId") Long gameId,
+        @PathVariable Long playerId) {
         playerRepository.deleteById(playerId);
 
         return ResponseEntity.noContent().build();

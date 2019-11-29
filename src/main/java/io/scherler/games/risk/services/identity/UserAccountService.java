@@ -16,7 +16,8 @@ public class UserAccountService {
     }
 
     public UserAccountEntity getUser(long userId) {
-        return userAccountRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("UserAccount", userId));
+        return userAccountRepository.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("UserAccount", userId));
     }
 
     public UserAccountEntity createNew(UserAccount newUserAccount) {

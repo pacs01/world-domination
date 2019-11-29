@@ -4,12 +4,14 @@ import io.scherler.games.risk.entities.identity.UserAccountEntity;
 import io.scherler.games.risk.entities.map.ContinentEntity;
 import io.scherler.games.risk.entities.map.MapEntity;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
-import lombok.Getter;
-import lombok.val;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.Getter;
+import lombok.val;
 
 @Getter
 public class World {
@@ -140,7 +142,9 @@ public class World {
         westernUnitedStates = new TerritoryEntity("Western United States", northAmerica);
         easternUnitedStates = new TerritoryEntity("Eastern United States", northAmerica);
         centralAmerica = new TerritoryEntity("Central America", northAmerica);
-        northAmericanCountries = Arrays.asList(alaska, northwestTerritory, greenland, alberta, ontario, quebec, westernUnitedStates, easternUnitedStates, centralAmerica);
+        northAmericanCountries = Arrays
+            .asList(alaska, northwestTerritory, greenland, alberta, ontario, quebec,
+                westernUnitedStates, easternUnitedStates, centralAmerica);
         northAmerica.setTerritories(new HashSet<>(northAmericanCountries));
 
         venezuela = new TerritoryEntity("Venezuela", southAmerica);
@@ -156,7 +160,8 @@ public class World {
         congo = new TerritoryEntity("Congo", africa);
         southAfrica = new TerritoryEntity("South Africa", africa);
         madagascar = new TerritoryEntity("Madagascar", africa);
-        africanCountries = Arrays.asList(northAfrica, egypt, eastAfrica, congo, southAfrica, madagascar);
+        africanCountries = Arrays
+            .asList(northAfrica, egypt, eastAfrica, congo, southAfrica, madagascar);
         africa.setTerritories(new HashSet<>(africanCountries));
 
         iceland = new TerritoryEntity("Iceland", europe);
@@ -166,14 +171,17 @@ public class World {
         northernEurope = new TerritoryEntity("Northern Europe", europe);
         southernEurope = new TerritoryEntity("Southern Europe", europe);
         westernEurope = new TerritoryEntity("Western Europe", europe);
-        europeCountries = Arrays.asList(iceland, scandinavia, ukraine, greatBritain, northernEurope, southernEurope, westernEurope);
+        europeCountries = Arrays
+            .asList(iceland, scandinavia, ukraine, greatBritain, northernEurope, southernEurope,
+                westernEurope);
         europe.setTerritories(new HashSet<>(europeCountries));
 
         indonesia = new TerritoryEntity("Indonesia", australia);
         newGuinea = new TerritoryEntity("New Guinea", australia);
         westernAustralia = new TerritoryEntity("Western Australia", australia);
         easternAustralia = new TerritoryEntity("Eastern Australia", australia);
-        australianCountries = Arrays.asList(indonesia, newGuinea, westernAustralia, easternAustralia);
+        australianCountries = Arrays
+            .asList(indonesia, newGuinea, westernAustralia, easternAustralia);
         australia.setTerritories(new HashSet<>(australianCountries));
 
         siam = new TerritoryEntity("Siam", asia);
@@ -188,10 +196,15 @@ public class World {
         afghanistan = new TerritoryEntity("Afghanistan", asia);
         ural = new TerritoryEntity("Ural", asia);
         middleEast = new TerritoryEntity("Middle East", asia);
-        asianCountries = Arrays.asList(siam, india, china, mongolia, japan, irkutsk, yakutsk, kamchatka, siberia, afghanistan, ural, middleEast);
+        asianCountries = Arrays
+            .asList(siam, india, china, mongolia, japan, irkutsk, yakutsk, kamchatka, siberia,
+                afghanistan, ural, middleEast);
         asia.setTerritories(new HashSet<>(asianCountries));
 
-        territories = Stream.of(northAmericanCountries, southAmericanCountries, africanCountries, europeCountries, australianCountries, asianCountries).flatMap(Collection::stream).collect(Collectors.toList());
+        territories = Stream
+            .of(northAmericanCountries, southAmericanCountries, africanCountries, europeCountries,
+                australianCountries, asianCountries).flatMap(Collection::stream)
+            .collect(Collectors.toList());
     }
 
     private void setConnections() {
@@ -199,10 +212,13 @@ public class World {
         northwestTerritory.addAdjacentTerritories(alaska, greenland, alberta, ontario);
         greenland.addAdjacentTerritories(northwestTerritory, ontario, quebec, iceland);
         alberta.addAdjacentTerritories(alaska, northwestTerritory, ontario, westernUnitedStates);
-        ontario.addAdjacentTerritories(northwestTerritory, alberta, westernUnitedStates, quebec, easternUnitedStates, greenland);
+        ontario.addAdjacentTerritories(northwestTerritory, alberta, westernUnitedStates, quebec,
+            easternUnitedStates, greenland);
         quebec.addAdjacentTerritories(ontario, greenland, easternUnitedStates);
-        westernUnitedStates.addAdjacentTerritories(alberta, ontario, easternUnitedStates, centralAmerica);
-        easternUnitedStates.addAdjacentTerritories(quebec, ontario, westernUnitedStates, centralAmerica);
+        westernUnitedStates
+            .addAdjacentTerritories(alberta, ontario, easternUnitedStates, centralAmerica);
+        easternUnitedStates
+            .addAdjacentTerritories(quebec, ontario, westernUnitedStates, centralAmerica);
         centralAmerica.addAdjacentTerritories(westernUnitedStates, easternUnitedStates, venezuela);
 
         venezuela.addAdjacentTerritories(centralAmerica, peru, brazil);
@@ -210,20 +226,28 @@ public class World {
         brazil.addAdjacentTerritories(venezuela, peru, argentina, northAfrica);
         argentina.addAdjacentTerritories(peru, brazil);
 
-        northAfrica.addAdjacentTerritories(brazil, westernEurope, southernEurope, egypt, eastAfrica, congo);
+        northAfrica.addAdjacentTerritories(brazil, westernEurope, southernEurope, egypt, eastAfrica,
+            congo);
         egypt.addAdjacentTerritories(southernEurope, northAfrica, eastAfrica, middleEast);
-        eastAfrica.addAdjacentTerritories(egypt, northAfrica, congo, southAfrica, middleEast, madagascar);
+        eastAfrica
+            .addAdjacentTerritories(egypt, northAfrica, congo, southAfrica, middleEast, madagascar);
         congo.addAdjacentTerritories(northAfrica, eastAfrica, southAfrica);
         southAfrica.addAdjacentTerritories(congo, eastAfrica, madagascar);
         madagascar.addAdjacentTerritories(southAfrica, eastAfrica);
 
         iceland.addAdjacentTerritories(greenland, greatBritain, scandinavia);
         scandinavia.addAdjacentTerritories(iceland, greatBritain, northernEurope, ukraine);
-        ukraine.addAdjacentTerritories(scandinavia, northernEurope, southernEurope, ural, afghanistan, middleEast);
+        ukraine
+            .addAdjacentTerritories(scandinavia, northernEurope, southernEurope, ural, afghanistan,
+                middleEast);
         greatBritain.addAdjacentTerritories(iceland, scandinavia, northernEurope, westernEurope);
-        northernEurope.addAdjacentTerritories(greatBritain, scandinavia, ukraine, southernEurope, westernEurope);
-        southernEurope.addAdjacentTerritories(westernEurope, northernEurope, ukraine, middleEast, egypt, northAfrica);
-        westernEurope.addAdjacentTerritories(greatBritain, northernEurope, southernEurope, northAfrica);
+        northernEurope.addAdjacentTerritories(greatBritain, scandinavia, ukraine, southernEurope,
+            westernEurope);
+        southernEurope
+            .addAdjacentTerritories(westernEurope, northernEurope, ukraine, middleEast, egypt,
+                northAfrica);
+        westernEurope
+            .addAdjacentTerritories(greatBritain, northernEurope, southernEurope, northAfrica);
 
         indonesia.addAdjacentTerritories(siam, newGuinea, westernAustralia);
         newGuinea.addAdjacentTerritories(indonesia, westernAustralia, easternAustralia);
@@ -241,6 +265,7 @@ public class World {
         siberia.addAdjacentTerritories(ural, china, mongolia, irkutsk, yakutsk);
         afghanistan.addAdjacentTerritories(ukraine, middleEast, india, china, ural);
         ural.addAdjacentTerritories(ukraine, afghanistan, china, siberia);
-        middleEast.addAdjacentTerritories(ukraine, southernEurope, egypt, eastAfrica, india, afghanistan);
+        middleEast
+            .addAdjacentTerritories(ukraine, southernEurope, egypt, eastAfrica, india, afghanistan);
     }
 }

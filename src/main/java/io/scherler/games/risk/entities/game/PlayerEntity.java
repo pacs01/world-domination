@@ -6,8 +6,14 @@ import io.scherler.games.risk.entities.identity.UserAccountEntity;
 import io.scherler.games.risk.models.PlayerColor;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.*;
-
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,7 +22,8 @@ import org.hibernate.annotations.NaturalId;
 
 @Data
 @Entity
-@Table(name = "player", uniqueConstraints = @UniqueConstraint(columnNames = {"gameId", "userAccountId"}))
+@Table(name = "player", uniqueConstraints = @UniqueConstraint(columnNames = {"gameId",
+    "userAccountId"}))
 @ToString(exclude = {"game", "userAccount"})
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
@@ -46,7 +53,8 @@ public class PlayerEntity extends BaseEntity {
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private Set<CardEntity> cards = new HashSet<>();
 
-    public PlayerEntity(GameEntity game, UserAccountEntity userAccount, int position, PlayerColor color) {
+    public PlayerEntity(GameEntity game, UserAccountEntity userAccount, int position,
+        PlayerColor color) {
         this.game = game;
         this.userAccount = userAccount;
         this.position = position;

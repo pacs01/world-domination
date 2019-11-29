@@ -14,23 +14,27 @@ class AdjacentTerritoryValidationTest {
 
     private TerritoryService territoryService = new TerritoryService(territoryRepository);
 
-    private final World world = World.createWithIds(); // todo: use testdata world also for Database initialization at startup
+    private final World world = World
+        .createWithIds(); // todo: use testdata world also for Database initialization at startup
 
     @Test
     void testAdjacentTerritories() {
         Assertions.assertTrue(territoryService.areAdjacent(world.getAlaska(), world.getAlberta()));
-        Assertions.assertTrue(territoryService.areAdjacent(world.getNorthwestTerritory(), world.getOntario()));
+        Assertions.assertTrue(
+            territoryService.areAdjacent(world.getNorthwestTerritory(), world.getOntario()));
     }
 
     @Test
     void testNonadjacentTerritories() {
         Assertions.assertFalse(territoryService.areAdjacent(world.getAlaska(), world.getOntario()));
-        Assertions.assertFalse(territoryService.areAdjacent(world.getAlaska(), world.getGreenland()));
+        Assertions
+            .assertFalse(territoryService.areAdjacent(world.getAlaska(), world.getGreenland()));
     }
 
     @Test
     void testAdjacentWithSameTerritories() {
         Assertions.assertFalse(territoryService.areAdjacent(world.getAlaska(), world.getAlaska()));
-        Assertions.assertFalse(territoryService.areAdjacent(world.getGreenland(), world.getGreenland()));
+        Assertions
+            .assertFalse(territoryService.areAdjacent(world.getGreenland(), world.getGreenland()));
     }
 }

@@ -6,8 +6,16 @@ import io.scherler.games.risk.entities.game.CardEntity;
 import io.scherler.games.risk.entities.game.OccupationEntity;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.*;
-
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,7 +24,8 @@ import org.hibernate.annotations.NaturalId;
 
 @Data
 @Entity
-@Table(name = "territory", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "continentId"}))
+@Table(name = "territory", uniqueConstraints = @UniqueConstraint(columnNames = {"name",
+    "continentId"}))
 @ToString(exclude = {"continent", "adjacentTerritories"})
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor

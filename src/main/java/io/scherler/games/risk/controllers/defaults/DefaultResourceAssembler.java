@@ -7,7 +7,8 @@ import io.scherler.games.risk.entities.BaseEntity;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
 
-public class DefaultResourceAssembler<T extends BaseEntity> implements ResourceAssembler<T, Resource<T>> {
+public class DefaultResourceAssembler<T extends BaseEntity> implements
+    ResourceAssembler<T, Resource<T>> {
 
     private final DefaultResourceController<T> defaultResourceController;
 
@@ -17,7 +18,9 @@ public class DefaultResourceAssembler<T extends BaseEntity> implements ResourceA
 
     @Override
     public Resource<T> toResource(T entity) {
-        return new Resource<>(entity, linkTo(methodOn(defaultResourceController.getClass()).getOne(entity.getId())).withSelfRel(),
+        return new Resource<>(entity,
+            linkTo(methodOn(defaultResourceController.getClass()).getOne(entity.getId()))
+                .withSelfRel(),
             linkTo(methodOn(defaultResourceController.getClass()).getAll()).withRel("list"));
     }
 }

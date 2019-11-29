@@ -15,7 +15,8 @@ public class DeploymentAction extends ActionStrategy<Deployment, TerritoryInfo> 
     private final TerritoryService territoryService;
     private final OccupationService occupationService;
 
-    public DeploymentAction(GameService gameService, PlayerService playerService, TerritoryService territoryService, OccupationService occupationService) {
+    public DeploymentAction(GameService gameService, PlayerService playerService,
+        TerritoryService territoryService, OccupationService occupationService) {
         super(gameService, playerService);
         this.territoryService = territoryService;
         this.occupationService = occupationService;
@@ -28,11 +29,16 @@ public class DeploymentAction extends ActionStrategy<Deployment, TerritoryInfo> 
 
     @Override
     protected TerritoryInfo apply(ActionContext<Deployment> context) {
-        val target = territoryService.getTerritory(context.getGame().getMap().getId(), context.getRequest().getName());
+        val target = territoryService
+            .getTerritory(context.getGame().getMap().getId(), context.getRequest().getName());
 
-        val occupation = occupationService.getOccupationByPlayer(context.getGame().getId(), context.getPlayer().getId(), target.getName());
+        val occupation = occupationService
+            .getOccupationByPlayer(context.getGame().getId(), context.getPlayer().getId(),
+                target.getName());
 
-        val updatedOccupation = occupationService.addUnits(occupation, context.getRequest().getNumberOfUnits());
-        return new TerritoryInfo(target.getName(), updatedOccupation.getPlayer().getColor().toString(), updatedOccupation.getUnits());
+        val updatedOccupation = occupationService
+            .addUnits(occupation, context.getRequest().getNumberOfUnits());
+        return new TerritoryInfo(target.getName(),
+            updatedOccupation.getPlayer().getColor().toString(), updatedOccupation.getUnits());
     }
 }

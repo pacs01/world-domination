@@ -22,23 +22,28 @@ public class MapService {
     }
 
     public MapEntity getMap(String name) {
-        return mapRepository.findByName(name).stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("Map", "name = " + name));
+        return mapRepository.findByName(name).stream().findFirst()
+            .orElseThrow(() -> new ResourceNotFoundException("Map", "name = " + name));
     }
 
     public MapEntity getMap(long mapId) {
-        return mapRepository.findById(mapId).orElseThrow(() -> new ResourceNotFoundException("Map", mapId));
+        return mapRepository.findById(mapId)
+            .orElseThrow(() -> new ResourceNotFoundException("Map", mapId));
     }
 
     public MapEntity createNew(Map newMap, UserAccountEntity user) {
         val map = new MapEntity(newMap.getName(), user);
-        val continents = newMap.getContinents().stream().map(c -> createContinent(map, c)).collect(Collectors.toSet());
+        val continents = newMap.getContinents().stream().map(c -> createContinent(map, c))
+            .collect(Collectors.toSet());
         map.setContinents(continents);
         return mapRepository.save(map);
     }
 
     private ContinentEntity createContinent(MapEntity map, Continent continent) {
         val continentEntity = new ContinentEntity(map, continent.getName());
-        val territories = continent.getTerritories().stream().map(t -> new TerritoryEntity(t.getName(), continentEntity)).collect(Collectors.toSet());
+        val territories = continent.getTerritories().stream()
+            .map(t -> new TerritoryEntity(t.getName(), continentEntity))
+            .collect(Collectors.toSet());
         continentEntity.setTerritories(territories);
         return continentEntity;
     }

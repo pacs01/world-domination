@@ -23,7 +23,8 @@ public class GameService {
     private final MapService mapService;
     private final CardService cardService;
 
-    public GameService(GameRepository gameRepository, PlayerService playerService, MapService mapService, CardService cardService) {
+    public GameService(GameRepository gameRepository, PlayerService playerService,
+        MapService mapService, CardService cardService) {
         this.gameRepository = gameRepository;
         this.playerService = playerService;
         this.mapService = mapService;
@@ -34,7 +35,8 @@ public class GameService {
     public GameEntity createNew(Game newGame, UserAccountEntity creator) {
         val map = mapService.getMap(newGame.getMap());
         val newGameEntity = new GameEntity(newGame.getName(), creator, map);
-        newGameEntity.addPlayers(playerService.generatePlayers(newGameEntity, newGame.getNumberOfPlayers()));
+        newGameEntity
+            .addPlayers(playerService.generatePlayers(newGameEntity, newGame.getNumberOfPlayers()));
         newGameEntity.setActivePlayer(getFirstPlayer(newGameEntity));
 
         return gameRepository.save(newGameEntity);
@@ -42,9 +44,10 @@ public class GameService {
 
     private PlayerEntity getFirstPlayer(GameEntity gameEntity) {
         return gameEntity.getPlayers()
-                         .stream()
-                         .min(Comparator.comparing(PlayerEntity::getPosition))
-                         .orElseThrow(() -> new ResourceNotFoundException("No resource of type 'Player' found!"));
+            .stream()
+            .min(Comparator.comparing(PlayerEntity::getPosition))
+            .orElseThrow(
+                () -> new ResourceNotFoundException("No resource of type 'Player' found!"));
     }
 
     @Transactional
@@ -52,7 +55,8 @@ public class GameService {
         val game = getGame(gameId);
         val player = playerService.getPlayer(playerId);
         if (!player.equals(game.getActivePlayer())) {
-            throw new IllegalArgumentException("Player is not active and thus cannot end the turn!");
+            throw new IllegalArgumentException(
+                "Player is not active and thus cannot end the turn!");
         }
 
         val card = drawCardIfAllowedTo(game, player);
@@ -78,7 +82,8 @@ public class GameService {
     }
 
     public GameEntity getGame(long gameId) {
-        return gameRepository.findById(gameId).orElseThrow(() -> new ResourceNotFoundException("Game", gameId));
+        return gameRepository.findById(gameId)
+            .orElseThrow(() -> new ResourceNotFoundException("Game", gameId));
     }
 
     public void setState(long gameId, GameState state) {

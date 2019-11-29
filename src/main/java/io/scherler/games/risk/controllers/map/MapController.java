@@ -9,8 +9,8 @@ import io.scherler.games.risk.entities.map.MapEntity;
 import io.scherler.games.risk.entities.repositories.map.MapRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.request.Map;
-import io.scherler.games.risk.services.map.MapService;
 import io.scherler.games.risk.services.identity.UserAccountService;
+import io.scherler.games.risk.services.map.MapService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -37,7 +37,8 @@ public class MapController implements DefaultResourceController<MapEntity> {
     private final UserAccountService userAccountService;
     private final DefaultResourceAssembler<MapEntity> defaultResourceAssembler;
 
-    public MapController(MapRepository mapRepository, MapService mapService, UserAccountService userAccountService) {
+    public MapController(MapRepository mapRepository, MapService mapService,
+        UserAccountService userAccountService) {
         this.mapRepository = mapRepository;
         this.mapService = mapService;
         this.userAccountService = userAccountService;
@@ -46,22 +47,26 @@ public class MapController implements DefaultResourceController<MapEntity> {
 
     @GetMapping()
     public Resources<Resource<MapEntity>> getAll() {
-        List<Resource<MapEntity>> maps = mapRepository.findAll().stream().map(defaultResourceAssembler::toResource).collect(Collectors.toList());
+        List<Resource<MapEntity>> maps = mapRepository.findAll().stream()
+            .map(defaultResourceAssembler::toResource).collect(Collectors.toList());
 
         return new Resources<>(maps, linkTo(methodOn(MapController.class).getAll()).withSelfRel());
     }
 
     @PostMapping()
-    public ResponseEntity<?> createNew(@PathVariable("userId") Long userId, @Valid @RequestBody Map newMap) throws URISyntaxException {
+    public ResponseEntity<?> createNew(@PathVariable("userId") Long userId,
+        @Valid @RequestBody Map newMap) throws URISyntaxException {
         val userAccount = userAccountService.getUser(userId);
-        Resource<MapEntity> resource = defaultResourceAssembler.toResource(mapService.createNew(newMap, userAccount));
+        Resource<MapEntity> resource = defaultResourceAssembler
+            .toResource(mapService.createNew(newMap, userAccount));
 
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
     @GetMapping("/{id}")
     public Resource<MapEntity> getOne(@PathVariable Long id) {
-        return defaultResourceAssembler.toResource(mapRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Map", id)));
+        return defaultResourceAssembler.toResource(
+            mapRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Map", id)));
     }
 
     @DeleteMapping("/{id}")

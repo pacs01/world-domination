@@ -13,7 +13,8 @@ public interface TerritoryRepository extends JpaRepository<TerritoryEntity, Long
 
     List<TerritoryEntity> findByContinentMapId(Long continent_map_id);
 
-    List<TerritoryEntity> findByContinentMapIdAndIdNotIn(Long continent_map_id, Collection<Long> id);
+    List<TerritoryEntity> findByContinentMapIdAndIdNotIn(Long continent_map_id,
+        Collection<Long> id);
 
     long countByContinentMapId(Long continent_map_id);
 }

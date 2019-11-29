@@ -6,9 +6,7 @@ import io.scherler.games.risk.models.request.Territory;
 import io.scherler.games.risk.models.response.AttackResult;
 import io.scherler.games.risk.models.response.MovementInfo;
 import io.scherler.games.risk.models.response.TerritoryInfo;
-
 import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +20,8 @@ public class ActionService {
 
     private final AttackAction attackAction;
 
-    public ActionService(OccupationAction occupationAction, DeploymentAction deploymentAction, MovementAction movementAction, AttackAction attackAction) {
+    public ActionService(OccupationAction occupationAction, DeploymentAction deploymentAction,
+        MovementAction movementAction, AttackAction attackAction) {
         this.occupationAction = occupationAction;
         this.deploymentAction = deploymentAction;
         this.movementAction = movementAction;

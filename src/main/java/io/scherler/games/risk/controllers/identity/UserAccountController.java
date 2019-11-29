@@ -34,7 +34,8 @@ public class UserAccountController implements DefaultResourceController<UserAcco
     private final UserAccountService userAccountService;
     private final DefaultResourceAssembler<UserAccountEntity> defaultResourceAssembler;
 
-    public UserAccountController(UserAccountRepository userAccountRepository, UserAccountService userAccountService) {
+    public UserAccountController(UserAccountRepository userAccountRepository,
+        UserAccountService userAccountService) {
         this.userAccountRepository = userAccountRepository;
         this.userAccountService = userAccountService;
         this.defaultResourceAssembler = new DefaultResourceAssembler<>(this);
@@ -42,21 +43,26 @@ public class UserAccountController implements DefaultResourceController<UserAcco
 
     @GetMapping()
     public Resources<Resource<UserAccountEntity>> getAll() {
-        List<Resource<UserAccountEntity>> userAccounts = userAccountRepository.findAll().stream().map(defaultResourceAssembler::toResource).collect(Collectors.toList());
+        List<Resource<UserAccountEntity>> userAccounts = userAccountRepository.findAll().stream()
+            .map(defaultResourceAssembler::toResource).collect(Collectors.toList());
 
-        return new Resources<>(userAccounts, linkTo(methodOn(UserAccountController.class).getAll()).withSelfRel());
+        return new Resources<>(userAccounts,
+            linkTo(methodOn(UserAccountController.class).getAll()).withSelfRel());
     }
 
     @PostMapping()
-    public ResponseEntity<?> createNew(@Valid @RequestBody UserAccount newUserAccount) throws URISyntaxException {
-        Resource<UserAccountEntity> resource = defaultResourceAssembler.toResource(userAccountService.createNew(newUserAccount));
+    public ResponseEntity<?> createNew(@Valid @RequestBody UserAccount newUserAccount)
+        throws URISyntaxException {
+        Resource<UserAccountEntity> resource = defaultResourceAssembler
+            .toResource(userAccountService.createNew(newUserAccount));
 
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
     @GetMapping("/{id}")
     public Resource<UserAccountEntity> getOne(@PathVariable Long id) {
-        return defaultResourceAssembler.toResource(userAccountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("UserAccount", id)));
+        return defaultResourceAssembler.toResource(userAccountRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("UserAccount", id)));
     }
 
     @DeleteMapping("/{id}")

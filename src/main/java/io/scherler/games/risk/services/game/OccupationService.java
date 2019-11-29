@@ -10,12 +10,11 @@ import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.services.game.action.models.Parties;
 import io.scherler.games.risk.services.game.action.models.Route;
 import io.scherler.games.risk.services.map.TerritoryService;
-import lombok.val;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.val;
+import org.springframework.stereotype.Service;
 
 @Service
 public class OccupationService {
@@ -23,40 +22,54 @@ public class OccupationService {
     private final OccupationRepository occupationRepository;
     private final TerritoryService territoryService;
 
-    public OccupationService(OccupationRepository occupationRepository, TerritoryService territoryService) {
+    public OccupationService(OccupationRepository occupationRepository,
+        TerritoryService territoryService) {
         this.occupationRepository = occupationRepository;
         this.territoryService = territoryService;
     }
 
-    public OccupationEntity add(GameEntity game, PlayerEntity player, TerritoryEntity territory, int units) {
+    public OccupationEntity add(GameEntity game, PlayerEntity player, TerritoryEntity territory,
+        int units) {
         val newOccupation = new OccupationEntity(game, territory, player, units);
         return occupationRepository.save(newOccupation);
     }
 
     public Optional<OccupationEntity> getOccupationIfPresent(long gameId, String territoryName) {
-        return occupationRepository.findByGameIdAndTerritoryName(gameId, territoryName).stream().findFirst();
+        return occupationRepository.findByGameIdAndTerritoryName(gameId, territoryName).stream()
+            .findFirst();
     }
 
     public OccupationEntity getOccupation(long gameId, String territoryName) {
-        return getOccupationIfPresent(gameId, territoryName).orElseThrow(() -> new ResourceNotFoundException("Occupation", "territory_name = " + territoryName));
+        return getOccupationIfPresent(gameId, territoryName).orElseThrow(
+            () -> new ResourceNotFoundException("Occupation", "territory_name = " + territoryName));
     }
 
-    public Optional<OccupationEntity> getOccupationByPlayerIfPresent(long gameId, long playerId, String territoryName) {
-        return occupationRepository.findByGameIdAndPlayerIdAndTerritoryName(gameId, playerId, territoryName).stream().findFirst();
+    public Optional<OccupationEntity> getOccupationByPlayerIfPresent(long gameId, long playerId,
+        String territoryName) {
+        return occupationRepository
+            .findByGameIdAndPlayerIdAndTerritoryName(gameId, playerId, territoryName).stream()
+            .findFirst();
     }
 
-    public OccupationEntity getOccupationByPlayer(long gameId, long playerId, String territoryName) {
+    public OccupationEntity getOccupationByPlayer(long gameId, long playerId,
+        String territoryName) {
         return getOccupationByPlayerIfPresent(gameId, playerId, territoryName).orElseThrow(
-                () -> new IllegalArgumentException("Territory '" + territoryName + "' not occupied by player '" + playerId + "'."));
+            () -> new IllegalArgumentException(
+                "Territory '" + territoryName + "' not occupied by player '" + playerId + "'."));
     }
 
-    public Optional<OccupationEntity> getOccupationByEnemyIfPresent(long gameId, long playerId, String territoryName) {
-        return occupationRepository.findByGameIdAndPlayerIdIsNotAndTerritoryName(gameId, playerId, territoryName).stream().findFirst();
+    public Optional<OccupationEntity> getOccupationByEnemyIfPresent(long gameId, long playerId,
+        String territoryName) {
+        return occupationRepository
+            .findByGameIdAndPlayerIdIsNotAndTerritoryName(gameId, playerId, territoryName).stream()
+            .findFirst();
     }
 
     public OccupationEntity getOccupationByEnemy(long gameId, long playerId, String territoryName) {
         return getOccupationByEnemyIfPresent(gameId, playerId, territoryName).orElseThrow(
-                () -> new IllegalArgumentException("Territory '" + territoryName + "' not occupied by an enemy player of '" + playerId + "'."));
+            () -> new IllegalArgumentException(
+                "Territory '" + territoryName + "' not occupied by an enemy player of '" + playerId
+                    + "'."));
     }
 
     public List<OccupationEntity> getOccupationsByPlayer(long gameId, long playerId) {
@@ -90,24 +103,30 @@ public class OccupationService {
     }
 
     public List<TerritoryInfo> getTerritoryInfos(long gameId) {
-        return occupationRepository.findByGameId(gameId).stream().map(this::createTerritoryInfo).collect(Collectors.toList());
+        return occupationRepository.findByGameId(gameId).stream().map(this::createTerritoryInfo)
+            .collect(Collectors.toList());
     }
 
     private TerritoryInfo createTerritoryInfo(OccupationEntity occupation) {
-        return new TerritoryInfo(occupation.getTerritory().getName(), occupation.getPlayer().getColor().toString(), occupation.getUnits());
+        return new TerritoryInfo(occupation.getTerritory().getName(),
+            occupation.getPlayer().getColor().toString(), occupation.getUnits());
     }
 
-    public void validateRemainingUnits(OccupationEntity occupation, int numberOfUnits) { // todo: move out of service class -> these are strategy specific rules
+    public void validateRemainingUnits(OccupationEntity occupation,
+        int numberOfUnits) { // todo: move out of service class -> these are strategy specific rules
         if (occupation.getUnits() < numberOfUnits + 1) {
             throw new IllegalArgumentException(
-                    "Not enough units available at territory '" + occupation.getTerritory().getName() + "'. There must remain at least one unit at every conquered place.");
+                "Not enough units available at territory '" + occupation.getTerritory().getName()
+                    + "'. There must remain at least one unit at every conquered place.");
         } else if (numberOfUnits < 1) {
             throw new IllegalArgumentException("An action without any units is not possible.");
         }
     }
 
     public boolean areConnected(long gameId, OccupationEntity source, OccupationEntity target) {
-        val occupiedTerritories = getOccupationsByPlayer(gameId, source.getPlayer().getId()).stream().map(OccupationEntity::getTerritory).collect(Collectors.toList());
-        return territoryService.areConnected(source.getTerritory(), target.getTerritory(), occupiedTerritories);
+        val occupiedTerritories = getOccupationsByPlayer(gameId, source.getPlayer().getId())
+            .stream().map(OccupationEntity::getTerritory).collect(Collectors.toList());
+        return territoryService
+            .areConnected(source.getTerritory(), target.getTerritory(), occupiedTerritories);
     }
 }

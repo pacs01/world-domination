@@ -15,7 +15,8 @@ public class OccupationAction extends ActionStrategy<Territory, TerritoryInfo> {
     private final TerritoryService territoryService;
     private final OccupationService occupationService;
 
-    public OccupationAction(GameService gameService, PlayerService playerService, TerritoryService territoryService, OccupationService occupationService) {
+    public OccupationAction(GameService gameService, PlayerService playerService,
+        TerritoryService territoryService, OccupationService occupationService) {
         super(gameService, playerService);
         this.territoryService = territoryService;
         this.occupationService = occupationService;
@@ -28,14 +29,19 @@ public class OccupationAction extends ActionStrategy<Territory, TerritoryInfo> {
 
     @Override
     protected TerritoryInfo apply(ActionContext<Territory> context) {
-        val target = territoryService.getTerritory(context.getGame().getMap().getId(), context.getRequest().getName());
+        val target = territoryService
+            .getTerritory(context.getGame().getMap().getId(), context.getRequest().getName());
 
-        occupationService.getOccupationIfPresent(context.getGame().getId(), target.getName()).ifPresent(o -> {
-            throw new IllegalArgumentException("The territory '" + target.getName() + "' is occupied already.");
-        });
+        occupationService.getOccupationIfPresent(context.getGame().getId(), target.getName())
+            .ifPresent(o -> {
+                throw new IllegalArgumentException(
+                    "The territory '" + target.getName() + "' is occupied already.");
+            });
 
-        val createdOccupation = occupationService.add(context.getGame(), context.getPlayer(), target, 1);
+        val createdOccupation = occupationService
+            .add(context.getGame(), context.getPlayer(), target, 1);
 
-        return new TerritoryInfo(target.getName(), createdOccupation.getPlayer().getColor().toString(), createdOccupation.getUnits());
+        return new TerritoryInfo(target.getName(),
+            createdOccupation.getPlayer().getColor().toString(), createdOccupation.getUnits());
     }
 }

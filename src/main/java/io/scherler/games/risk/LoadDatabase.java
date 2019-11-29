@@ -1,13 +1,13 @@
 package io.scherler.games.risk;
 
+import io.scherler.games.risk.entities.identity.UserAccountEntity;
 import io.scherler.games.risk.entities.map.ContinentEntity;
 import io.scherler.games.risk.entities.map.MapEntity;
-import io.scherler.games.risk.entities.identity.UserAccountEntity;
-import io.scherler.games.risk.entities.repositories.map.ContinentRepository;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
+import io.scherler.games.risk.entities.repositories.identity.UserAccountRepository;
+import io.scherler.games.risk.entities.repositories.map.ContinentRepository;
 import io.scherler.games.risk.entities.repositories.map.MapRepository;
 import io.scherler.games.risk.entities.repositories.map.TerritoryRepository;
-import io.scherler.games.risk.entities.repositories.identity.UserAccountRepository;
 import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,9 @@ public class LoadDatabase {
 
     // todo move database initialization to Liquibase
     @Bean
-    CommandLineRunner initDatabase(UserAccountRepository userAccountRepository, MapRepository mapRepository, ContinentRepository continentRepository, TerritoryRepository territoryRepository) {
+    CommandLineRunner initDatabase(UserAccountRepository userAccountRepository,
+        MapRepository mapRepository, ContinentRepository continentRepository,
+        TerritoryRepository territoryRepository) {
         return args -> {
             log.info("Preloading entities...");
 
@@ -41,7 +43,8 @@ public class LoadDatabase {
             val asia = new ContinentEntity(map, "Asia");
             val australia = new ContinentEntity(map, "Australia");
             val africa = new ContinentEntity(map, "Africa");
-            List<ContinentEntity> continents = Arrays.asList(northAmerica, southAmerica, europe, asia, australia, africa);
+            List<ContinentEntity> continents = Arrays
+                .asList(northAmerica, southAmerica, europe, asia, australia, africa);
             continentRepository.saveAll(continents);
 
             log.info("Creating territories...");
@@ -54,15 +57,18 @@ public class LoadDatabase {
             val westernUnitedStates = new TerritoryEntity("Western United States", northAmerica);
             val easternUnitedStates = new TerritoryEntity("Eastern United States", northAmerica);
             val centralAmerica = new TerritoryEntity("Central America", northAmerica);
-            List<TerritoryEntity> northAmericanCountries = Arrays.asList(alaska, northwestTerritory, greenland, alberta, ontario, quebec, westernUnitedStates, easternUnitedStates,
-                centralAmerica);
+            List<TerritoryEntity> northAmericanCountries = Arrays
+                .asList(alaska, northwestTerritory, greenland, alberta, ontario, quebec,
+                    westernUnitedStates, easternUnitedStates,
+                    centralAmerica);
             territoryRepository.saveAll(northAmericanCountries);
 
             val venezuela = new TerritoryEntity("Venezuela", southAmerica);
             val peru = new TerritoryEntity("Peru", southAmerica);
             val brazil = new TerritoryEntity("Brazil", southAmerica);
             val argentina = new TerritoryEntity("Argentina", southAmerica);
-            List<TerritoryEntity> southAmericanCountries = Arrays.asList(venezuela, peru, brazil, argentina);
+            List<TerritoryEntity> southAmericanCountries = Arrays
+                .asList(venezuela, peru, brazil, argentina);
             territoryRepository.saveAll(southAmericanCountries);
 
             val northAfrica = new TerritoryEntity("North Africa", africa);
@@ -71,7 +77,8 @@ public class LoadDatabase {
             val congo = new TerritoryEntity("Congo", africa);
             val southAfrica = new TerritoryEntity("South Africa", africa);
             val madagascar = new TerritoryEntity("Madagascar", africa);
-            List<TerritoryEntity> africanCountries = Arrays.asList(northAfrica, egypt, eastAfrica, congo, southAfrica, madagascar);
+            List<TerritoryEntity> africanCountries = Arrays
+                .asList(northAfrica, egypt, eastAfrica, congo, southAfrica, madagascar);
             territoryRepository.saveAll(africanCountries);
 
             val iceland = new TerritoryEntity("Iceland", europe);
@@ -81,14 +88,17 @@ public class LoadDatabase {
             val northernEurope = new TerritoryEntity("Northern Europe", europe);
             val southernEurope = new TerritoryEntity("Southern Europe", europe);
             val westernEurope = new TerritoryEntity("Western Europe", europe);
-            List<TerritoryEntity> europeCountries = Arrays.asList(iceland, scandinavia, ukraine, greatBritain, northernEurope, southernEurope, westernEurope);
+            List<TerritoryEntity> europeCountries = Arrays
+                .asList(iceland, scandinavia, ukraine, greatBritain, northernEurope, southernEurope,
+                    westernEurope);
             territoryRepository.saveAll(europeCountries);
 
             val indonesia = new TerritoryEntity("Indonesia", australia);
             val newGuinea = new TerritoryEntity("New Guinea", australia);
             val westernAustralia = new TerritoryEntity("Western Australia", australia);
             val easternAustralia = new TerritoryEntity("Eastern Australia", australia);
-            List<TerritoryEntity> australianCountries = Arrays.asList(indonesia, newGuinea, westernAustralia, easternAustralia);
+            List<TerritoryEntity> australianCountries = Arrays
+                .asList(indonesia, newGuinea, westernAustralia, easternAustralia);
             territoryRepository.saveAll(australianCountries);
 
             val siam = new TerritoryEntity("Siam", asia);
@@ -103,19 +113,26 @@ public class LoadDatabase {
             val afghanistan = new TerritoryEntity("Afghanistan", asia);
             val ural = new TerritoryEntity("Ural", asia);
             val middleEast = new TerritoryEntity("Middle East", asia);
-            List<TerritoryEntity> asianCountries = Arrays.asList(siam, india, china, mongolia, japan, irkutsk, yakutsk, kamchatka, siberia, afghanistan, ural, middleEast);
+            List<TerritoryEntity> asianCountries = Arrays
+                .asList(siam, india, china, mongolia, japan, irkutsk, yakutsk, kamchatka, siberia,
+                    afghanistan, ural, middleEast);
             territoryRepository.saveAll(asianCountries);
 
             log.info("Defining adjacent territories...");
             alaska.addAdjacentTerritories(kamchatka, northwestTerritory, alberta);
             northwestTerritory.addAdjacentTerritories(alaska, greenland, alberta, ontario);
             greenland.addAdjacentTerritories(northwestTerritory, ontario, quebec, iceland);
-            alberta.addAdjacentTerritories(alaska, northwestTerritory, ontario, westernUnitedStates);
-            ontario.addAdjacentTerritories(northwestTerritory, alberta, westernUnitedStates, quebec, easternUnitedStates, greenland);
+            alberta
+                .addAdjacentTerritories(alaska, northwestTerritory, ontario, westernUnitedStates);
+            ontario.addAdjacentTerritories(northwestTerritory, alberta, westernUnitedStates, quebec,
+                easternUnitedStates, greenland);
             quebec.addAdjacentTerritories(ontario, greenland, easternUnitedStates);
-            westernUnitedStates.addAdjacentTerritories(alberta, ontario, easternUnitedStates, centralAmerica);
-            easternUnitedStates.addAdjacentTerritories(quebec, ontario, westernUnitedStates, centralAmerica);
-            centralAmerica.addAdjacentTerritories(westernUnitedStates, easternUnitedStates, venezuela);
+            westernUnitedStates
+                .addAdjacentTerritories(alberta, ontario, easternUnitedStates, centralAmerica);
+            easternUnitedStates
+                .addAdjacentTerritories(quebec, ontario, westernUnitedStates, centralAmerica);
+            centralAmerica
+                .addAdjacentTerritories(westernUnitedStates, easternUnitedStates, venezuela);
             territoryRepository.saveAll(northAmericanCountries);
 
             venezuela.addAdjacentTerritories(centralAmerica, peru, brazil);
@@ -124,9 +141,12 @@ public class LoadDatabase {
             argentina.addAdjacentTerritories(peru, brazil);
             territoryRepository.saveAll(southAmericanCountries);
 
-            northAfrica.addAdjacentTerritories(brazil, westernEurope, southernEurope, egypt, eastAfrica, congo);
+            northAfrica
+                .addAdjacentTerritories(brazil, westernEurope, southernEurope, egypt, eastAfrica,
+                    congo);
             egypt.addAdjacentTerritories(southernEurope, northAfrica, eastAfrica, middleEast);
-            eastAfrica.addAdjacentTerritories(egypt, northAfrica, congo, southAfrica, middleEast, madagascar);
+            eastAfrica.addAdjacentTerritories(egypt, northAfrica, congo, southAfrica, middleEast,
+                madagascar);
             congo.addAdjacentTerritories(northAfrica, eastAfrica, southAfrica);
             southAfrica.addAdjacentTerritories(congo, eastAfrica, madagascar);
             madagascar.addAdjacentTerritories(southAfrica, eastAfrica);
@@ -134,11 +154,18 @@ public class LoadDatabase {
 
             iceland.addAdjacentTerritories(greenland, greatBritain, scandinavia);
             scandinavia.addAdjacentTerritories(iceland, greatBritain, northernEurope, ukraine);
-            ukraine.addAdjacentTerritories(scandinavia, northernEurope, southernEurope, ural, afghanistan, middleEast);
-            greatBritain.addAdjacentTerritories(iceland, scandinavia, northernEurope, westernEurope);
-            northernEurope.addAdjacentTerritories(greatBritain, scandinavia, ukraine, southernEurope, westernEurope);
-            southernEurope.addAdjacentTerritories(westernEurope, northernEurope, ukraine, middleEast, egypt, northAfrica);
-            westernEurope.addAdjacentTerritories(greatBritain, northernEurope, southernEurope, northAfrica);
+            ukraine.addAdjacentTerritories(scandinavia, northernEurope, southernEurope, ural,
+                afghanistan, middleEast);
+            greatBritain
+                .addAdjacentTerritories(iceland, scandinavia, northernEurope, westernEurope);
+            northernEurope
+                .addAdjacentTerritories(greatBritain, scandinavia, ukraine, southernEurope,
+                    westernEurope);
+            southernEurope
+                .addAdjacentTerritories(westernEurope, northernEurope, ukraine, middleEast, egypt,
+                    northAfrica);
+            westernEurope
+                .addAdjacentTerritories(greatBritain, northernEurope, southernEurope, northAfrica);
             territoryRepository.saveAll(europeCountries);
 
             indonesia.addAdjacentTerritories(siam, newGuinea, westernAustralia);
@@ -158,7 +185,8 @@ public class LoadDatabase {
             siberia.addAdjacentTerritories(ural, china, mongolia, irkutsk, yakutsk);
             afghanistan.addAdjacentTerritories(ukraine, middleEast, india, china, ural);
             ural.addAdjacentTerritories(ukraine, afghanistan, china, siberia);
-            middleEast.addAdjacentTerritories(ukraine, southernEurope, egypt, eastAfrica, india, afghanistan);
+            middleEast.addAdjacentTerritories(ukraine, southernEurope, egypt, eastAfrica, india,
+                afghanistan);
             territoryRepository.saveAll(asianCountries);
 
             log.info("Preloading done...");

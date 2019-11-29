@@ -2,9 +2,8 @@ package io.scherler.games.risk.services.game.action;
 
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.PlayerService;
-import lombok.val;
-
 import javax.transaction.Transactional;
+import lombok.val;
 
 abstract class ActionStrategy<RequestModel, ResponseModel> {
 
@@ -24,7 +23,8 @@ abstract class ActionStrategy<RequestModel, ResponseModel> {
         return apply(context);
     }
 
-    private ActionContext<RequestModel> buildContext(RequestModel requestModel, long gameId, long playerId) {
+    private ActionContext<RequestModel> buildContext(RequestModel requestModel, long gameId,
+        long playerId) {
         val game = gameService.getGame(gameId);
         val player = playerService.getPlayer(playerId);
         return new ActionContext<>(requestModel, game, player);
