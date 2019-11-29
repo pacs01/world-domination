@@ -1,5 +1,6 @@
 package io.scherler.games.risk.services.game.action;
 
+import io.scherler.games.risk.exceptions.IllegalTurnException;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.PlayerService;
 import javax.transaction.Transactional;
@@ -18,7 +19,7 @@ abstract class ActionStrategy<RequestModel, ResponseModel> {
     @Transactional
     ResponseModel execute(RequestModel requestModel, long gameId, long playerId) {
         val context = buildContext(requestModel, gameId, playerId);
-        validateContext();
+        validateContext(context);
         customValidation();
         return apply(context);
     }
@@ -30,9 +31,11 @@ abstract class ActionStrategy<RequestModel, ResponseModel> {
         return new ActionContext<>(requestModel, game, player);
     }
 
-    private void validateContext() {
+    private void validateContext(ActionContext<RequestModel> context) {
         //todo validate if player matches user
-        //todo validate if it is this player's turn
+        if (!context.getPlayer().getId().equals(context.getGame().getActivePlayer().getId())) {
+            throw new IllegalTurnException(context.getPlayer());
+        }
     }
 
     abstract protected void customValidation();

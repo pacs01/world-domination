@@ -1,5 +1,6 @@
 package io.scherler.games.risk.controllers.defaults;
 
+import io.scherler.games.risk.exceptions.IllegalTurnException;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,9 +19,9 @@ public class ErrorAdvice {
     }
 
     @ResponseBody
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler({IllegalArgumentException.class, IllegalTurnException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String badRequestHandler(IllegalArgumentException ex) {
+    String badRequestHandler(Exception ex) {
         return ex.getMessage();
     }
 }
