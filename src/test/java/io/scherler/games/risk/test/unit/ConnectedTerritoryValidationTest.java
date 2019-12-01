@@ -20,8 +20,7 @@ class ConnectedTerritoryValidationTest {
 
     private TerritoryService territoryService = new TerritoryService(territoryRepository);
 
-    private final World world = World
-        .createWithIds(); // todo: use testdata world also for Database initialization at startup
+    private final World world = World.createWithIds();
     private final Game game = Game.createWithIds(world);
 
     private List<TerritoryEntity> territories;
