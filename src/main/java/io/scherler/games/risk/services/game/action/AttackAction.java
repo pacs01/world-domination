@@ -53,8 +53,8 @@ public class AttackAction extends ActionStrategy<Movement, AttackResult> {
         val targetOccupation = occupationService
             .getOccupationByEnemy(context.getGame().getId(), context.getPlayer().getId(),
                 target.getName());
-        occupationService
-            .validateRemainingUnits(sourceOccupation, context.getRequest().getNumberOfUnits());
+        Validations.validateNumberOfUnits(context.getRequest().getNumberOfUnits());
+        Validations.validateRemainingUnits(sourceOccupation, context.getRequest().getNumberOfUnits());
 
         val attackDices = diceService.rollDices(
             Math.min(context.getRequest().getNumberOfUnits(), MAX_NUMBER_OF_ATTACK_DICES));

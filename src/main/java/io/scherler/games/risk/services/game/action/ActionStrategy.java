@@ -33,9 +33,7 @@ abstract class ActionStrategy<RequestModel, ResponseModel> {
 
     private void validateContext(ActionContext<RequestModel> context) {
         //todo validate if player matches user
-        if (!context.getPlayer().getId().equals(context.getGame().getActivePlayer().getId())) {
-            throw new IllegalTurnException(context.getPlayer());
-        }
+        Validations.validateActivePlayer(context);
     }
 
     abstract protected void customValidation();

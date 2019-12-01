@@ -112,17 +112,6 @@ public class OccupationService {
             occupation.getPlayer().getColor().toString(), occupation.getUnits());
     }
 
-    public void validateRemainingUnits(OccupationEntity occupation,
-        int numberOfUnits) { // todo: move out of service class -> these are strategy specific rules
-        if (occupation.getUnits() < numberOfUnits + 1) {
-            throw new IllegalArgumentException(
-                "Not enough units available at territory '" + occupation.getTerritory().getName()
-                    + "'. There must remain at least one unit at every conquered place.");
-        } else if (numberOfUnits < 1) {
-            throw new IllegalArgumentException("An action without any units is not possible.");
-        }
-    }
-
     public boolean areConnected(long gameId, OccupationEntity source, OccupationEntity target) {
         val occupiedTerritories = getOccupationsByPlayer(gameId, source.getPlayer().getId())
             .stream().map(OccupationEntity::getTerritory).collect(Collectors.toList());

@@ -42,8 +42,8 @@ public class MovementAction extends ActionStrategy<Movement, MovementInfo> {
         val targetOccupation = occupationService
             .getOccupationByPlayer(context.getGame().getId(), context.getPlayer().getId(),
                 target.getName());
-        occupationService
-            .validateRemainingUnits(sourceOccupation, context.getRequest().getNumberOfUnits());
+        Validations.validateNumberOfUnits(context.getRequest().getNumberOfUnits());
+        Validations.validateRemainingUnits(sourceOccupation, context.getRequest().getNumberOfUnits());
 
         val updatedRoute = occupationService
             .moveUnits(new Route(sourceOccupation, targetOccupation),
