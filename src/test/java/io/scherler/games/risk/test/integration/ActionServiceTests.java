@@ -84,11 +84,11 @@ class ActionServiceTests {
         Assertions.assertEquals(new TerritoryInfo("Peru", firstPlayer.getColor().toString(), 1),
             territoryInfo);
 
-        val targetTerritory = occupationService
+        val targetOccupation = occupationService
             .getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Peru");
-        Assertions.assertTrue(targetTerritory.isOccupied());
-        Assertions.assertTrue(targetTerritory.isOccupiedBy(firstPlayer));
-        Assertions.assertEquals(firstPlayer, targetTerritory.getPlayer());
+        Assertions.assertTrue(occupationService.isOccupied(game.getId(), targetOccupation.getTerritory()));
+        Assertions.assertTrue(targetOccupation.isOccupiedBy(firstPlayer));
+        Assertions.assertEquals(firstPlayer, targetOccupation.getPlayer());
     }
 
     @Test

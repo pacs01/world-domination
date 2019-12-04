@@ -30,21 +30,21 @@ public class ActionService {
 
     @Transactional
     public TerritoryInfo occupy(Territory territory, long gameId, long playerId) {
-        return occupationAction.execute(territory, gameId, playerId);
+        return occupationAction.execute(gameId, playerId, territory);
     }
 
     @Transactional
     public TerritoryInfo deploy(Deployment deployment, long gameId, long playerId) {
-        return deploymentAction.execute(deployment, gameId, playerId);
+        return deploymentAction.execute(gameId, playerId, deployment);
     }
 
     @Transactional
     public MovementInfo move(Movement movement, long gameId, long playerId) {
-        return movementAction.execute(movement, gameId, playerId);
+        return movementAction.execute(gameId, playerId, movement);
     }
 
     @Transactional
     public AttackResult attack(Movement movement, long gameId, long playerId) {
-        return attackAction.execute(movement, gameId, playerId);
+        return attackAction.execute(gameId, playerId, movement);
     }
 }

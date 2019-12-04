@@ -76,6 +76,10 @@ public class OccupationService {
         return occupationRepository.findByGameIdAndPlayerId(gameId, playerId);
     }
 
+    public boolean isOccupied(long gameId, TerritoryEntity target) {
+        return getOccupationIfPresent(gameId, target.getName()).isPresent();
+    }
+
     public OccupationEntity addUnits(OccupationEntity occupation, int units) {
         occupation.addUnits(units);
         return occupationRepository.save(occupation);

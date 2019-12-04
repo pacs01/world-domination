@@ -80,10 +80,6 @@ public class OccupationEntity extends BaseEntity {
         this.units = units;
     }
 
-    public boolean isOccupied() {
-        return player != null;
-    }
-
     public boolean isOccupiedBy(@NotNull PlayerEntity player) {
         return this.player != null && this.player.getId().equals(player.getId());
     }

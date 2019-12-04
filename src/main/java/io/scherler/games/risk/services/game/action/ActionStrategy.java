@@ -1,8 +1,8 @@
 package io.scherler.games.risk.services.game.action;
 
-import io.scherler.games.risk.exceptions.IllegalTurnException;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.PlayerService;
+import io.scherler.games.risk.services.game.action.models.RequestContext;
 import javax.transaction.Transactional;
 import lombok.val;
 
@@ -17,26 +17,28 @@ abstract class ActionStrategy<RequestModel, ResponseModel> {
     }
 
     @Transactional
-    ResponseModel execute(RequestModel requestModel, long gameId, long playerId) {
-        val context = buildContext(requestModel, gameId, playerId);
-        validateContext(context);
-        customValidation();
-        return apply(context);
+    final ResponseModel execute(long gameId, long playerId, RequestModel requestModel) {
+        val requestContext = buildRequestContext(gameId, playerId, requestModel);
+        validateRequestContext(requestContext);
+        buildActionContext(requestContext);
+        validateActionContext(requestContext);
+        return apply(requestContext);
     }
 
-    private ActionContext<RequestModel> buildContext(RequestModel requestModel, long gameId,
-        long playerId) {
+    private RequestContext<RequestModel> buildRequestContext(long gameId, long playerId, RequestModel requestModel) {
         val game = gameService.getGame(gameId);
         val player = playerService.getPlayer(playerId);
-        return new ActionContext<>(requestModel, game, player);
+        return new RequestContext<>(game, player, requestModel);
     }
 
-    private void validateContext(ActionContext<RequestModel> context) {
+    private void validateRequestContext(RequestContext<RequestModel> context) {
         //todo validate if player matches user
         Validations.validateActivePlayer(context);
     }
 
-    abstract protected void customValidation();
+    abstract protected void buildActionContext(RequestContext<RequestModel> context);
 
-    abstract protected ResponseModel apply(ActionContext<RequestModel> context);
+    abstract protected void validateActionContext(RequestContext<RequestModel> context);
+
+    abstract protected ResponseModel apply(RequestContext<RequestModel> requestContext);
 }

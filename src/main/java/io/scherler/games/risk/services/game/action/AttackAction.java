@@ -1,5 +1,7 @@
 package io.scherler.games.risk.services.game.action;
 
+import io.scherler.games.risk.entities.game.OccupationEntity;
+import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.models.request.Movement;
 import io.scherler.games.risk.models.response.AttackResult;
 import io.scherler.games.risk.models.response.MovementInfo;
@@ -9,6 +11,7 @@ import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.PlayerService;
 import io.scherler.games.risk.services.game.action.models.Parties;
+import io.scherler.games.risk.services.game.action.models.RequestContext;
 import io.scherler.games.risk.services.game.action.models.Route;
 import io.scherler.games.risk.services.map.TerritoryService;
 import java.util.Collections;
@@ -26,6 +29,11 @@ public class AttackAction extends ActionStrategy<Movement, AttackResult> {
     private final OccupationService occupationService;
     private final DiceService diceService;
 
+    private TerritoryEntity source;
+    private TerritoryEntity target;
+    private OccupationEntity sourceOccupation;
+    private OccupationEntity targetOccupation;
+
     public AttackAction(GameService gameService, PlayerService playerService,
         TerritoryService territoryService, OccupationService occupationService,
         DiceService diceService) {
@@ -36,32 +44,37 @@ public class AttackAction extends ActionStrategy<Movement, AttackResult> {
     }
 
     @Override
-    protected void customValidation() {
+    protected void buildActionContext(RequestContext<Movement> context) {
+        source = territoryService
+            .getTerritory(context.getGame().getMap().getId(), context.getRequest().getSource());
+        target = territoryService
+            .getTerritory(context.getGame().getMap().getId(), context.getRequest().getName());
+
+        sourceOccupation = occupationService
+            .getOccupationByPlayer(context.getGame().getId(), context.getPlayer().getId(),
+                source.getName());
+        targetOccupation = occupationService
+            .getOccupationByEnemy(context.getGame().getId(), context.getPlayer().getId(),
+                target.getName());
+    }
+
+    @Override
+    protected void validateActionContext(RequestContext<Movement> context) {
+        Validations.validateNumberOfUnits(context.getRequest().getNumberOfUnits());
+        Validations
+            .validateRemainingUnits(sourceOccupation, context.getRequest().getNumberOfUnits());
         // todo add validation (are territories connected?)
     }
 
     @Override
-    protected AttackResult apply(ActionContext<Movement> context) {
-        val source = territoryService
-            .getTerritory(context.getGame().getMap().getId(), context.getRequest().getSource());
-        val target = territoryService
-            .getTerritory(context.getGame().getMap().getId(), context.getRequest().getName());
-
-        val sourceOccupation = occupationService
-            .getOccupationByPlayer(context.getGame().getId(), context.getPlayer().getId(),
-                source.getName());
-        val targetOccupation = occupationService
-            .getOccupationByEnemy(context.getGame().getId(), context.getPlayer().getId(),
-                target.getName());
-        Validations.validateNumberOfUnits(context.getRequest().getNumberOfUnits());
-        Validations.validateRemainingUnits(sourceOccupation, context.getRequest().getNumberOfUnits());
-
+    protected AttackResult apply(RequestContext<Movement> context) {
         val attackDices = diceService.rollDices(
             Math.min(context.getRequest().getNumberOfUnits(), MAX_NUMBER_OF_ATTACK_DICES));
         val defendDices = diceService
             .rollDices(Math.min(targetOccupation.getUnits(), MAX_NUMBER_OF_DEFEND_DICES));
         val parties = performAttacks(
-            new Parties(context.getRequest().getNumberOfUnits(), targetOccupation.getUnits()),
+            new Parties(context.getRequest().getNumberOfUnits(),
+                targetOccupation.getUnits()),
             attackDices, defendDices);
 
         val updatedRoute = occupationService
