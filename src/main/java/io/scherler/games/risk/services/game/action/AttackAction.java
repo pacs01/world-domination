@@ -63,7 +63,7 @@ public class AttackAction extends ActionStrategy<Movement, AttackResult> {
         Validations.validateNumberOfUnits(context.getRequest().getNumberOfUnits());
         Validations
             .validateRemainingUnits(sourceOccupation, context.getRequest().getNumberOfUnits());
-        // todo add validation (are territories connected?)
+        Validations.validateConnection(occupationService, context.getGame().getId(), sourceOccupation, targetOccupation);
     }
 
     @Override

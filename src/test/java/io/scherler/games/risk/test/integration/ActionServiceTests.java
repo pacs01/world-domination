@@ -66,11 +66,13 @@ class ActionServiceTests {
 
         actionService.occupy(new Territory("Egypt"), game.getId(), firstPlayer.getId());
         actionService.occupy(new Territory("Southern Europe"), game.getId(), firstPlayer.getId());
+        actionService.occupy(new Territory("Congo"), game.getId(), firstPlayer.getId());
         actionService
             .deploy(new Deployment("Southern Europe", 5), game.getId(), firstPlayer.getId());
         gameService.endTurn(game.getId(), firstPlayer.getId());
 
         actionService.occupy(new Territory("Japan"), game.getId(), secondPlayer.getId());
+        actionService.occupy(new Territory("Middle East"), game.getId(), secondPlayer.getId());
         gameService.endTurn(game.getId(), secondPlayer.getId());
     }
 
@@ -86,7 +88,8 @@ class ActionServiceTests {
 
         val targetOccupation = occupationService
             .getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Peru");
-        Assertions.assertTrue(occupationService.isOccupied(game.getId(), targetOccupation.getTerritory()));
+        Assertions.assertTrue(
+            occupationService.isOccupied(game.getId(), targetOccupation.getTerritory()));
         Assertions.assertTrue(targetOccupation.isOccupiedBy(firstPlayer));
         Assertions.assertEquals(firstPlayer, targetOccupation.getPlayer());
     }
@@ -135,6 +138,16 @@ class ActionServiceTests {
     }
 
     @Test
+    void testNotConnectedMovement() {
+        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
+
+        val movement = new Movement("Congo", 5, "Southern Europe");
+
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> actionService.move(movement, game.getId(), firstPlayer.getId()));
+    }
+
+    @Test
     void testAttackWin() {
         Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
 
@@ -143,14 +156,14 @@ class ActionServiceTests {
         Mockito.when(mockedDiceService.rollDices(attackDices.size())).thenReturn(attackDices);
         Mockito.when(mockedDiceService.rollDices(defendDices.size())).thenReturn(defendDices);
 
-        val movement = new Movement("Japan", 5, "Southern Europe");
+        val movement = new Movement("Middle East", 5, "Southern Europe");
 
         val attackResult = actionService.attack(movement, game.getId(), firstPlayer.getId());
 
         Assertions.assertEquals(new AttackResult(
             new MovementInfo(
                 new TerritoryInfo("Southern Europe", firstPlayer.getColor().toString(), 1),
-                new TerritoryInfo("Japan", firstPlayer.getColor().toString(), 5)),
+                new TerritoryInfo("Middle East", firstPlayer.getColor().toString(), 5)),
             attackDices, defendDices), attackResult);
 
         val sourceTerritory = occupationService
@@ -160,7 +173,7 @@ class ActionServiceTests {
         Assertions.assertEquals(1, sourceTerritory.getUnits());
 
         val targetTerritory = occupationService
-            .getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Japan");
+            .getOccupationByPlayer(game.getId(), firstPlayer.getId(), "Middle East");
         Assertions.assertTrue(targetTerritory.isOccupiedBy(firstPlayer));
         Assertions.assertEquals(firstPlayer, targetTerritory.getPlayer());
         Assertions.assertEquals(5, targetTerritory.getUnits());
@@ -175,14 +188,14 @@ class ActionServiceTests {
         Mockito.when(mockedDiceService.rollDices(attackDices.size())).thenReturn(attackDices);
         Mockito.when(mockedDiceService.rollDices(defendDices.size())).thenReturn(defendDices);
 
-        val movement = new Movement("Japan", 5, "Southern Europe");
+        val movement = new Movement("Middle East", 5, "Southern Europe");
 
         val attackResult = actionService.attack(movement, game.getId(), firstPlayer.getId());
 
         Assertions.assertEquals(new AttackResult(
             new MovementInfo(
                 new TerritoryInfo("Southern Europe", firstPlayer.getColor().toString(), 5),
-                new TerritoryInfo("Japan", secondPlayer.getColor().toString(), 1)),
+                new TerritoryInfo("Middle East", secondPlayer.getColor().toString(), 1)),
             attackDices, defendDices), attackResult);
 
         val sourceTerritory = occupationService
@@ -192,9 +205,24 @@ class ActionServiceTests {
         Assertions.assertEquals(5, sourceTerritory.getUnits());
 
         val targetTerritory = occupationService
-            .getOccupationByPlayer(game.getId(), secondPlayer.getId(), "Japan");
+            .getOccupationByPlayer(game.getId(), secondPlayer.getId(), "Middle East");
         Assertions.assertTrue(targetTerritory.isOccupiedBy(secondPlayer));
         Assertions.assertEquals(secondPlayer, targetTerritory.getPlayer());
         Assertions.assertEquals(1, targetTerritory.getUnits());
+    }
+
+    @Test
+    void testNotConnectedAttack() {
+        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
+
+        val attackDices = Arrays.asList(2, 4, 6);
+        val defendDices = Collections.singletonList(3);
+        Mockito.when(mockedDiceService.rollDices(attackDices.size())).thenReturn(attackDices);
+        Mockito.when(mockedDiceService.rollDices(defendDices.size())).thenReturn(defendDices);
+
+        val movement = new Movement("Japan", 5, "Southern Europe");
+
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> actionService.attack(movement, game.getId(), firstPlayer.getId()));
     }
 }

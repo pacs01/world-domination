@@ -35,4 +35,14 @@ class Validations {
                 "The territory '" + target.getName() + "' is occupied already.");
         }
     }
+
+    static void validateConnection(OccupationService occupationService, long gameId,
+        OccupationEntity source, OccupationEntity target) {
+        if (!occupationService.areConnected(gameId, source, target)) {
+            throw new IllegalArgumentException(
+                "The territories '" + source.getTerritory().getName() + "' and '" + target
+                    .getTerritory().getName()
+                    + "' must be connected by occupations from this player.");
+        }
+    }
 }

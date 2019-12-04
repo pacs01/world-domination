@@ -52,7 +52,7 @@ public class MovementAction extends ActionStrategy<Movement, MovementInfo> {
         Validations.validateNumberOfUnits(context.getRequest().getNumberOfUnits());
         Validations
             .validateRemainingUnits(sourceOccupation, context.getRequest().getNumberOfUnits());
-        // todo add validation (are territories connected?)
+        Validations.validateConnection(occupationService, context.getGame().getId(), sourceOccupation, targetOccupation);
     }
 
     @Override
