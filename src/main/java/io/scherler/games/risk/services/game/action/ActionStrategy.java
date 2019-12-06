@@ -8,8 +8,8 @@ import lombok.val;
 
 abstract class ActionStrategy<RequestModel, ResponseModel> {
 
-    private final GameService gameService;
-    private final PlayerService playerService;
+    protected final GameService gameService;
+    protected final PlayerService playerService;
 
     ActionStrategy(GameService gameService, PlayerService playerService) {
         this.gameService = gameService;

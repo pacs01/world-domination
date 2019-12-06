@@ -136,10 +136,10 @@ public class Game {
     }
 
     private void generatePlayers() {
-        playerOne = new PlayerEntity(game, userOne, 0, PlayerColor.values()[0]);
-        playerTwo = new PlayerEntity(game, userTwo, 1, PlayerColor.values()[1]);
-        playerThree = new PlayerEntity(game, userThree, 2, PlayerColor.values()[2]);
-        playerFour = new PlayerEntity(game, userFour, 3, PlayerColor.values()[3]);
+        playerOne = new PlayerEntity(game, userOne, 0, PlayerColor.values()[0], 10);
+        playerTwo = new PlayerEntity(game, userTwo, 1, PlayerColor.values()[1], 10);
+        playerThree = new PlayerEntity(game, userThree, 2, PlayerColor.values()[2], 10);
+        playerFour = new PlayerEntity(game, userFour, 3, PlayerColor.values()[3], 10);
         players = Arrays.asList(playerOne, playerTwo, playerThree, playerFour);
     }
 

@@ -47,6 +47,8 @@ public class PlayerEntity extends BaseEntity {
 
     private int position;
 
+    private int unitsToDeploy;
+
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
     private Set<OccupationEntity> occupations = new HashSet<>();
 
@@ -54,10 +56,20 @@ public class PlayerEntity extends BaseEntity {
     private Set<CardEntity> cards = new HashSet<>();
 
     public PlayerEntity(GameEntity game, UserAccountEntity userAccount, int position,
-        PlayerColor color) {
+        PlayerColor color, int unitsToDeploy) {
         this.game = game;
         this.userAccount = userAccount;
         this.position = position;
         this.color = color;
+        this.unitsToDeploy = unitsToDeploy;
+    }
+
+    public int reduceDeployableUnits(int numberOfUnits) {
+        if (unitsToDeploy < numberOfUnits) {
+            throw new IllegalArgumentException(
+                "Not enough units available for player '" + color + "'.");
+        }
+        unitsToDeploy -= numberOfUnits;
+        return unitsToDeploy;
     }
 }

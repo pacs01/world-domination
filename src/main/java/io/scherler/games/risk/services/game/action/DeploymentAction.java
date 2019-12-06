@@ -40,11 +40,12 @@ public class DeploymentAction extends ActionStrategy<Deployment, TerritoryInfo> 
 
     @Override
     protected void validateActionContext(RequestContext<Deployment> context) {
-        // todo add validation (number of units left to place)
+
     }
 
     @Override
     protected TerritoryInfo apply(RequestContext<Deployment> context) {
+        playerService.reduceDeployableUnits(context.getPlayer(), context.getRequest().getNumberOfUnits());
         val updatedOccupation = occupationService
             .addUnits(occupation, context.getRequest().getNumberOfUnits());
         return new TerritoryInfo(target.getName(),

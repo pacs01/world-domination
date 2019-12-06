@@ -47,10 +47,14 @@ public class PlayerService {
         for (int i = 0; i < number; i++) {
             playerList.add(new PlayerEntity(game,
                 userAccountService.createNew(new UserAccount(game.getName() + "-user-" + i)), i,
-                PlayerColor.values()[i]));
+                PlayerColor.values()[i], 10));
         }
 
         return playerList;
     }
 
+    public PlayerEntity reduceDeployableUnits(PlayerEntity player, int numberOfUnits) {
+        player.reduceDeployableUnits(numberOfUnits);
+        return playerRepository.save(player);
+    }
 }

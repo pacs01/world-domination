@@ -112,6 +112,27 @@ class ActionServiceTests {
     }
 
     @Test
+    void testDeploymentOfTooManyUnits() {
+        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
+
+        val deployment = new Deployment("Egypt", 11);
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> actionService.deploy(deployment, game.getId(), firstPlayer.getId()));
+    }
+
+    @Test
+    void testDeploymentOfTooManyUnitsInTwoActions() {
+        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
+
+        val deployment = new Deployment("Egypt", 5);
+        actionService.deploy(deployment, game.getId(), firstPlayer.getId());
+
+        val deployment2 = new Deployment("Southern Europe", 6);
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> actionService.deploy(deployment2, game.getId(), firstPlayer.getId()));
+    }
+
+    @Test
     void testMovement() {
         Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
 
