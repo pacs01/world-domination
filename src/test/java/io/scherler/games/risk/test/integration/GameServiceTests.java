@@ -4,9 +4,11 @@ import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.models.GameState;
 import io.scherler.games.risk.models.request.Game;
+import io.scherler.games.risk.models.request.Territory;
 import io.scherler.games.risk.models.request.UserAccount;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.PlayerService;
+import io.scherler.games.risk.services.game.action.ActionService;
 import io.scherler.games.risk.services.identity.UserAccountService;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
@@ -32,6 +34,9 @@ class GameServiceTests {
     @Autowired
     private UserAccountService userAccountService;
 
+    @Autowired
+    private ActionService actionService;
+
     private GameEntity game;
     private PlayerEntity firstPlayer;
     private PlayerEntity secondPlayer;
@@ -55,11 +60,23 @@ class GameServiceTests {
     }
 
     @Test
-    void testEndTurn() {
+    void testEndTurnWithOccupation() {
+        val occupation = new Territory("Peru");
+        actionService.occupy(occupation, game.getId(), firstPlayer.getId());
+
         val turnResult = gameService.endTurn(game.getId(), firstPlayer.getId());
 
         Assertions.assertEquals(secondPlayer, turnResult.getNextPlayer());
         Assertions.assertNotNull(turnResult.getCard());
+        Assertions.assertEquals(secondPlayer, game.getActivePlayer());
+    }
+
+    @Test
+    void testEndTurnWithoutOccupation() {
+        val turnResult = gameService.endTurn(game.getId(), firstPlayer.getId());
+
+        Assertions.assertEquals(secondPlayer, turnResult.getNextPlayer());
+        Assertions.assertNull(turnResult.getCard());
         Assertions.assertEquals(secondPlayer, game.getActivePlayer());
     }
 }

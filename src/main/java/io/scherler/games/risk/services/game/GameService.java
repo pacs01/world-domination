@@ -11,6 +11,7 @@ import io.scherler.games.risk.models.response.Card;
 import io.scherler.games.risk.models.response.TurnResult;
 import io.scherler.games.risk.services.map.MapService;
 import java.util.Comparator;
+import java.util.Optional;
 import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,13 +23,16 @@ public class GameService {
     private final PlayerService playerService;
     private final MapService mapService;
     private final CardService cardService;
+    private final OccupationService occupationService;
 
     public GameService(GameRepository gameRepository, PlayerService playerService,
-        MapService mapService, CardService cardService) {
+        MapService mapService, CardService cardService,
+        OccupationService occupationService) {
         this.gameRepository = gameRepository;
         this.playerService = playerService;
         this.mapService = mapService;
         this.cardService = cardService;
+        this.occupationService = occupationService;
     }
 
     @Transactional
@@ -62,22 +66,22 @@ public class GameService {
         val card = drawCardIfAllowedTo(game, player);
 
         PlayerEntity nextPlayer = null;
-        if (CardService.VALAR_MORGHULIS.equals(card.getTerritory())) {
+        if (card.isPresent() && CardService.VALAR_MORGHULIS.equals(card.get().getTerritory())) {
             game.setState(GameState.VALAR_MORGHULIS);
         } else {
             nextPlayer = playerService.getNextPlayer(game, playerId);
             game.setActivePlayer(nextPlayer);
         }
         gameRepository.save(game);
-        return new TurnResult(nextPlayer, card);
+        return new TurnResult(nextPlayer, card.orElse(null));
     }
 
     @Transactional
-    public Card drawCardIfAllowedTo(GameEntity game, PlayerEntity player) {
-        if (true) { //todo: is allowed to draw a card? (has conquered at least one territory)
-            return cardService.drawNextCard(game, player);
+    public Optional<Card> drawCardIfAllowedTo(GameEntity game, PlayerEntity player) {
+        if (occupationService.hadOccupationsInRound(game.getId(), player.getId(), game.getRound())) {
+            return Optional.of(cardService.drawNextCard(game, player));
         } else {
-            return null;
+            return Optional.empty();
         }
     }
 

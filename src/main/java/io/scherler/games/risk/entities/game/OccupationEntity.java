@@ -48,12 +48,15 @@ public class OccupationEntity extends BaseEntity {
     @Setter(AccessLevel.NONE)
     private int units;
 
+    private int occupiedInRound;
+
     public OccupationEntity(GameEntity game, TerritoryEntity territory, PlayerEntity player,
-        int units) {
+        int units, int currentRound) {
         this.game = game;
         this.territory = territory;
         this.player = player;
         this.units = units;
+        this.occupiedInRound = currentRound;
     }
 
     public int addUnits(int numberOfUnits) {

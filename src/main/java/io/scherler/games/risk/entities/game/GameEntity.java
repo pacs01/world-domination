@@ -17,9 +17,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 
@@ -64,6 +66,9 @@ public class GameEntity extends BaseEntity {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private Set<CardEntity> cards = new HashSet<>();
 
+    @Setter(AccessLevel.NONE)
+    private int round;
+
     @ManyToOne
     private PlayerEntity activePlayer;
 
@@ -72,6 +77,11 @@ public class GameEntity extends BaseEntity {
         this.creator = creator;
         this.map = map;
         this.state = GameState.ACTIVE;
+        round = 1;
+    }
+
+    public int increaseRound() {
+        return ++round;
     }
 
     public void addPlayers(List<PlayerEntity> players) {

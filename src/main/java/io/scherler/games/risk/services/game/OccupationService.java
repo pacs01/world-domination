@@ -30,7 +30,7 @@ public class OccupationService {
 
     public OccupationEntity add(GameEntity game, PlayerEntity player, TerritoryEntity territory,
         int units) {
-        val newOccupation = new OccupationEntity(game, territory, player, units);
+        val newOccupation = new OccupationEntity(game, territory, player, units, game.getRound());
         return occupationRepository.save(newOccupation);
     }
 
@@ -121,5 +121,9 @@ public class OccupationService {
             .stream().map(OccupationEntity::getTerritory).collect(Collectors.toList());
         return territoryService
             .areConnected(source.getTerritory(), target.getTerritory(), occupiedTerritories);
+    }
+
+    public boolean hadOccupationsInRound(long gameId, long playerId, int round) {
+        return !occupationRepository.findByGameIdAndPlayerIdAndOccupiedInRound(gameId, playerId, round).isEmpty();
     }
 }
