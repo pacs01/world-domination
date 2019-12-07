@@ -74,12 +74,12 @@ class ActionServiceTests {
         actionService.occupy(new Territory("Japan"), game.getId(), secondPlayer.getId());
         actionService.occupy(new Territory("Middle East"), game.getId(), secondPlayer.getId());
         gameService.endTurn(game.getId(), secondPlayer.getId());
+
+        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
     }
 
     @Test
     void testOccupation() {
-        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
-
         val occupation = new Territory("Peru");
         val territoryInfo = actionService.occupy(occupation, game.getId(), firstPlayer.getId());
 
@@ -96,8 +96,6 @@ class ActionServiceTests {
 
     @Test
     void testDeployment() {
-        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
-
         val deployment = new Deployment("Egypt", 5);
         val territoryInfo = actionService.deploy(deployment, game.getId(), firstPlayer.getId());
 
@@ -113,8 +111,6 @@ class ActionServiceTests {
 
     @Test
     void testDeploymentOfTooManyUnits() {
-        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
-
         val deployment = new Deployment("Egypt", 11);
         Assertions.assertThrows(IllegalArgumentException.class,
             () -> actionService.deploy(deployment, game.getId(), firstPlayer.getId()));
@@ -122,8 +118,6 @@ class ActionServiceTests {
 
     @Test
     void testDeploymentOfTooManyUnitsInTwoActions() {
-        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
-
         val deployment = new Deployment("Egypt", 5);
         actionService.deploy(deployment, game.getId(), firstPlayer.getId());
 
@@ -134,8 +128,6 @@ class ActionServiceTests {
 
     @Test
     void testMovement() {
-        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
-
         val movement = new Movement("Egypt", 5, "Southern Europe");
         val movementInfo = actionService.move(movement, game.getId(), firstPlayer.getId());
 
@@ -160,8 +152,6 @@ class ActionServiceTests {
 
     @Test
     void testNotConnectedMovement() {
-        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
-
         val movement = new Movement("Congo", 5, "Southern Europe");
 
         Assertions.assertThrows(IllegalArgumentException.class,
@@ -170,8 +160,6 @@ class ActionServiceTests {
 
     @Test
     void testAttackWin() {
-        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
-
         val attackDices = Arrays.asList(2, 4, 6);
         val defendDices = Collections.singletonList(3);
         Mockito.when(mockedDiceService.rollDices(attackDices.size())).thenReturn(attackDices);
@@ -202,8 +190,6 @@ class ActionServiceTests {
 
     @Test
     void testAttackLost() {
-        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
-
         val attackDices = Arrays.asList(2, 4, 3);
         val defendDices = Collections.singletonList(5);
         Mockito.when(mockedDiceService.rollDices(attackDices.size())).thenReturn(attackDices);
@@ -234,8 +220,6 @@ class ActionServiceTests {
 
     @Test
     void testNotConnectedAttack() {
-        Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
-
         val attackDices = Arrays.asList(2, 4, 6);
         val defendDices = Collections.singletonList(3);
         Mockito.when(mockedDiceService.rollDices(attackDices.size())).thenReturn(attackDices);
