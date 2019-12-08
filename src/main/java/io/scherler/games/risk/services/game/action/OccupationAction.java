@@ -6,13 +6,13 @@ import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.PlayerService;
-import io.scherler.games.risk.services.game.action.models.RequestContext;
+import io.scherler.games.risk.services.game.action.models.TypedRequestContext;
 import io.scherler.games.risk.services.map.TerritoryService;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OccupationAction extends ActionStrategy<Territory, TerritoryInfo> {
+public class OccupationAction extends TypedActionStrategy<Territory, TerritoryInfo> {
 
     private final TerritoryService territoryService;
     private final OccupationService occupationService;
@@ -27,18 +27,19 @@ public class OccupationAction extends ActionStrategy<Territory, TerritoryInfo> {
     }
 
     @Override
-    protected void buildActionContext(RequestContext<Territory> context) {
+    protected void buildActionContext(TypedRequestContext<Territory> context) {
         target = territoryService
             .getTerritory(context.getGame().getMap().getId(), context.getRequest().getName());
     }
 
     @Override
-    protected void validateActionContext(RequestContext<Territory> context) {
-        Validations.validateTerritoryNotOccupied(occupationService, context.getGame().getId(), target);
+    protected void validateActionContext(TypedRequestContext<Territory> context) {
+        Validations
+            .validateTerritoryNotOccupied(occupationService, context.getGame().getId(), target);
     }
 
     @Override
-    protected TerritoryInfo apply(RequestContext<Territory> context) {
+    protected TerritoryInfo apply(TypedRequestContext<Territory> context) {
         val createdOccupation = occupationService
             .add(context.getGame(), context.getPlayer(), target, 1);
 

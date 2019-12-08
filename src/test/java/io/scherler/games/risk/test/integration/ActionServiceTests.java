@@ -69,11 +69,11 @@ class ActionServiceTests {
         actionService.occupy(new Territory("Congo"), game.getId(), firstPlayer.getId());
         actionService
             .deploy(new Deployment("Southern Europe", 5), game.getId(), firstPlayer.getId());
-        gameService.endTurn(game.getId(), firstPlayer.getId());
+        actionService.endTurn(game.getId(), firstPlayer.getId());
 
         actionService.occupy(new Territory("Japan"), game.getId(), secondPlayer.getId());
         actionService.occupy(new Territory("Middle East"), game.getId(), secondPlayer.getId());
-        gameService.endTurn(game.getId(), secondPlayer.getId());
+        actionService.endTurn(game.getId(), secondPlayer.getId());
 
         Assertions.assertEquals(game.getActivePlayer(), firstPlayer);
     }

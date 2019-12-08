@@ -7,13 +7,13 @@ import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.PlayerService;
-import io.scherler.games.risk.services.game.action.models.RequestContext;
+import io.scherler.games.risk.services.game.action.models.TypedRequestContext;
 import io.scherler.games.risk.services.map.TerritoryService;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DeploymentAction extends ActionStrategy<Deployment, TerritoryInfo> {
+public class DeploymentAction extends TypedActionStrategy<Deployment, TerritoryInfo> {
 
     private final TerritoryService territoryService;
     private final OccupationService occupationService;
@@ -29,7 +29,7 @@ public class DeploymentAction extends ActionStrategy<Deployment, TerritoryInfo> 
     }
 
     @Override
-    protected void buildActionContext(RequestContext<Deployment> context) {
+    protected void buildActionContext(TypedRequestContext<Deployment> context) {
         target = territoryService
             .getTerritory(context.getGame().getMap().getId(), context.getRequest().getName());
 
@@ -39,13 +39,9 @@ public class DeploymentAction extends ActionStrategy<Deployment, TerritoryInfo> 
     }
 
     @Override
-    protected void validateActionContext(RequestContext<Deployment> context) {
-
-    }
-
-    @Override
-    protected TerritoryInfo apply(RequestContext<Deployment> context) {
-        playerService.reduceDeployableUnits(context.getPlayer(), context.getRequest().getNumberOfUnits());
+    protected TerritoryInfo apply(TypedRequestContext<Deployment> context) {
+        playerService
+            .reduceDeployableUnits(context.getPlayer(), context.getRequest().getNumberOfUnits());
         val updatedOccupation = occupationService
             .addUnits(occupation, context.getRequest().getNumberOfUnits());
         return new TerritoryInfo(target.getName(),

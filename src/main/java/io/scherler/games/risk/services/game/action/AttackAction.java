@@ -11,8 +11,8 @@ import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.PlayerService;
 import io.scherler.games.risk.services.game.action.models.Parties;
-import io.scherler.games.risk.services.game.action.models.RequestContext;
 import io.scherler.games.risk.services.game.action.models.Route;
+import io.scherler.games.risk.services.game.action.models.TypedRequestContext;
 import io.scherler.games.risk.services.map.TerritoryService;
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +20,7 @@ import lombok.val;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AttackAction extends ActionStrategy<Movement, AttackResult> {
+public class AttackAction extends TypedActionStrategy<Movement, AttackResult> {
 
     private static final int MAX_NUMBER_OF_ATTACK_DICES = 3;
     private static final int MAX_NUMBER_OF_DEFEND_DICES = 2;
@@ -44,7 +44,7 @@ public class AttackAction extends ActionStrategy<Movement, AttackResult> {
     }
 
     @Override
-    protected void buildActionContext(RequestContext<Movement> context) {
+    protected void buildActionContext(TypedRequestContext<Movement> context) {
         source = territoryService
             .getTerritory(context.getGame().getMap().getId(), context.getRequest().getSource());
         target = territoryService
@@ -59,15 +59,17 @@ public class AttackAction extends ActionStrategy<Movement, AttackResult> {
     }
 
     @Override
-    protected void validateActionContext(RequestContext<Movement> context) {
+    protected void validateActionContext(TypedRequestContext<Movement> context) {
         Validations.validateNumberOfUnits(context.getRequest().getNumberOfUnits());
         Validations
             .validateRemainingUnits(sourceOccupation, context.getRequest().getNumberOfUnits());
-        Validations.validateConnection(occupationService, context.getGame().getId(), sourceOccupation, targetOccupation);
+        Validations
+            .validateConnection(occupationService, context.getGame().getId(), sourceOccupation,
+                targetOccupation);
     }
 
     @Override
-    protected AttackResult apply(RequestContext<Movement> context) {
+    protected AttackResult apply(TypedRequestContext<Movement> context) {
         val attackDices = diceService.rollDices(
             Math.min(context.getRequest().getNumberOfUnits(), MAX_NUMBER_OF_ATTACK_DICES));
         val defendDices = diceService

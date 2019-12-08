@@ -2,12 +2,13 @@ package io.scherler.games.risk.services.game.action.models;
 
 import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Value
-public class RequestContext<RequestModel> {
+@Getter
+@AllArgsConstructor
+public class SimpleRequestContext {
 
-    GameEntity game;
-    PlayerEntity player;
-    RequestModel request;
+    final GameEntity game;
+    final PlayerEntity player;
 }

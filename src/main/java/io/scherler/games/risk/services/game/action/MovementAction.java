@@ -8,14 +8,14 @@ import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.PlayerService;
-import io.scherler.games.risk.services.game.action.models.RequestContext;
 import io.scherler.games.risk.services.game.action.models.Route;
+import io.scherler.games.risk.services.game.action.models.TypedRequestContext;
 import io.scherler.games.risk.services.map.TerritoryService;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MovementAction extends ActionStrategy<Movement, MovementInfo> {
+public class MovementAction extends TypedActionStrategy<Movement, MovementInfo> {
 
     private final TerritoryService territoryService;
     private final OccupationService occupationService;
@@ -33,7 +33,7 @@ public class MovementAction extends ActionStrategy<Movement, MovementInfo> {
     }
 
     @Override
-    protected void buildActionContext(RequestContext<Movement> context) {
+    protected void buildActionContext(TypedRequestContext<Movement> context) {
         source = territoryService
             .getTerritory(context.getGame().getMap().getId(), context.getRequest().getSource());
         target = territoryService
@@ -48,15 +48,17 @@ public class MovementAction extends ActionStrategy<Movement, MovementInfo> {
     }
 
     @Override
-    protected void validateActionContext(RequestContext<Movement> context) {
+    protected void validateActionContext(TypedRequestContext<Movement> context) {
         Validations.validateNumberOfUnits(context.getRequest().getNumberOfUnits());
         Validations
             .validateRemainingUnits(sourceOccupation, context.getRequest().getNumberOfUnits());
-        Validations.validateConnection(occupationService, context.getGame().getId(), sourceOccupation, targetOccupation);
+        Validations
+            .validateConnection(occupationService, context.getGame().getId(), sourceOccupation,
+                targetOccupation);
     }
 
     @Override
-    protected MovementInfo apply(RequestContext<Movement> context) {
+    protected MovementInfo apply(TypedRequestContext<Movement> context) {
         val updatedRoute = occupationService
             .moveUnits(new Route(sourceOccupation, targetOccupation),
                 context.getRequest().getNumberOfUnits());

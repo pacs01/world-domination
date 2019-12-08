@@ -64,7 +64,7 @@ class GameServiceTests {
         val occupation = new Territory("Peru");
         actionService.occupy(occupation, game.getId(), firstPlayer.getId());
 
-        val turnResult = gameService.endTurn(game.getId(), firstPlayer.getId());
+        val turnResult = actionService.endTurn(game.getId(), firstPlayer.getId());
 
         Assertions.assertEquals(secondPlayer, turnResult.getNextPlayer());
         Assertions.assertNotNull(turnResult.getCard());
@@ -73,7 +73,7 @@ class GameServiceTests {
 
     @Test
     void testEndTurnWithoutOccupation() {
-        val turnResult = gameService.endTurn(game.getId(), firstPlayer.getId());
+        val turnResult = actionService.endTurn(game.getId(), firstPlayer.getId());
 
         Assertions.assertEquals(secondPlayer, turnResult.getNextPlayer());
         Assertions.assertNull(turnResult.getCard());

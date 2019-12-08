@@ -6,6 +6,7 @@ import io.scherler.games.risk.models.request.Territory;
 import io.scherler.games.risk.models.response.AttackResult;
 import io.scherler.games.risk.models.response.MovementInfo;
 import io.scherler.games.risk.models.response.TerritoryInfo;
+import io.scherler.games.risk.models.response.TurnResult;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +21,16 @@ public class ActionService {
 
     private final AttackAction attackAction;
 
+    private final EndTurnAction endTurnAction;
+
     public ActionService(OccupationAction occupationAction, DeploymentAction deploymentAction,
-        MovementAction movementAction, AttackAction attackAction) {
+        MovementAction movementAction, AttackAction attackAction,
+        EndTurnAction endTurnAction) {
         this.occupationAction = occupationAction;
         this.deploymentAction = deploymentAction;
         this.movementAction = movementAction;
         this.attackAction = attackAction;
+        this.endTurnAction = endTurnAction;
     }
 
     @Transactional
@@ -46,5 +51,10 @@ public class ActionService {
     @Transactional
     public AttackResult attack(Movement movement, long gameId, long playerId) {
         return attackAction.execute(gameId, playerId, movement);
+    }
+
+    @Transactional
+    public TurnResult endTurn(long gameId, long playerId) {
+        return endTurnAction.execute(gameId, playerId);
     }
 }

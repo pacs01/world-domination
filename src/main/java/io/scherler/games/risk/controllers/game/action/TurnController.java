@@ -1,6 +1,6 @@
 package io.scherler.games.risk.controllers.game.action;
 
-import io.scherler.games.risk.services.game.GameService;
+import io.scherler.games.risk.services.game.action.ActionService;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("games/{gameId}/players/{playerId}/turns")
 public class TurnController {
 
-    private final GameService gameService;
+    private final ActionService actionService;
 
-    public TurnController(GameService gameService) {
-        this.gameService = gameService;
+    public TurnController(ActionService actionService) {
+        this.actionService = actionService;
     }
 
     @PostMapping()
     public ResponseEntity<?> endTurn(@PathVariable("gameId") Long gameId,
         @PathVariable("playerId") Long playerId) {
-        val turnResult = gameService.endTurn(gameId, playerId);
+        val turnResult = actionService.endTurn(gameId, playerId);
         return ResponseEntity.ok().body(turnResult); //todo add hateoas
     }
 }

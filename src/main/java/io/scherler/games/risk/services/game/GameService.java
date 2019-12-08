@@ -54,45 +54,19 @@ public class GameService {
                 () -> new ResourceNotFoundException("No resource of type 'Player' found!"));
     }
 
-    @Transactional
-    public TurnResult endTurn(long gameId, long playerId) {
-        val game = getGame(gameId);
-        val player = playerService.getPlayer(playerId);
-        if (!player.equals(game.getActivePlayer())) {
-            throw new IllegalArgumentException(
-                "Player is not active and thus cannot end the turn!");
-        }
-
-        val card = drawCardIfAllowedTo(game, player);
-
-        PlayerEntity nextPlayer = null;
-        if (card.isPresent() && CardService.VALAR_MORGHULIS.equals(card.get().getTerritory())) {
-            game.setState(GameState.VALAR_MORGHULIS);
-        } else {
-            nextPlayer = playerService.getNextPlayer(game, playerId);
-            game.setActivePlayer(nextPlayer);
-        }
-        gameRepository.save(game);
-        return new TurnResult(nextPlayer, card.orElse(null));
-    }
-
-    @Transactional
-    public Optional<Card> drawCardIfAllowedTo(GameEntity game, PlayerEntity player) {
-        if (occupationService.hadOccupationsInRound(game.getId(), player.getId(), game.getRound())) {
-            return Optional.of(cardService.drawNextCard(game, player));
-        } else {
-            return Optional.empty();
-        }
-    }
-
     public GameEntity getGame(long gameId) {
         return gameRepository.findById(gameId)
             .orElseThrow(() -> new ResourceNotFoundException("Game", gameId));
     }
 
-    public void setState(long gameId, GameState state) {
-        val game = getGame(gameId);
-        game.setState(state);
-        gameRepository.save(game);
+    public GameEntity endTurn(GameEntity game) {
+        val nextPlayer = playerService.getNextPlayer(game, game.getActivePlayer().getId());
+        game.setActivePlayer(nextPlayer);
+        return gameRepository.save(game);
+    }
+
+    public GameEntity endGame(GameEntity game, GameState endState) {
+        game.setState(endState);
+        return gameRepository.save(game);
     }
 }
