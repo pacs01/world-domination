@@ -7,11 +7,8 @@ import io.scherler.games.risk.entities.repositories.game.GameRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.GameState;
 import io.scherler.games.risk.models.request.Game;
-import io.scherler.games.risk.models.response.Card;
-import io.scherler.games.risk.models.response.TurnResult;
 import io.scherler.games.risk.services.map.MapService;
 import java.util.Comparator;
-import java.util.Optional;
 import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,17 +19,12 @@ public class GameService {
     private final GameRepository gameRepository;
     private final PlayerService playerService;
     private final MapService mapService;
-    private final CardService cardService;
-    private final OccupationService occupationService;
 
     public GameService(GameRepository gameRepository, PlayerService playerService,
-        MapService mapService, CardService cardService,
-        OccupationService occupationService) {
+        MapService mapService) {
         this.gameRepository = gameRepository;
         this.playerService = playerService;
         this.mapService = mapService;
-        this.cardService = cardService;
-        this.occupationService = occupationService;
     }
 
     @Transactional
