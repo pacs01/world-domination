@@ -6,7 +6,7 @@ import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.PlayerService;
-import io.scherler.games.risk.services.game.action.models.TypedRequestContext;
+import io.scherler.games.risk.services.game.action.models.context.TypedActionContext;
 import io.scherler.games.risk.services.map.TerritoryService;
 import lombok.val;
 import org.springframework.stereotype.Service;
@@ -27,19 +27,19 @@ public class OccupationAction extends TypedActionStrategy<Territory, TerritoryIn
     }
 
     @Override
-    protected void buildActionContext(TypedRequestContext<Territory> context) {
+    protected void buildCustomActionContext(TypedActionContext<Territory> context) {
         target = territoryService
             .getTerritory(context.getGame().getMap().getId(), context.getRequest().getName());
     }
 
     @Override
-    protected void validateActionContext(TypedRequestContext<Territory> context) {
+    protected void validateCustomActionContext(TypedActionContext<Territory> context) {
         Validations
             .validateTerritoryNotOccupied(occupationService, context.getGame().getId(), target);
     }
 
     @Override
-    protected TerritoryInfo apply(TypedRequestContext<Territory> context) {
+    protected TerritoryInfo apply(TypedActionContext<Territory> context) {
         val createdOccupation = occupationService
             .add(context.getGame(), context.getPlayer(), target, 1);
 

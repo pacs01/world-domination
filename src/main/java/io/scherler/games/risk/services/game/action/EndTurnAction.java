@@ -9,7 +9,7 @@ import io.scherler.games.risk.services.game.CardService;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.PlayerService;
-import io.scherler.games.risk.services.game.action.models.SimpleRequestContext;
+import io.scherler.games.risk.services.game.action.models.context.ActionContext;
 import java.util.Optional;
 import lombok.val;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class EndTurnAction extends SimpleActionStrategy<TurnResult> {
     }
 
     @Override
-    protected TurnResult apply(SimpleRequestContext context) {
+    protected TurnResult apply(ActionContext context) {
         val card = drawCardIfAllowedTo(context.getGame(), context.getPlayer());
 
         if (card.isPresent() && CardService.VALAR_MORGHULIS.equals(card.get().getTerritory())) {

@@ -12,7 +12,7 @@ import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.PlayerService;
 import io.scherler.games.risk.services.game.action.models.Parties;
 import io.scherler.games.risk.services.game.action.models.Route;
-import io.scherler.games.risk.services.game.action.models.TypedRequestContext;
+import io.scherler.games.risk.services.game.action.models.context.TypedActionContext;
 import io.scherler.games.risk.services.map.TerritoryService;
 import java.util.Collections;
 import java.util.List;
@@ -44,7 +44,7 @@ public class AttackAction extends TypedActionStrategy<Movement, AttackResult> {
     }
 
     @Override
-    protected void buildActionContext(TypedRequestContext<Movement> context) {
+    protected void buildCustomActionContext(TypedActionContext<Movement> context) {
         source = territoryService
             .getTerritory(context.getGame().getMap().getId(), context.getRequest().getSource());
         target = territoryService
@@ -59,7 +59,7 @@ public class AttackAction extends TypedActionStrategy<Movement, AttackResult> {
     }
 
     @Override
-    protected void validateActionContext(TypedRequestContext<Movement> context) {
+    protected void validateCustomActionContext(TypedActionContext<Movement> context) {
         Validations.validateNumberOfUnits(context.getRequest().getNumberOfUnits());
         Validations
             .validateRemainingUnits(sourceOccupation, context.getRequest().getNumberOfUnits());
@@ -69,7 +69,7 @@ public class AttackAction extends TypedActionStrategy<Movement, AttackResult> {
     }
 
     @Override
-    protected AttackResult apply(TypedRequestContext<Movement> context) {
+    protected AttackResult apply(TypedActionContext<Movement> context) {
         val attackDices = diceService.rollDices(
             Math.min(context.getRequest().getNumberOfUnits(), MAX_NUMBER_OF_ATTACK_DICES));
         val defendDices = diceService

@@ -7,7 +7,7 @@ import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.PlayerService;
-import io.scherler.games.risk.services.game.action.models.TypedRequestContext;
+import io.scherler.games.risk.services.game.action.models.context.TypedActionContext;
 import io.scherler.games.risk.services.map.TerritoryService;
 import lombok.val;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class DeploymentAction extends TypedActionStrategy<Deployment, TerritoryI
     }
 
     @Override
-    protected void buildActionContext(TypedRequestContext<Deployment> context) {
+    protected void buildCustomActionContext(TypedActionContext<Deployment> context) {
         target = territoryService
             .getTerritory(context.getGame().getMap().getId(), context.getRequest().getName());
 
@@ -39,7 +39,7 @@ public class DeploymentAction extends TypedActionStrategy<Deployment, TerritoryI
     }
 
     @Override
-    protected TerritoryInfo apply(TypedRequestContext<Deployment> context) {
+    protected TerritoryInfo apply(TypedActionContext<Deployment> context) {
         playerService
             .reduceDeployableUnits(context.getPlayer(), context.getRequest().getNumberOfUnits());
         val updatedOccupation = occupationService

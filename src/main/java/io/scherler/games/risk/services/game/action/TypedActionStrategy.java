@@ -2,50 +2,25 @@ package io.scherler.games.risk.services.game.action;
 
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.PlayerService;
-import io.scherler.games.risk.services.game.action.models.TypedRequestContext;
-import javax.transaction.Transactional;
+import io.scherler.games.risk.services.game.action.models.context.TypedActionContext;
+import io.scherler.games.risk.services.game.action.models.context.TypedRequestContext;
 import lombok.val;
 import org.springframework.stereotype.Component;
 
 @Component
-public abstract class TypedActionStrategy<RequestModel, ResponseModel> {
+public abstract class TypedActionStrategy<RequestModel, ResponseModel> extends
+    ActionStrategy<TypedRequestContext<RequestModel>, TypedActionContext<RequestModel>, ResponseModel> {
 
-    protected final GameService gameService;
-    protected final PlayerService playerService;
-
-    public TypedActionStrategy(GameService gameService, PlayerService playerService) {
-        this.gameService = gameService;
-        this.playerService = playerService;
+    public TypedActionStrategy(GameService gameService,
+        PlayerService playerService) {
+        super(gameService, playerService);
     }
 
-    @Transactional
-    final ResponseModel execute(long gameId, long playerId, RequestModel requestModel) {
-        val requestContext = buildRequestContext(gameId, playerId, requestModel);
-        validateRequestContext(requestContext);
-        buildActionContext(requestContext);
-        validateActionContext(requestContext);
-        return apply(requestContext);
+    @Override
+    protected TypedActionContext<RequestModel> buildActionContext(
+        TypedRequestContext<RequestModel> requestContext) {
+        val game = gameService.getGame(requestContext.getGameId());
+        val player = playerService.getPlayer(requestContext.getPlayerId());
+        return new TypedActionContext<>(game, player, requestContext.getRequest());
     }
-
-    private TypedRequestContext<RequestModel> buildRequestContext(long gameId, long playerId,
-        RequestModel requestModel) {
-        val game = gameService.getGame(gameId);
-        val player = playerService.getPlayer(playerId);
-        return new TypedRequestContext<>(game, player, requestModel);
-    }
-
-    private void validateRequestContext(TypedRequestContext<RequestModel> context) {
-        //todo validate if player matches user
-        Validations.validateActivePlayer(context);
-    }
-
-    protected void buildActionContext(TypedRequestContext<RequestModel> context) {
-
-    }
-
-    protected void validateActionContext(TypedRequestContext<RequestModel> context) {
-
-    }
-
-    abstract protected ResponseModel apply(TypedRequestContext<RequestModel> requestContext);
 }

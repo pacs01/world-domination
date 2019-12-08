@@ -9,7 +9,7 @@ import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.PlayerService;
 import io.scherler.games.risk.services.game.action.models.Route;
-import io.scherler.games.risk.services.game.action.models.TypedRequestContext;
+import io.scherler.games.risk.services.game.action.models.context.TypedActionContext;
 import io.scherler.games.risk.services.map.TerritoryService;
 import lombok.val;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class MovementAction extends TypedActionStrategy<Movement, MovementInfo> 
     }
 
     @Override
-    protected void buildActionContext(TypedRequestContext<Movement> context) {
+    protected void buildCustomActionContext(TypedActionContext<Movement> context) {
         source = territoryService
             .getTerritory(context.getGame().getMap().getId(), context.getRequest().getSource());
         target = territoryService
@@ -48,7 +48,7 @@ public class MovementAction extends TypedActionStrategy<Movement, MovementInfo> 
     }
 
     @Override
-    protected void validateActionContext(TypedRequestContext<Movement> context) {
+    protected void validateCustomActionContext(TypedActionContext<Movement> context) {
         Validations.validateNumberOfUnits(context.getRequest().getNumberOfUnits());
         Validations
             .validateRemainingUnits(sourceOccupation, context.getRequest().getNumberOfUnits());
@@ -58,7 +58,7 @@ public class MovementAction extends TypedActionStrategy<Movement, MovementInfo> 
     }
 
     @Override
-    protected MovementInfo apply(TypedRequestContext<Movement> context) {
+    protected MovementInfo apply(TypedActionContext<Movement> context) {
         val updatedRoute = occupationService
             .moveUnits(new Route(sourceOccupation, targetOccupation),
                 context.getRequest().getNumberOfUnits());

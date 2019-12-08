@@ -4,11 +4,11 @@ import io.scherler.games.risk.entities.game.OccupationEntity;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.exceptions.IllegalTurnException;
 import io.scherler.games.risk.services.game.OccupationService;
-import io.scherler.games.risk.services.game.action.models.SimpleRequestContext;
+import io.scherler.games.risk.services.game.action.models.context.ActionContext;
 
 class Validations {
 
-    static void validateActivePlayer(SimpleRequestContext context) {
+    static void validateActivePlayer(ActionContext context) {
         if (!context.getPlayer().getId().equals(context.getGame().getActivePlayer().getId())) {
             throw new IllegalTurnException(context.getPlayer());
         }

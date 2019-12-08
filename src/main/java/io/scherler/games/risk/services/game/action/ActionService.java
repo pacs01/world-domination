@@ -7,6 +7,8 @@ import io.scherler.games.risk.models.response.AttackResult;
 import io.scherler.games.risk.models.response.MovementInfo;
 import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.models.response.TurnResult;
+import io.scherler.games.risk.services.game.action.models.context.RequestContext;
+import io.scherler.games.risk.services.game.action.models.context.TypedRequestContext;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,22 +35,22 @@ public class ActionService {
     }
 
     public TerritoryInfo occupy(Territory territory, long gameId, long playerId) {
-        return occupationAction.execute(gameId, playerId, territory);
+        return occupationAction.execute(new TypedRequestContext<>(gameId, playerId, territory));
     }
 
     public TerritoryInfo deploy(Deployment deployment, long gameId, long playerId) {
-        return deploymentAction.execute(gameId, playerId, deployment);
+        return deploymentAction.execute(new TypedRequestContext<>(gameId, playerId, deployment));
     }
 
     public MovementInfo move(Movement movement, long gameId, long playerId) {
-        return movementAction.execute(gameId, playerId, movement);
+        return movementAction.execute(new TypedRequestContext<>(gameId, playerId, movement));
     }
 
     public AttackResult attack(Movement movement, long gameId, long playerId) {
-        return attackAction.execute(gameId, playerId, movement);
+        return attackAction.execute(new TypedRequestContext<>(gameId, playerId, movement));
     }
 
     public TurnResult endTurn(long gameId, long playerId) {
-        return endTurnAction.execute(gameId, playerId);
+        return endTurnAction.execute(new RequestContext(gameId, playerId));
     }
 }
