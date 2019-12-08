@@ -1,4 +1,4 @@
-package io.scherler.games.risk.services.game.action;
+package io.scherler.games.risk.services.game.action.strategies;
 
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.PlayerService;

@@ -1,7 +1,8 @@
-package io.scherler.games.risk.services.game.action;
+package io.scherler.games.risk.services.game.action.strategies;
 
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.PlayerService;
+import io.scherler.games.risk.services.game.action.Validations;
 import io.scherler.games.risk.services.game.action.models.context.ActionContext;
 import io.scherler.games.risk.services.game.action.models.context.RequestContext;
 import javax.transaction.Transactional;
@@ -14,13 +15,13 @@ public abstract class ActionStrategy<RequestModel extends RequestContext, Action
     protected final GameService gameService;
     protected final PlayerService playerService;
 
-    public ActionStrategy(GameService gameService, PlayerService playerService) {
+    ActionStrategy(GameService gameService, PlayerService playerService) {
         this.gameService = gameService;
         this.playerService = playerService;
     }
 
     @Transactional
-    final ResponseModel execute(RequestModel requestContext) {
+    public final ResponseModel execute(RequestModel requestContext) {
         val actionContext = buildActionContext(requestContext);
         validateActionContext(actionContext);
         buildCustomActionContext(actionContext);

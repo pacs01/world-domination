@@ -6,21 +6,21 @@ import io.scherler.games.risk.exceptions.IllegalTurnException;
 import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.action.models.context.ActionContext;
 
-class Validations {
+public class Validations {
 
-    static void validateActivePlayer(ActionContext context) {
+    public static void validateActivePlayer(ActionContext context) {
         if (!context.getPlayer().getId().equals(context.getGame().getActivePlayer().getId())) {
             throw new IllegalTurnException(context.getPlayer());
         }
     }
 
-    static void validateNumberOfUnits(int numberOfUnits) {
+    public static void validateNumberOfUnits(int numberOfUnits) {
         if (numberOfUnits < 1) {
             throw new IllegalArgumentException("An action without any units is not possible.");
         }
     }
 
-    static void validateRemainingUnits(OccupationEntity occupation, int numberOfUnits) {
+    public static void validateRemainingUnits(OccupationEntity occupation, int numberOfUnits) {
         if (occupation.getUnits() < numberOfUnits + 1) {
             throw new IllegalArgumentException(
                 "Not enough units available at territory '" + occupation.getTerritory().getName()
@@ -28,7 +28,7 @@ class Validations {
         }
     }
 
-    static void validateTerritoryNotOccupied(OccupationService occupationService, long gameId,
+    public static void validateTerritoryNotOccupied(OccupationService occupationService, long gameId,
         TerritoryEntity target) {
         if (occupationService.isOccupied(gameId, target)) {
             throw new IllegalArgumentException(
@@ -36,7 +36,7 @@ class Validations {
         }
     }
 
-    static void validateConnection(OccupationService occupationService, long gameId,
+    public static void validateConnection(OccupationService occupationService, long gameId,
         OccupationEntity source, OccupationEntity target) {
         if (!occupationService.areConnected(gameId, source, target)) {
             throw new IllegalArgumentException(

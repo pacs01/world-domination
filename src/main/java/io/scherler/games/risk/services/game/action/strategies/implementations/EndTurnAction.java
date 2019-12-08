@@ -1,4 +1,4 @@
-package io.scherler.games.risk.services.game.action;
+package io.scherler.games.risk.services.game.action.strategies.implementations;
 
 import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
@@ -9,6 +9,7 @@ import io.scherler.games.risk.services.game.CardService;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.PlayerService;
+import io.scherler.games.risk.services.game.action.strategies.SimpleActionStrategy;
 import io.scherler.games.risk.services.game.action.models.context.ActionContext;
 import java.util.Optional;
 import lombok.val;

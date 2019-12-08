@@ -1,4 +1,4 @@
-package io.scherler.games.risk.services.game.action;
+package io.scherler.games.risk.services.game.action.strategies.implementations;
 
 import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.models.request.Territory;
@@ -6,6 +6,8 @@ import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.PlayerService;
+import io.scherler.games.risk.services.game.action.strategies.TypedActionStrategy;
+import io.scherler.games.risk.services.game.action.Validations;
 import io.scherler.games.risk.services.game.action.models.context.TypedActionContext;
 import io.scherler.games.risk.services.map.TerritoryService;
 import lombok.val;
