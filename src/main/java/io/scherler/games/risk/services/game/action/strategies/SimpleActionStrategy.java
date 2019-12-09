@@ -8,8 +8,8 @@ import lombok.val;
 import org.springframework.stereotype.Component;
 
 @Component
-public abstract class SimpleActionStrategy<ResponseModel> extends
-    ActionStrategy<RequestContext, ActionContext, ResponseModel> {
+public abstract class SimpleActionStrategy<ResponseModelT> extends
+    ActionStrategy<RequestContext, ActionContext, ResponseModelT> {
 
     public SimpleActionStrategy(GameService gameService,
         PlayerService playerService) {

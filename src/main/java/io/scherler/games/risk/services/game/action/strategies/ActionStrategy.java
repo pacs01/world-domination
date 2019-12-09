@@ -10,8 +10,8 @@ import lombok.val;
 import org.springframework.stereotype.Component;
 
 @Component
-public abstract class ActionStrategy<RequestModel extends RequestContext,
-    ActionModel extends ActionContext, ResponseModel> {
+public abstract class ActionStrategy<RequestContextT extends RequestContext,
+    ActionContextT extends ActionContext, ResponseModelT> {
 
     protected final GameService gameService;
     protected final PlayerService playerService;
@@ -22,7 +22,7 @@ public abstract class ActionStrategy<RequestModel extends RequestContext,
     }
 
     @Transactional
-    public final ResponseModel execute(RequestModel requestContext) {
+    public final ResponseModelT execute(RequestContextT requestContext) {
         val actionContext = buildActionContext(requestContext);
         validateActionContext(actionContext);
         buildCustomActionContext(actionContext);
@@ -30,20 +30,20 @@ public abstract class ActionStrategy<RequestModel extends RequestContext,
         return apply(actionContext);
     }
 
-    protected abstract ActionModel buildActionContext(RequestModel requestContext);
+    protected abstract ActionContextT buildActionContext(RequestContextT requestContext);
 
-    private void validateActionContext(ActionModel context) {
+    private void validateActionContext(ActionContextT context) {
         //todo validate if player matches user
         Validations.validateActivePlayer(context);
     }
 
-    protected void buildCustomActionContext(ActionModel context) {
+    protected void buildCustomActionContext(ActionContextT context) {
 
     }
 
-    protected void validateCustomActionContext(ActionModel context) {
+    protected void validateCustomActionContext(ActionContextT context) {
 
     }
 
-    protected abstract ResponseModel apply(ActionModel context);
+    protected abstract ResponseModelT apply(ActionContextT context);
 }
