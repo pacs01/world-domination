@@ -20,5 +20,6 @@ public interface OccupationRepository extends JpaRepository<OccupationEntity, Lo
     List<OccupationEntity> findByGameIdAndPlayerIdIsNotAndTerritoryName(Long game_id,
         Long player_id, String territory_name);
 
-    List<OccupationEntity> findByGameIdAndPlayerIdAndOccupiedInRound(Long game_id, Long player_id, int occupiedInRound);
+    List<OccupationEntity> findByGameIdAndPlayerIdAndOccupiedInRound(Long game_id, Long player_id,
+        int occupiedInRound);
 }

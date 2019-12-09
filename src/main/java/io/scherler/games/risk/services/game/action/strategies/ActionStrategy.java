@@ -10,7 +10,8 @@ import lombok.val;
 import org.springframework.stereotype.Component;
 
 @Component
-public abstract class ActionStrategy<RequestModel extends RequestContext, ActionModel extends ActionContext, ResponseModel> {
+public abstract class ActionStrategy<RequestModel extends RequestContext,
+    ActionModel extends ActionContext, ResponseModel> {
 
     protected final GameService gameService;
     protected final PlayerService playerService;
@@ -29,7 +30,7 @@ public abstract class ActionStrategy<RequestModel extends RequestContext, Action
         return apply(actionContext);
     }
 
-    abstract protected ActionModel buildActionContext(RequestModel requestContext);
+    protected abstract ActionModel buildActionContext(RequestModel requestContext);
 
     private void validateActionContext(ActionModel context) {
         //todo validate if player matches user
@@ -44,5 +45,5 @@ public abstract class ActionStrategy<RequestModel extends RequestContext, Action
 
     }
 
-    abstract protected ResponseModel apply(ActionModel context);
+    protected abstract ResponseModel apply(ActionModel context);
 }

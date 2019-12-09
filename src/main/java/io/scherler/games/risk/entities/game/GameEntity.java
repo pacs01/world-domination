@@ -33,7 +33,8 @@ import org.hibernate.annotations.NaturalId;
 @NoArgsConstructor
 public class GameEntity extends BaseEntity {
 
-    // todo: remove @JsonIgnore from all entities (solve with different models) and check @ToString(excludes...) on all entities
+    // todo: remove @JsonIgnore from all entities (use different models)
+    // todo: check @ToString(excludes...) on all entities
 
     @NaturalId
     @Column(nullable = false)

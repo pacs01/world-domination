@@ -124,6 +124,7 @@ public class OccupationService {
     }
 
     public boolean hadOccupationsInRound(long gameId, long playerId, int round) {
-        return !occupationRepository.findByGameIdAndPlayerIdAndOccupiedInRound(gameId, playerId, round).isEmpty();
+        return !occupationRepository
+            .findByGameIdAndPlayerIdAndOccupiedInRound(gameId, playerId, round).isEmpty();
     }
 }

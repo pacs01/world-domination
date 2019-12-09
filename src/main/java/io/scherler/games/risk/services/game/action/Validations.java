@@ -28,7 +28,8 @@ public class Validations {
         }
     }
 
-    public static void validateTerritoryNotOccupied(OccupationService occupationService, long gameId,
+    public static void validateTerritoryNotOccupied(OccupationService occupationService,
+        long gameId,
         TerritoryEntity target) {
         if (occupationService.isOccupied(gameId, target)) {
             throw new IllegalArgumentException(

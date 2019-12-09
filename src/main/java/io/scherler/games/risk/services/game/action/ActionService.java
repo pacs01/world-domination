@@ -7,13 +7,13 @@ import io.scherler.games.risk.models.response.AttackResult;
 import io.scherler.games.risk.models.response.MovementInfo;
 import io.scherler.games.risk.models.response.TerritoryInfo;
 import io.scherler.games.risk.models.response.TurnResult;
+import io.scherler.games.risk.services.game.action.models.context.RequestContext;
+import io.scherler.games.risk.services.game.action.models.context.TypedRequestContext;
 import io.scherler.games.risk.services.game.action.strategies.implementations.AttackAction;
 import io.scherler.games.risk.services.game.action.strategies.implementations.DeploymentAction;
 import io.scherler.games.risk.services.game.action.strategies.implementations.EndTurnAction;
 import io.scherler.games.risk.services.game.action.strategies.implementations.MovementAction;
 import io.scherler.games.risk.services.game.action.strategies.implementations.OccupationAction;
-import io.scherler.games.risk.services.game.action.models.context.RequestContext;
-import io.scherler.games.risk.services.game.action.models.context.TypedRequestContext;
 import org.springframework.stereotype.Service;
 
 @Service
