@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
 	id 'war'
+	id 'checkstyle'
 }
 
 group = 'io.scherler.games'
@@ -44,4 +45,8 @@ dependencies {
 		exclude group: 'junit', module: 'junit'
 	}
 	testImplementation("org.junit.jupiter:junit-jupiter:5.5.1")
+}
+
+checkstyle {
+	toolVersion '8.27'
 }
