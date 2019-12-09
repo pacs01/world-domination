@@ -9,12 +9,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TerritoryRepository extends JpaRepository<TerritoryEntity, Long> {
 
-    List<TerritoryEntity> findByContinentMapIdAndName(Long continent_map_id, String name);
+    List<TerritoryEntity> findByContinentMapIdAndName(Long continentMapId, String name);
 
-    List<TerritoryEntity> findByContinentMapId(Long continent_map_id);
+    List<TerritoryEntity> findByContinentMapId(Long continentMapId);
 
-    List<TerritoryEntity> findByContinentMapIdAndIdNotIn(Long continent_map_id,
+    List<TerritoryEntity> findByContinentMapIdAndIdNotIn(Long continentMapId,
         Collection<Long> id);
 
-    long countByContinentMapId(Long continent_map_id);
+    long countByContinentMapId(Long continentMapId);
 }

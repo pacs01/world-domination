@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
 
-    List<PlayerEntity> findByGameId(Long game_id);
+    List<PlayerEntity> findByGameId(Long gameId);
 
-    List<PlayerEntity> findByIdAndGameId(Long id, Long game_id);
+    List<PlayerEntity> findByIdAndGameId(Long id, Long gameId);
 
-    List<PlayerEntity> findByGameIdAndPosition(Long game_id, int position);
+    List<PlayerEntity> findByGameIdAndPosition(Long gameId, int position);
 }

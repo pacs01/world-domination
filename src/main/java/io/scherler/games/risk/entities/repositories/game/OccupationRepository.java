@@ -8,18 +8,18 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OccupationRepository extends JpaRepository<OccupationEntity, Long> {
 
-    List<OccupationEntity> findByGameId(Long game_id);
+    List<OccupationEntity> findByGameId(Long gameId);
 
-    List<OccupationEntity> findByGameIdAndPlayerId(Long game_id, Long player_id);
+    List<OccupationEntity> findByGameIdAndPlayerId(Long gameId, Long playerId);
 
-    List<OccupationEntity> findByGameIdAndTerritoryName(Long game_id, String territory_name);
+    List<OccupationEntity> findByGameIdAndTerritoryName(Long gameId, String territoryName);
 
-    List<OccupationEntity> findByGameIdAndPlayerIdAndTerritoryName(Long game_id, Long player_id,
-        String territory_name);
+    List<OccupationEntity> findByGameIdAndPlayerIdAndTerritoryName(Long gameId, Long playerId,
+        String territoryName);
 
-    List<OccupationEntity> findByGameIdAndPlayerIdIsNotAndTerritoryName(Long game_id,
-        Long player_id, String territory_name);
+    List<OccupationEntity> findByGameIdAndPlayerIdIsNotAndTerritoryName(Long gameId,
+        Long playerId, String territoryName);
 
-    List<OccupationEntity> findByGameIdAndPlayerIdAndOccupiedInRound(Long game_id, Long player_id,
+    List<OccupationEntity> findByGameIdAndPlayerIdAndOccupiedInRound(Long gameId, Long playerId,
         int occupiedInRound);
 }
