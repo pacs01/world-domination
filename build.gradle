@@ -4,6 +4,7 @@ plugins {
 	id 'java'
 	id 'war'
 	id 'checkstyle'
+	id 'jacoco'
 }
 
 group = 'io.scherler.games'
@@ -49,4 +50,8 @@ dependencies {
 
 checkstyle {
 	toolVersion '8.27'
+}
+
+jacoco {
+	toolVersion = '0.8.5'
 }
