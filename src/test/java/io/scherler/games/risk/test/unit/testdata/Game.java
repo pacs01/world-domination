@@ -21,7 +21,8 @@ public class Game {
     private final MockEntityCreator<UserAccountEntity> userGenerator = new MockEntityCreator<>();
     private final MockEntityCreator<GameEntity> gameGenerator = new MockEntityCreator<>();
     private final MockEntityCreator<PlayerEntity> playerGenerator = new MockEntityCreator<>();
-    private final MockEntityCreator<OccupationEntity> occupationGenerator = new MockEntityCreator<>();
+    private final MockEntityCreator<OccupationEntity> occupationGenerator =
+        new MockEntityCreator<>();
 
     @Getter(AccessLevel.NONE)
     private final World world;
