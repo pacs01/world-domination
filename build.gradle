@@ -4,6 +4,7 @@ plugins {
 	id 'java'
 	id 'war'
 	id 'checkstyle'
+	id "jacoco"
 	id "org.sonarqube" version "2.7"
 }
 
@@ -50,4 +51,14 @@ dependencies {
 
 checkstyle {
 	toolVersion '8.27'
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+	}
+}
+
+plugins.withType(JacocoPlugin) {
+	tasks["test"].finalizedBy 'jacocoTestReport'
 }
