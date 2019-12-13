@@ -7,6 +7,8 @@ import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.entities.repositories.game.CardRepository;
 import io.scherler.games.risk.models.response.Card;
 import io.scherler.games.risk.services.map.TerritoryService;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -18,13 +20,17 @@ public class CardService {
 
     public static final String VALAR_MORGHULIS = "Valar Morghulis";
 
+    private final Random random;
+
     private final CardRepository cardRepository;
 
     private final TerritoryService territoryService;
 
-    public CardService(CardRepository cardRepository, TerritoryService territoryService) {
+    public CardService(CardRepository cardRepository, TerritoryService territoryService)
+        throws NoSuchAlgorithmException {
         this.cardRepository = cardRepository;
         this.territoryService = territoryService;
+        this.random = SecureRandom.getInstanceStrong();
     }
 
     public List<CardEntity> getAllCards(long gameId) {
@@ -46,8 +52,7 @@ public class CardService {
             numberOfCards++;
         }
 
-        Random r = new Random();
-        val pickedIndex = r.nextInt(numberOfCards);
+        val pickedIndex = random.nextInt(numberOfCards);
         if (pickedIndex == remainingTerritories.size()) {
             return new Card(VALAR_MORGHULIS);
         }
