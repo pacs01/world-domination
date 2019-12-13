@@ -8,6 +8,10 @@ import io.scherler.games.risk.services.game.action.models.context.ActionContext;
 
 public class Validations {
 
+    private Validations() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void validateActivePlayer(ActionContext context) {
         if (!context.getPlayer().getId().equals(context.getGame().getActivePlayer().getId())) {
             throw new IllegalTurnException(context.getPlayer());
