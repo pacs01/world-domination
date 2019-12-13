@@ -1,7 +1,6 @@
 package io.scherler.games.risk.entities.game;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.scherler.games.risk.entities.BaseEntity;
 import io.scherler.games.risk.entities.identity.UserAccountEntity;
 import io.scherler.games.risk.models.PlayerColor;
 import java.util.HashSet;
@@ -24,17 +23,10 @@ import org.hibernate.annotations.NaturalId;
 @Entity
 @Table(name = "player", uniqueConstraints = @UniqueConstraint(columnNames = {"gameId",
     "userAccountId"}))
-@ToString(exclude = {"game", "userAccount"})
+@ToString(exclude = {"userAccount"})
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
-public class PlayerEntity extends BaseEntity {
-
-    @NaturalId
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "gameId")
-    @EqualsAndHashCode.Include
-    @JsonIgnore
-    private GameEntity game;
+public class PlayerEntity extends BaseGameEntity {
 
     @NaturalId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

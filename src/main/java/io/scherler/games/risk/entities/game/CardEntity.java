@@ -1,7 +1,5 @@
 package io.scherler.games.risk.entities.game;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.scherler.games.risk.entities.BaseEntity;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,17 +17,10 @@ import org.hibernate.annotations.NaturalId;
 @Entity
 @Table(name = "card", uniqueConstraints = @UniqueConstraint(columnNames = {"gameId",
     "territoryId"}))
-@ToString(exclude = {"game", "player", "territory"})
+@ToString(exclude = {"player", "territory"})
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
-public class CardEntity extends BaseEntity {
-
-    @NaturalId
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "gameId")
-    @EqualsAndHashCode.Include
-    @JsonIgnore
-    private GameEntity game;
+public class CardEntity extends BaseGameEntity {
 
     @NaturalId
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
