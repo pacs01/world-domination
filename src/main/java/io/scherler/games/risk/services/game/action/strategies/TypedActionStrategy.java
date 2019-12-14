@@ -19,7 +19,7 @@ public abstract class TypedActionStrategy<RequestModelT, ResponseModelT> extends
     @Override
     protected TypedActionContext<RequestModelT> buildActionContext(
         TypedRequestContext<RequestModelT> requestContext) {
-        val game = gameService.getGame(requestContext.getGameId());
+        val game = gameService.get(requestContext.getGameId());
         val player = playerService.getPlayer(requestContext.getPlayerId());
         return new TypedActionContext<>(game, player, requestContext.getRequest());
     }

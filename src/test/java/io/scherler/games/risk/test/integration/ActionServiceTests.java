@@ -7,6 +7,7 @@ import io.scherler.games.risk.models.request.NewGame;
 import io.scherler.games.risk.models.request.Movement;
 import io.scherler.games.risk.models.request.Territory;
 import io.scherler.games.risk.models.request.UserAccount;
+import io.scherler.games.risk.models.request.UserRequest;
 import io.scherler.games.risk.models.response.AttackResult;
 import io.scherler.games.risk.models.response.MovementInfo;
 import io.scherler.games.risk.models.response.TerritoryInfo;
@@ -60,7 +61,8 @@ class ActionServiceTests {
     @BeforeEach
     void init() {
         val creator = userAccountService.createNew(new UserAccount("testuser"));
-        game = gameService.createNew(new NewGame("testgame", 2, "helloworld"), creator);
+        val newGame = new NewGame("testgame", 2, "helloworld");
+        game = gameService.create(new UserRequest<>(newGame, creator));
         firstPlayer = game.getActivePlayer();
         secondPlayer = playerService.getNextPlayer(game, firstPlayer.getId());
 

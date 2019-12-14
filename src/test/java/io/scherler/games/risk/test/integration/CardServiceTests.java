@@ -4,6 +4,7 @@ import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.models.request.NewGame;
 import io.scherler.games.risk.models.request.UserAccount;
+import io.scherler.games.risk.models.request.UserRequest;
 import io.scherler.games.risk.services.game.CardService;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.identity.UserAccountService;
@@ -37,7 +38,8 @@ class CardServiceTests {
     @BeforeEach
     void init() {
         val creator = userAccountService.createNew(new UserAccount("testuser"));
-        game = gameService.createNew(new NewGame("testgame", 4, "helloworld"), creator);
+        val newGame = new NewGame("testgame", 4, "helloworld");
+        game = gameService.create(new UserRequest<>(newGame, creator));
         firstPlayer = game.getActivePlayer();
     }
 

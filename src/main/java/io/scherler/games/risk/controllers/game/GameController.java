@@ -8,6 +8,7 @@ import io.scherler.games.risk.controllers.defaults.DefaultResourceController;
 import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.models.request.NewGame;
 import io.scherler.games.risk.models.request.UserAccount;
+import io.scherler.games.risk.models.request.UserRequest;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.identity.UserAccountService;
 import java.net.URI;
@@ -44,7 +45,7 @@ public class GameController implements DefaultResourceController<GameEntity> {
 
     @GetMapping()
     public Resources<Resource<GameEntity>> getAll() {
-        List<Resource<GameEntity>> games = gameService.getAllGames().stream()
+        List<Resource<GameEntity>> games = gameService.getAll().stream()
             .map(defaultResourceAssembler::toResource).collect(Collectors.toList());
 
         return new Resources<>(games,
@@ -57,19 +58,19 @@ public class GameController implements DefaultResourceController<GameEntity> {
         val creator = userAccountService
             .createNew(new UserAccount("test")); //todo: load user from http authorization
         Resource<GameEntity> resource = defaultResourceAssembler
-            .toResource(gameService.createNew(newGame, creator));
+            .toResource(gameService.create(new UserRequest<>(newGame, creator)));
 
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
     @GetMapping("/{id}")
     public Resource<GameEntity> getOne(@PathVariable Long id) {
-        return defaultResourceAssembler.toResource(gameService.getGame(id));
+        return defaultResourceAssembler.toResource(gameService.get(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        gameService.deleteGame(id);
+        gameService.delete(id);
 
         return ResponseEntity.noContent().build();
     }
