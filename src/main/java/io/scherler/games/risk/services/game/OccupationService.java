@@ -28,7 +28,7 @@ public class OccupationService {
         this.territoryService = territoryService;
     }
 
-    public OccupationEntity add(GameEntity game, PlayerEntity player, TerritoryEntity territory,
+    public OccupationEntity create(GameEntity game, PlayerEntity player, TerritoryEntity territory,
         int units) {
         val newOccupation = new OccupationEntity(game, territory, player, units, game.getRound());
         return occupationRepository.save(newOccupation);

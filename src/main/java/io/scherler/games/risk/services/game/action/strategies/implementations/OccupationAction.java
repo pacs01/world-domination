@@ -43,7 +43,7 @@ public class OccupationAction extends TypedActionStrategy<Territory, TerritoryIn
     @Override
     protected TerritoryInfo apply(TypedActionContext<Territory> context) {
         val createdOccupation = occupationService
-            .add(context.getGame(), context.getPlayer(), target, 1);
+            .create(context.getGame(), context.getPlayer(), target, 1);
 
         return new TerritoryInfo(target.getName(),
             createdOccupation.getPlayer().getColor().toString(), createdOccupation.getUnits());
