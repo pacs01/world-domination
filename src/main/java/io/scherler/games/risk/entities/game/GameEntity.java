@@ -98,4 +98,8 @@ public class GameEntity extends BaseEntity {
         players.remove(player);
         player.setGame(null);
     }
+
+    public boolean hasStarted() {
+        return !this.state.equals(GameState.INITIALISATION);
+    }
 }

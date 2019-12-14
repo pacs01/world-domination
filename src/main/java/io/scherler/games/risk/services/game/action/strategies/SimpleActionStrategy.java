@@ -19,7 +19,7 @@ public abstract class SimpleActionStrategy<ResponseModelT> extends
     @Override
     protected ActionContext buildActionContext(RequestContext requestContext) {
         val game = gameService.get(requestContext.getGameId());
-        val player = playerService.getPlayer(requestContext.getPlayerId());
+        val player = playerService.get(requestContext.getPlayerId());
         return new ActionContext(game, player);
     }
 }
