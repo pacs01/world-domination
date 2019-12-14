@@ -32,6 +32,9 @@ class CardServiceTests {
     @Autowired
     private UserAccountService userAccountService;
 
+    @Autowired
+    private DatabaseTestHelpers databaseTestHelpers;
+
     private GameEntity game;
     private PlayerEntity firstPlayer;
 
@@ -40,6 +43,8 @@ class CardServiceTests {
         val creator = userAccountService.createNew(new UserAccount("testuser"));
         val newGame = new NewGame("testgame", 4, "helloworld");
         game = gameService.create(new UserRequest<>(newGame, creator));
+        databaseTestHelpers.generatePlayers(game, 4);
+        gameService.startGame(game);
         firstPlayer = game.getActivePlayer();
     }
 

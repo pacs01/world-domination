@@ -54,6 +54,9 @@ class ActionServiceTests {
     @Autowired
     private UserAccountService userAccountService;
 
+    @Autowired
+    private DatabaseTestHelpers databaseTestHelpers;
+
     private GameEntity game;
     private PlayerEntity firstPlayer;
     private PlayerEntity secondPlayer;
@@ -63,6 +66,8 @@ class ActionServiceTests {
         val creator = userAccountService.createNew(new UserAccount("testuser"));
         val newGame = new NewGame("testgame", 2, "helloworld");
         game = gameService.create(new UserRequest<>(newGame, creator));
+        databaseTestHelpers.generatePlayers(game, 2);
+        gameService.startGame(game);
         firstPlayer = game.getActivePlayer();
         secondPlayer = playerService.getNextPlayer(game, firstPlayer.getId());
 

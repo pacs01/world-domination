@@ -77,7 +77,7 @@ public class GameEntity extends BaseEntity {
         this.name = name;
         this.creator = creator;
         this.map = map;
-        this.state = GameState.ACTIVE;
+        this.state = GameState.INITIALISATION;
         round = 1;
     }
 

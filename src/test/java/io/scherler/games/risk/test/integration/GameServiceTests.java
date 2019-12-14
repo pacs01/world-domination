@@ -38,6 +38,9 @@ class GameServiceTests {
     @Autowired
     private ActionService actionService;
 
+    @Autowired
+    private DatabaseTestHelpers databaseTestHelpers;
+
     private GameEntity game;
     private PlayerEntity firstPlayer;
     private PlayerEntity secondPlayer;
@@ -47,6 +50,8 @@ class GameServiceTests {
         val creator = userAccountService.createNew(new UserAccount("testuser"));
         val newGame = new NewGame("testgame", 4, "helloworld");
         game = gameService.create(new UserRequest<>(newGame, creator));
+        databaseTestHelpers.generatePlayers(game, 4);
+        gameService.startGame(game);
         firstPlayer = game.getActivePlayer();
         secondPlayer = playerService.getNextPlayer(game, firstPlayer.getId());
     }
@@ -56,6 +61,19 @@ class GameServiceTests {
         val creator = userAccountService.createNew(new UserAccount("testuser2"));
         val newGame = new NewGame("new-test-game", 4, "helloworld");
         val game = gameService.create(new UserRequest<>(newGame, creator));
+
+        Assertions.assertEquals(0, game.getPlayers().size());
+        Assertions.assertNull(game.getActivePlayer());
+        Assertions.assertEquals(GameState.INITIALISATION, game.getState());
+    }
+
+    @Test
+    void testCreateNewGameWithPlayers() {
+        val creator = userAccountService.createNew(new UserAccount("testuser2"));
+        val newGame = new NewGame("new-test-game", 4, "helloworld");
+        val game = gameService.create(new UserRequest<>(newGame, creator));
+        databaseTestHelpers.generatePlayers(game, 4);
+        gameService.startGame(game);
 
         Assertions.assertEquals(4, game.getPlayers().size());
         Assertions.assertNotNull(game.getActivePlayer());

@@ -36,9 +36,6 @@ public class GameService extends CrudService<GameEntity, UserRequest<NewGame>> {
         val creator = request.getUserAccount();
         val map = mapService.getMap(newGame.getMap());
         val newGameEntity = new GameEntity(newGame.getName(), creator, map);
-        newGameEntity
-            .addPlayers(playerService.generatePlayers(newGameEntity, newGame.getNumberOfPlayers()));
-        newGameEntity.setActivePlayer(getFirstPlayer(newGameEntity));
 
         return entityRepository.save(newGameEntity);
     }
@@ -54,6 +51,18 @@ public class GameService extends CrudService<GameEntity, UserRequest<NewGame>> {
     public GameEntity endTurn(GameEntity game) {
         val nextPlayer = playerService.getNextPlayer(game, game.getActivePlayer().getId());
         game.setActivePlayer(nextPlayer);
+        return entityRepository.save(game);
+    }
+
+    public GameEntity startGame(GameEntity game) {
+        if (game.getPlayers().size() < 2) {
+            throw new IllegalStateException("The game needs at least two players to be started");
+        } else if (game.hasStarted()) {
+            throw new IllegalStateException("The game has been started already");
+        }
+
+        game.setActivePlayer(getFirstPlayer(game));
+        game.setState(GameState.ACTIVE);
         return entityRepository.save(game);
     }
 
