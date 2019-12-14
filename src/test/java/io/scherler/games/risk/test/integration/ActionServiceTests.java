@@ -3,7 +3,7 @@ package io.scherler.games.risk.test.integration;
 import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.models.request.Deployment;
-import io.scherler.games.risk.models.request.Game;
+import io.scherler.games.risk.models.request.NewGame;
 import io.scherler.games.risk.models.request.Movement;
 import io.scherler.games.risk.models.request.Territory;
 import io.scherler.games.risk.models.request.UserAccount;
@@ -60,7 +60,7 @@ class ActionServiceTests {
     @BeforeEach
     void init() {
         val creator = userAccountService.createNew(new UserAccount("testuser"));
-        game = gameService.createNew(new Game("testgame", 2, "helloworld"), creator);
+        game = gameService.createNew(new NewGame("testgame", 2, "helloworld"), creator);
         firstPlayer = game.getActivePlayer();
         secondPlayer = playerService.getNextPlayer(game, firstPlayer.getId());
 

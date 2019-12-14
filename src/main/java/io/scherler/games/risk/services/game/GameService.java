@@ -6,9 +6,10 @@ import io.scherler.games.risk.entities.identity.UserAccountEntity;
 import io.scherler.games.risk.entities.repositories.game.GameRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.GameState;
-import io.scherler.games.risk.models.request.Game;
+import io.scherler.games.risk.models.request.NewGame;
 import io.scherler.games.risk.services.map.MapService;
 import java.util.Comparator;
+import java.util.List;
 import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,7 @@ public class GameService {
     }
 
     @Transactional
-    public GameEntity createNew(Game newGame, UserAccountEntity creator) {
+    public GameEntity createNew(NewGame newGame, UserAccountEntity creator) {
         val map = mapService.getMap(newGame.getMap());
         val newGameEntity = new GameEntity(newGame.getName(), creator, map);
         newGameEntity
@@ -49,6 +50,14 @@ public class GameService {
     public GameEntity getGame(long gameId) {
         return gameRepository.findById(gameId)
             .orElseThrow(() -> new ResourceNotFoundException("Game", gameId));
+    }
+
+    public List<GameEntity> getAllGames() {
+        return gameRepository.findAll();
+    }
+
+    public void deleteGame(long gameId) {
+        gameRepository.deleteById(gameId);
     }
 
     public GameEntity endTurn(GameEntity game) {

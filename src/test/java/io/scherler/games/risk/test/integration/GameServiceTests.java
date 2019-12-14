@@ -3,7 +3,7 @@ package io.scherler.games.risk.test.integration;
 import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.models.GameState;
-import io.scherler.games.risk.models.request.Game;
+import io.scherler.games.risk.models.request.NewGame;
 import io.scherler.games.risk.models.request.Territory;
 import io.scherler.games.risk.models.request.UserAccount;
 import io.scherler.games.risk.services.game.GameService;
@@ -44,7 +44,7 @@ class GameServiceTests {
     @BeforeEach
     void init() {
         val creator = userAccountService.createNew(new UserAccount("testuser"));
-        game = gameService.createNew(new Game("testgame", 4, "helloworld"), creator);
+        game = gameService.createNew(new NewGame("testgame", 4, "helloworld"), creator);
         firstPlayer = game.getActivePlayer();
         secondPlayer = playerService.getNextPlayer(game, firstPlayer.getId());
     }
@@ -52,7 +52,7 @@ class GameServiceTests {
     @Test
     void testCreateNewGame() {
         val creator = userAccountService.createNew(new UserAccount("testuser2"));
-        val game = gameService.createNew(new Game("new-test-game", 4, "helloworld"), creator);
+        val game = gameService.createNew(new NewGame("new-test-game", 4, "helloworld"), creator);
 
         Assertions.assertEquals(4, game.getPlayers().size());
         Assertions.assertNotNull(game.getActivePlayer());

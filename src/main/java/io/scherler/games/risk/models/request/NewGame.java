@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Game {
+public class NewGame {
 
     @NotBlank(message = "Name is mandatory")
     private String name;

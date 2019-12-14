@@ -6,9 +6,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import io.scherler.games.risk.controllers.defaults.DefaultResourceAssembler;
 import io.scherler.games.risk.controllers.defaults.DefaultResourceController;
 import io.scherler.games.risk.entities.game.GameEntity;
-import io.scherler.games.risk.entities.repositories.game.GameRepository;
-import io.scherler.games.risk.exceptions.ResourceNotFoundException;
-import io.scherler.games.risk.models.request.Game;
+import io.scherler.games.risk.models.request.NewGame;
 import io.scherler.games.risk.models.request.UserAccount;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.identity.UserAccountService;
@@ -33,14 +31,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/games")
 public class GameController implements DefaultResourceController<GameEntity> {
 
-    private final GameRepository gameRepository;
     private final DefaultResourceAssembler<GameEntity> defaultResourceAssembler;
     private final GameService gameService;
     private final UserAccountService userAccountService;
 
-    public GameController(GameRepository gameRepository, GameService gameService,
+    public GameController(GameService gameService,
         UserAccountService userAccountService) {
-        this.gameRepository = gameRepository;
         this.gameService = gameService;
         this.userAccountService = userAccountService;
         this.defaultResourceAssembler = new DefaultResourceAssembler<>(this);
@@ -48,7 +44,7 @@ public class GameController implements DefaultResourceController<GameEntity> {
 
     @GetMapping()
     public Resources<Resource<GameEntity>> getAll() {
-        List<Resource<GameEntity>> games = gameRepository.findAll().stream()
+        List<Resource<GameEntity>> games = gameService.getAllGames().stream()
             .map(defaultResourceAssembler::toResource).collect(Collectors.toList());
 
         return new Resources<>(games,
@@ -56,7 +52,8 @@ public class GameController implements DefaultResourceController<GameEntity> {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createNew(@Valid @RequestBody Game newGame) throws URISyntaxException {
+    public ResponseEntity<?> createNew(@Valid @RequestBody NewGame newGame)
+        throws URISyntaxException {
         val creator = userAccountService
             .createNew(new UserAccount("test")); //todo: load user from http authorization
         Resource<GameEntity> resource = defaultResourceAssembler
@@ -67,13 +64,12 @@ public class GameController implements DefaultResourceController<GameEntity> {
 
     @GetMapping("/{id}")
     public Resource<GameEntity> getOne(@PathVariable Long id) {
-        return defaultResourceAssembler.toResource(gameRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Game", id)));
+        return defaultResourceAssembler.toResource(gameService.getGame(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        gameRepository.deleteById(id);
+        gameService.deleteGame(id);
 
         return ResponseEntity.noContent().build();
     }
