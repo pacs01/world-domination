@@ -9,11 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserAccountService extends CrudService<UserAccountEntity, UserAccount> {
 
-    private final UserAccountRepository userAccountRepository;
-
     public UserAccountService(UserAccountRepository userAccountRepository) {
         super(userAccountRepository);
-        this.userAccountRepository = userAccountRepository;
     }
 
     @Override
@@ -23,6 +20,6 @@ public class UserAccountService extends CrudService<UserAccountEntity, UserAccou
 
     @Override
     public UserAccountEntity create(UserAccount request) {
-        return userAccountRepository.save(new UserAccountEntity(request.getName()));
+        return entityRepository.save(new UserAccountEntity(request.getName()));
     }
 }

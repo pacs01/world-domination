@@ -9,6 +9,7 @@ import io.scherler.games.risk.entities.map.MapEntity;
 import io.scherler.games.risk.entities.repositories.map.MapRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.request.Map;
+import io.scherler.games.risk.models.request.UserRequest;
 import io.scherler.games.risk.services.identity.UserAccountService;
 import io.scherler.games.risk.services.map.MapService;
 import java.net.URI;
@@ -58,7 +59,7 @@ public class MapController implements DefaultResourceController<MapEntity> {
         @Valid @RequestBody Map newMap) throws URISyntaxException {
         val userAccount = userAccountService.get(userId);
         Resource<MapEntity> resource = defaultResourceAssembler
-            .toResource(mapService.createNew(newMap, userAccount));
+            .toResource(mapService.create(new UserRequest<>(newMap, userAccount)));
 
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
