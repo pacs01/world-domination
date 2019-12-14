@@ -63,7 +63,7 @@ class ActionServiceTests {
 
     @BeforeEach
     void init() {
-        val creator = userAccountService.createNew(new UserAccount("testuser"));
+        val creator = userAccountService.create(new UserAccount("testuser"));
         val newGame = new NewGame("testgame", 2, "helloworld");
         game = gameService.create(new UserRequest<>(newGame, creator));
         databaseTestHelpers.generatePlayers(game, 2);

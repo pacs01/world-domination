@@ -6,6 +6,7 @@ import io.scherler.games.risk.entities.repositories.game.PlayerRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.PlayerColor;
 import io.scherler.games.risk.models.request.UserRequest;
+import io.scherler.games.risk.services.CrudService;
 import lombok.val;
 import org.springframework.stereotype.Service;
 

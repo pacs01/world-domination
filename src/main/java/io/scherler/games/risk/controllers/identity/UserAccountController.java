@@ -54,7 +54,7 @@ public class UserAccountController implements DefaultResourceController<UserAcco
     public ResponseEntity<?> createNew(@Valid @RequestBody UserAccount newUserAccount)
         throws URISyntaxException {
         Resource<UserAccountEntity> resource = defaultResourceAssembler
-            .toResource(userAccountService.createNew(newUserAccount));
+            .toResource(userAccountService.create(newUserAccount));
 
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }

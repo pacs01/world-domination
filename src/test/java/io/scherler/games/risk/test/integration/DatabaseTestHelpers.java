@@ -28,7 +28,7 @@ public class DatabaseTestHelpers {
         val playerList = new ArrayList<PlayerEntity>();
         for (int i = 0; i < number; i++) {
             val userAccount = userAccountService
-                .createNew(new UserAccount(game.getName() + "-user-" + i));
+                .create(new UserAccount(game.getName() + "-user-" + i));
             playerList.add(playerService.create(new UserRequest<>(game, userAccount)));
         }
 

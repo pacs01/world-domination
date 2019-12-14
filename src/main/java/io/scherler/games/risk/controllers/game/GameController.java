@@ -56,7 +56,7 @@ public class GameController implements DefaultResourceController<GameEntity> {
     public ResponseEntity<?> createNew(@Valid @RequestBody NewGame newGame)
         throws URISyntaxException {
         val creator = userAccountService
-            .createNew(new UserAccount("test")); //todo: load user from http authorization
+            .create(new UserAccount("test")); //todo: load user from http authorization
         Resource<GameEntity> resource = defaultResourceAssembler
             .toResource(gameService.create(new UserRequest<>(newGame, creator)));
 

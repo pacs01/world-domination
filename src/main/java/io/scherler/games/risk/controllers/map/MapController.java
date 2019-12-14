@@ -56,7 +56,7 @@ public class MapController implements DefaultResourceController<MapEntity> {
     @PostMapping()
     public ResponseEntity<?> createNew(@PathVariable("userId") Long userId,
         @Valid @RequestBody Map newMap) throws URISyntaxException {
-        val userAccount = userAccountService.getUser(userId);
+        val userAccount = userAccountService.get(userId);
         Resource<MapEntity> resource = defaultResourceAssembler
             .toResource(mapService.createNew(newMap, userAccount));
 

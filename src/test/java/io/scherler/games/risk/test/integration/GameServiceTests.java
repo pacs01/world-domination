@@ -47,7 +47,7 @@ class GameServiceTests {
 
     @BeforeEach
     void init() {
-        val creator = userAccountService.createNew(new UserAccount("testuser"));
+        val creator = userAccountService.create(new UserAccount("testuser"));
         val newGame = new NewGame("testgame", 4, "helloworld");
         game = gameService.create(new UserRequest<>(newGame, creator));
         databaseTestHelpers.generatePlayers(game, 4);
@@ -58,7 +58,7 @@ class GameServiceTests {
 
     @Test
     void testCreateNewGame() {
-        val creator = userAccountService.createNew(new UserAccount("testuser2"));
+        val creator = userAccountService.create(new UserAccount("testuser2"));
         val newGame = new NewGame("new-test-game", 4, "helloworld");
         val game = gameService.create(new UserRequest<>(newGame, creator));
 
@@ -69,7 +69,7 @@ class GameServiceTests {
 
     @Test
     void testCreateNewGameWithPlayers() {
-        val creator = userAccountService.createNew(new UserAccount("testuser2"));
+        val creator = userAccountService.create(new UserAccount("testuser2"));
         val newGame = new NewGame("new-test-game", 4, "helloworld");
         val game = gameService.create(new UserRequest<>(newGame, creator));
         databaseTestHelpers.generatePlayers(game, 4);

@@ -1,4 +1,4 @@
-package io.scherler.games.risk.services.game;
+package io.scherler.games.risk.services;
 
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import java.util.List;
@@ -11,7 +11,7 @@ public abstract class CrudService<E, C> {
 
     protected final JpaRepository<E, Long> entityRepository;
 
-    CrudService(
+    public CrudService(
         JpaRepository<E, Long> entityRepository) {
         this.entityRepository = entityRepository;
     }
