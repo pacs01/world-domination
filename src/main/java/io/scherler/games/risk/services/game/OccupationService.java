@@ -107,13 +107,8 @@ public class OccupationService {
     }
 
     public List<TerritoryInfo> getTerritoryInfos(long gameId) {
-        return occupationRepository.findByGameId(gameId).stream().map(this::createTerritoryInfo)
+        return occupationRepository.findByGameId(gameId).stream().map(TerritoryInfo::from)
             .collect(Collectors.toList());
-    }
-
-    private TerritoryInfo createTerritoryInfo(OccupationEntity occupation) {
-        return new TerritoryInfo(occupation.getTerritory().getName(),
-            occupation.getPlayer().getColor().toString(), occupation.getUnits());
     }
 
     public boolean areConnected(long gameId, OccupationEntity source, OccupationEntity target) {

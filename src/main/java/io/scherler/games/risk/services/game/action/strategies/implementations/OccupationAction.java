@@ -45,7 +45,6 @@ public class OccupationAction extends TypedActionStrategy<Territory, TerritoryIn
         val createdOccupation = occupationService
             .create(context.getGame(), context.getPlayer(), target, 1);
 
-        return new TerritoryInfo(target.getName(),
-            createdOccupation.getPlayer().getColor().toString(), createdOccupation.getUnits());
+        return TerritoryInfo.from(createdOccupation);
     }
 }

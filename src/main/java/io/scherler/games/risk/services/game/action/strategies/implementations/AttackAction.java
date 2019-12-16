@@ -85,12 +85,8 @@ public class AttackAction extends TypedActionStrategy<Movement, AttackResult> {
             .applyAttackResult(new Route(sourceOccupation, targetOccupation), parties,
                 context.getPlayer());
 
-        val movementInfo = new MovementInfo(new TerritoryInfo(source.getName(),
-            updatedRoute.getSource().getPlayer().getColor().toString(),
-            updatedRoute.getSource().getUnits()),
-            new TerritoryInfo(target.getName(),
-                updatedRoute.getTarget().getPlayer().getColor().toString(),
-                updatedRoute.getTarget().getUnits()));
+        val movementInfo = new MovementInfo(TerritoryInfo.from(updatedRoute.getSource()),
+            TerritoryInfo.from(updatedRoute.getTarget()));
         return new AttackResult(movementInfo, attackDices, defendDices);
     }
 

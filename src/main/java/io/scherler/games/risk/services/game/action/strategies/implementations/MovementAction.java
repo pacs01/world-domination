@@ -65,11 +65,7 @@ public class MovementAction extends TypedActionStrategy<Movement, MovementInfo> 
             .moveUnits(new Route(sourceOccupation, targetOccupation),
                 context.getRequest().getNumberOfUnits());
 
-        return new MovementInfo(new TerritoryInfo(source.getName(),
-            updatedRoute.getSource().getPlayer().getColor().toString(),
-            updatedRoute.getSource().getUnits()),
-            new TerritoryInfo(target.getName(),
-                updatedRoute.getTarget().getPlayer().getColor().toString(),
-                updatedRoute.getTarget().getUnits()));
+        return new MovementInfo(TerritoryInfo.from(updatedRoute.getSource()),
+            TerritoryInfo.from(updatedRoute.getTarget()));
     }
 }

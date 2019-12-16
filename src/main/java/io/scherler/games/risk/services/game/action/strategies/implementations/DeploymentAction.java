@@ -45,7 +45,6 @@ public class DeploymentAction extends TypedActionStrategy<Deployment, TerritoryI
             .reduceDeployableUnits(context.getPlayer(), context.getRequest().getNumberOfUnits());
         val updatedOccupation = occupationService
             .addUnits(occupation, context.getRequest().getNumberOfUnits());
-        return new TerritoryInfo(target.getName(),
-            updatedOccupation.getPlayer().getColor().toString(), updatedOccupation.getUnits());
+        return TerritoryInfo.from(updatedOccupation);
     }
 }
