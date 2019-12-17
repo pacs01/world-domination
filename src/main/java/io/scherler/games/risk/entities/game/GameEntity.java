@@ -78,7 +78,7 @@ public class GameEntity extends BaseEntity {
         this.creator = creator;
         this.map = map;
         this.state = GameState.INITIALISATION;
-        round = 1;
+        round = 0;
     }
 
     public int increaseRound() {

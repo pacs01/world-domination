@@ -52,6 +52,7 @@ public class GameService extends CrudService<GameEntity, UserRequest<NewGame>> {
     public GameEntity endTurn(GameEntity game) {
         val nextPlayer = playerService.getNextPlayer(game, game.getActivePlayer().getId());
         game.setActivePlayer(nextPlayer);
+        game.increaseRound();
         return entityRepository.save(game);
     }
 
@@ -64,6 +65,7 @@ public class GameService extends CrudService<GameEntity, UserRequest<NewGame>> {
 
         game.setActivePlayer(getFirstPlayer(game));
         game.setState(GameState.ACTIVE);
+        game.increaseRound();
         return entityRepository.save(game);
     }
 

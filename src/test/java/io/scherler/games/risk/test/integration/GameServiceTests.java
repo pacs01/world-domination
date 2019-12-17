@@ -65,6 +65,7 @@ class GameServiceTests {
         Assertions.assertEquals(0, game.getPlayers().size());
         Assertions.assertNull(game.getActivePlayer());
         Assertions.assertEquals(GameState.INITIALISATION, game.getState());
+        Assertions.assertEquals(0, game.getRound());
     }
 
     @Test
@@ -78,6 +79,7 @@ class GameServiceTests {
         Assertions.assertEquals(4, game.getPlayers().size());
         Assertions.assertNotNull(game.getActivePlayer());
         Assertions.assertEquals(GameState.ACTIVE, game.getState());
+        Assertions.assertEquals(1, game.getRound());
     }
 
     @Test
@@ -90,6 +92,7 @@ class GameServiceTests {
         Assertions.assertEquals(secondPlayer, turnResult.getNextPlayer());
         Assertions.assertNotNull(turnResult.getCard());
         Assertions.assertEquals(secondPlayer, game.getActivePlayer());
+        Assertions.assertEquals(2, game.getRound());
     }
 
     @Test
@@ -99,5 +102,6 @@ class GameServiceTests {
         Assertions.assertEquals(secondPlayer, turnResult.getNextPlayer());
         Assertions.assertNull(turnResult.getCard());
         Assertions.assertEquals(secondPlayer, game.getActivePlayer());
+        Assertions.assertEquals(2, game.getRound());
     }
 }
