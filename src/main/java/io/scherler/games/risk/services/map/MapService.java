@@ -5,9 +5,9 @@ import io.scherler.games.risk.entities.map.MapEntity;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.entities.repositories.map.MapRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
-import io.scherler.games.risk.models.request.Continent;
-import io.scherler.games.risk.models.request.Map;
-import io.scherler.games.risk.models.request.UserRequest;
+import io.scherler.games.risk.models.request.map.Continent;
+import io.scherler.games.risk.models.request.map.Map;
+import io.scherler.games.risk.models.request.identity.UserRequest;
 import io.scherler.games.risk.services.CrudService;
 import java.util.stream.Collectors;
 import lombok.val;
@@ -38,6 +38,7 @@ public class MapService extends CrudService<MapEntity, UserRequest<Map>> {
         return mapRepository.save(newMap);
     }
 
+    // todo find by naturalId?
     public MapEntity getMap(String name) {
         return mapRepository.findByName(name).stream().findFirst()
             .orElseThrow(() -> new ResourceNotFoundException("Map", "name = " + name));

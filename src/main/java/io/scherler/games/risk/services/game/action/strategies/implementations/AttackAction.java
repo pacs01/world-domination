@@ -2,10 +2,10 @@ package io.scherler.games.risk.services.game.action.strategies.implementations;
 
 import io.scherler.games.risk.entities.game.OccupationEntity;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
-import io.scherler.games.risk.models.request.Movement;
-import io.scherler.games.risk.models.response.AttackResult;
-import io.scherler.games.risk.models.response.MovementInfo;
-import io.scherler.games.risk.models.response.TerritoryInfo;
+import io.scherler.games.risk.models.request.game.Movement;
+import io.scherler.games.risk.models.response.game.AttackResult;
+import io.scherler.games.risk.models.response.game.MovementInfo;
+import io.scherler.games.risk.models.response.map.TerritoryInfo;
 import io.scherler.games.risk.services.game.DiceService;
 import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;

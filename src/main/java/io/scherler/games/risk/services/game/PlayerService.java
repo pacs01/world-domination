@@ -5,8 +5,9 @@ import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.entities.repositories.game.PlayerRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.PlayerColor;
-import io.scherler.games.risk.models.request.UserRequest;
+import io.scherler.games.risk.models.request.identity.UserRequest;
 import io.scherler.games.risk.services.CrudService;
+import java.util.List;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
@@ -58,5 +59,14 @@ public class PlayerService extends CrudService<PlayerEntity, UserRequest<GameEnt
     public PlayerEntity reduceDeployableUnits(PlayerEntity player, int numberOfUnits) {
         player.reduceDeployableUnits(numberOfUnits);
         return entityRepository.save(player);
+    }
+
+    public PlayerEntity getOneByIdAndGameId(Long playerId, Long gameId) {
+        return playerRepository.findByIdAndGameId(playerId, gameId).stream().findFirst()
+            .orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
+    }
+
+    public List<PlayerEntity> getAllByGameId(Long gameId) {
+        return playerRepository.findByGameId(gameId);
     }
 }

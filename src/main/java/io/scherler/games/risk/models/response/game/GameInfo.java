@@ -1,6 +1,7 @@
-package io.scherler.games.risk.models.response;
+package io.scherler.games.risk.models.response.game;
 
 import io.scherler.games.risk.entities.game.GameEntity;
+import io.scherler.games.risk.models.response.IdentifiableResource;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -25,6 +26,9 @@ public class GameInfo extends IdentifiableResource {
     private PlayerInfo activePlayer;
 
     public static GameInfo from(GameEntity gameEntity) {
+        if (gameEntity == null) {
+            return null;
+        }
         return GameInfo.builder()
             .id(gameEntity.getId())
             .name(gameEntity.getName())

@@ -6,7 +6,7 @@ import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.entities.repositories.game.OccupationRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
-import io.scherler.games.risk.models.response.TerritoryInfo;
+import io.scherler.games.risk.models.response.map.TerritoryInfo;
 import io.scherler.games.risk.services.game.action.models.Parties;
 import io.scherler.games.risk.services.game.action.models.Route;
 import io.scherler.games.risk.services.map.TerritoryService;

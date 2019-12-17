@@ -1,4 +1,4 @@
-package io.scherler.games.risk.models.request;
+package io.scherler.games.risk.models.request.map;
 
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

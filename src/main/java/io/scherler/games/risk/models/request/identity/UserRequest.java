@@ -1,4 +1,4 @@
-package io.scherler.games.risk.models.request;
+package io.scherler.games.risk.models.request.identity;
 
 import io.scherler.games.risk.entities.identity.UserAccountEntity;
 import lombok.Value;

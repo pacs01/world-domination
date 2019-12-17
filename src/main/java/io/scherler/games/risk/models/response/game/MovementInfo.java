@@ -1,5 +1,6 @@
-package io.scherler.games.risk.models.response;
+package io.scherler.games.risk.models.response.game;
 
+import io.scherler.games.risk.models.response.map.TerritoryInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

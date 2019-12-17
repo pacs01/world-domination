@@ -1,6 +1,7 @@
-package io.scherler.games.risk.models.response;
+package io.scherler.games.risk.models.response.map;
 
 import io.scherler.games.risk.entities.map.MapEntity;
+import io.scherler.games.risk.models.response.IdentifiableResource;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Data;
@@ -23,6 +24,9 @@ public class MapInfo extends IdentifiableResource {
     private List<ContinentInfo> continents;
 
     public static MapInfo from(MapEntity mapEntity) {
+        if (mapEntity == null) {
+            return null;
+        }
         return MapInfo.builder()
             .id(mapEntity.getId())
             .name(mapEntity.getName())

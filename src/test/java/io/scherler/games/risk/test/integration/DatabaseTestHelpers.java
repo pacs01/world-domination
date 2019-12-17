@@ -2,8 +2,8 @@ package io.scherler.games.risk.test.integration;
 
 import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
-import io.scherler.games.risk.models.request.UserAccount;
-import io.scherler.games.risk.models.request.UserRequest;
+import io.scherler.games.risk.models.request.identity.UserAccount;
+import io.scherler.games.risk.models.request.identity.UserRequest;
 import io.scherler.games.risk.models.response.IdentifiableResource;
 import io.scherler.games.risk.services.game.PlayerService;
 import io.scherler.games.risk.services.identity.UserAccountService;

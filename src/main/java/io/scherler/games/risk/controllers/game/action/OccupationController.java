@@ -1,6 +1,6 @@
 package io.scherler.games.risk.controllers.game.action;
 
-import io.scherler.games.risk.models.request.Territory;
+import io.scherler.games.risk.models.request.map.Territory;
 import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.action.ActionService;
 import javax.validation.Valid;

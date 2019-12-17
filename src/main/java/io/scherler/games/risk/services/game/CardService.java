@@ -5,7 +5,7 @@ import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.entities.repositories.game.CardRepository;
-import io.scherler.games.risk.models.response.Card;
+import io.scherler.games.risk.models.response.game.Card;
 import io.scherler.games.risk.services.map.TerritoryService;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;

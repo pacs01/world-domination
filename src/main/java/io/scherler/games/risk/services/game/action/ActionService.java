@@ -1,12 +1,12 @@
 package io.scherler.games.risk.services.game.action;
 
-import io.scherler.games.risk.models.request.Deployment;
-import io.scherler.games.risk.models.request.Movement;
-import io.scherler.games.risk.models.request.Territory;
-import io.scherler.games.risk.models.response.AttackResult;
-import io.scherler.games.risk.models.response.MovementInfo;
-import io.scherler.games.risk.models.response.TerritoryInfo;
-import io.scherler.games.risk.models.response.TurnResult;
+import io.scherler.games.risk.models.request.game.Deployment;
+import io.scherler.games.risk.models.request.game.Movement;
+import io.scherler.games.risk.models.request.map.Territory;
+import io.scherler.games.risk.models.response.game.AttackResult;
+import io.scherler.games.risk.models.response.game.MovementInfo;
+import io.scherler.games.risk.models.response.map.TerritoryInfo;
+import io.scherler.games.risk.models.response.game.TurnResult;
 import io.scherler.games.risk.services.game.action.models.context.RequestContext;
 import io.scherler.games.risk.services.game.action.models.context.TypedRequestContext;
 import io.scherler.games.risk.services.game.action.strategies.implementations.AttackAction;

@@ -5,16 +5,15 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import io.scherler.games.risk.controllers.defaults.DefaultResourceAssembler;
 import io.scherler.games.risk.controllers.defaults.DefaultResourceController;
-import io.scherler.games.risk.entities.identity.UserAccountEntity;
-import io.scherler.games.risk.entities.repositories.identity.UserAccountRepository;
-import io.scherler.games.risk.exceptions.ResourceNotFoundException;
-import io.scherler.games.risk.models.request.UserAccount;
+import io.scherler.games.risk.models.request.identity.UserAccount;
+import io.scherler.games.risk.models.response.identity.UserInfo;
 import io.scherler.games.risk.services.identity.UserAccountService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
+import lombok.val;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
@@ -28,23 +27,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/users")
-public class UserAccountController implements DefaultResourceController<UserAccountEntity> {
+public class UserAccountController implements DefaultResourceController<UserInfo> {
 
-    private final UserAccountRepository userAccountRepository;
     private final UserAccountService userAccountService;
-    private final DefaultResourceAssembler<UserAccountEntity> defaultResourceAssembler;
+    private final DefaultResourceAssembler<UserInfo> resourceAssembler;
 
-    public UserAccountController(UserAccountRepository userAccountRepository,
-        UserAccountService userAccountService) {
-        this.userAccountRepository = userAccountRepository;
+    public UserAccountController(UserAccountService userAccountService) {
         this.userAccountService = userAccountService;
-        this.defaultResourceAssembler = new DefaultResourceAssembler<>(this);
+        this.resourceAssembler = new DefaultResourceAssembler<>(this);
     }
 
     @GetMapping()
-    public Resources<Resource<UserAccountEntity>> getAll() {
-        List<Resource<UserAccountEntity>> userAccounts = userAccountRepository.findAll().stream()
-            .map(defaultResourceAssembler::toResource).collect(Collectors.toList());
+    public Resources<Resource<UserInfo>> getAll() {
+        List<Resource<UserInfo>> userAccounts = userAccountService.getAll().stream()
+            .map(UserInfo::from).map(resourceAssembler::toResource)
+            .collect(Collectors.toList());
 
         return new Resources<>(userAccounts,
             linkTo(methodOn(UserAccountController.class).getAll()).withSelfRel());
@@ -53,21 +50,21 @@ public class UserAccountController implements DefaultResourceController<UserAcco
     @PostMapping()
     public ResponseEntity<?> createNew(@Valid @RequestBody UserAccount newUserAccount)
         throws URISyntaxException {
-        Resource<UserAccountEntity> resource = defaultResourceAssembler
-            .toResource(userAccountService.create(newUserAccount));
+        val userAccount = userAccountService.create(newUserAccount);
+        Resource<UserInfo> resource = resourceAssembler
+            .toResource(UserInfo.from(userAccount));
 
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
     @GetMapping("/{id}")
-    public Resource<UserAccountEntity> getOne(@PathVariable Long id) {
-        return defaultResourceAssembler.toResource(userAccountRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("UserAccount", id)));
+    public Resource<UserInfo> getOne(@PathVariable Long id) {
+        return resourceAssembler.toResource(UserInfo.from(userAccountService.get(id)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        userAccountRepository.deleteById(id);
+        userAccountService.delete(id);
 
         return ResponseEntity.noContent().build();
     }

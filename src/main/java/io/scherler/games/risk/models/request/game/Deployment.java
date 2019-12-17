@@ -1,5 +1,6 @@
-package io.scherler.games.risk.models.request;
+package io.scherler.games.risk.models.request.game;
 
+import io.scherler.games.risk.models.request.map.Territory;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

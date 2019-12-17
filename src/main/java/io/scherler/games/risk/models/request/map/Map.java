@@ -1,4 +1,4 @@
-package io.scherler.games.risk.models.request;
+package io.scherler.games.risk.models.request.map;
 
 import java.util.List;
 import javax.validation.constraints.NotBlank;
