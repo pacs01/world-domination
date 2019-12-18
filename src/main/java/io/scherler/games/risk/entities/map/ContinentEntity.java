@@ -1,6 +1,5 @@
 package io.scherler.games.risk.entities.map;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.scherler.games.risk.entities.BaseEntity;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,7 +35,6 @@ public class ContinentEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "mapId")
     @EqualsAndHashCode.Include
-    @JsonIgnore
     private MapEntity map;
 
     @OneToMany(mappedBy = "continent", cascade = CascadeType.ALL)

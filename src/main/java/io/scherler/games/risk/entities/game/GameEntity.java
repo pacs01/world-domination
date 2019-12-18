@@ -1,6 +1,5 @@
 package io.scherler.games.risk.entities.game;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.scherler.games.risk.entities.BaseEntity;
 import io.scherler.games.risk.entities.identity.UserAccountEntity;
 import io.scherler.games.risk.entities.map.MapEntity;
@@ -33,7 +32,6 @@ import org.hibernate.annotations.NaturalId;
 @NoArgsConstructor
 public class GameEntity extends BaseEntity {
 
-    // todo: remove @JsonIgnore from all entities (use different models)
     // todo: check @ToString(excludes...) on all entities
 
     @NaturalId
@@ -45,23 +43,19 @@ public class GameEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "creatorId")
     @EqualsAndHashCode.Include
-    @JsonIgnore
     private UserAccountEntity creator;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "mapId")
-    @JsonIgnore
     private MapEntity map;
 
     @Column(nullable = false)
     private GameState state;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-    @JsonIgnore
     private Set<PlayerEntity> players = new HashSet<>();
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-    @JsonIgnore
     private Set<OccupationEntity> occupations = new HashSet<>();
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)

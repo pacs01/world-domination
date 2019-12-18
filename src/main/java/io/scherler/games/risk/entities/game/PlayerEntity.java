@@ -1,6 +1,5 @@
 package io.scherler.games.risk.entities.game;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.scherler.games.risk.entities.identity.UserAccountEntity;
 import io.scherler.games.risk.models.PlayerColor;
 import java.util.HashSet;
@@ -32,7 +31,6 @@ public class PlayerEntity extends BaseGameEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "userAccountId")
     @EqualsAndHashCode.Include
-    @JsonIgnore
     private UserAccountEntity userAccount;
 
     private PlayerColor color;

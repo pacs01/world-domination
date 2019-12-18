@@ -1,6 +1,5 @@
 package io.scherler.games.risk.entities.map;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.scherler.games.risk.entities.BaseEntity;
 import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.identity.UserAccountEntity;
@@ -38,14 +37,12 @@ public class MapEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creatorId")
     @EqualsAndHashCode.Include
-    @JsonIgnore
     private UserAccountEntity creator;
 
     @OneToMany(mappedBy = "map", cascade = CascadeType.ALL)
     private Set<ContinentEntity> continents = new HashSet<>();
 
     @OneToMany(mappedBy = "map", cascade = CascadeType.ALL)
-    @JsonIgnore
     private Set<GameEntity> games = new HashSet<>();
 
     public MapEntity(String name, UserAccountEntity creator) {

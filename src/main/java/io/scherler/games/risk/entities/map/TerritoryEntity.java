@@ -1,6 +1,5 @@
 package io.scherler.games.risk.entities.map;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.scherler.games.risk.entities.BaseEntity;
 import io.scherler.games.risk.entities.game.CardEntity;
 import io.scherler.games.risk.entities.game.OccupationEntity;
@@ -40,19 +39,15 @@ public class TerritoryEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "continentId")
     @EqualsAndHashCode.Include
-    @JsonIgnore
     private ContinentEntity continent;
 
     @ManyToMany
-    @JsonIgnore
     private Set<TerritoryEntity> adjacentTerritories = new HashSet<>();
 
     @OneToMany(mappedBy = "territory", cascade = CascadeType.ALL)
-    @JsonIgnore
     private Set<OccupationEntity> occupations = new HashSet<>();
 
     @OneToMany(mappedBy = "territory", cascade = CascadeType.ALL)
-    @JsonIgnore
     private Set<CardEntity> cards = new HashSet<>();
 
     public TerritoryEntity(String name, ContinentEntity continent) {
