@@ -10,14 +10,12 @@ import javax.persistence.UniqueConstraint;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 
 @Data
 @Entity
 @Table(name = "card", uniqueConstraints = @UniqueConstraint(columnNames = {"gameId",
     "territoryId"}))
-@ToString(exclude = {"player", "territory"})
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class CardEntity extends BaseGameEntity {

@@ -23,7 +23,7 @@ import org.hibernate.annotations.NaturalId;
 @Data
 @Entity
 @Table(name = "map", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "creatorId"}))
-@ToString(exclude = "creator")
+@ToString(exclude = {"games", "continents"})
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class MapEntity extends BaseEntity {

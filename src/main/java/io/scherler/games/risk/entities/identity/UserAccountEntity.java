@@ -14,11 +14,13 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 
 @Data
 @Entity
 @Table(name = "useraccount")
+@ToString(exclude = {"games", "maps", "players"})
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class UserAccountEntity extends BaseEntity {

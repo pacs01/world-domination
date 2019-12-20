@@ -25,7 +25,7 @@ import org.hibernate.annotations.NaturalId;
 @Entity
 @Table(name = "territory", uniqueConstraints = @UniqueConstraint(columnNames = {"name",
     "continentId"}))
-@ToString(exclude = {"continent", "adjacentTerritories"})
+@ToString(exclude = {"adjacentTerritories", "occupations", "cards"})
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class TerritoryEntity extends BaseEntity {

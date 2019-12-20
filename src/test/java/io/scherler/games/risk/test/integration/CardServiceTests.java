@@ -2,12 +2,7 @@ package io.scherler.games.risk.test.integration;
 
 import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
-import io.scherler.games.risk.models.request.game.NewGame;
-import io.scherler.games.risk.models.request.identity.UserAccount;
-import io.scherler.games.risk.models.request.identity.UserRequest;
 import io.scherler.games.risk.services.game.CardService;
-import io.scherler.games.risk.services.game.GameService;
-import io.scherler.games.risk.services.identity.UserAccountService;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,12 +22,6 @@ class CardServiceTests {
     private CardService cardService;
 
     @Autowired
-    private GameService gameService;
-
-    @Autowired
-    private UserAccountService userAccountService;
-
-    @Autowired
     private DatabaseTestHelpers databaseTestHelpers;
 
     private GameEntity game;
@@ -40,11 +29,7 @@ class CardServiceTests {
 
     @BeforeEach
     void init() {
-        val creator = userAccountService.create(new UserAccount("testuser"));
-        val newGame = new NewGame("testgame", 4, "helloworld");
-        game = gameService.create(new UserRequest<>(newGame, creator));
-        databaseTestHelpers.generatePlayers(game, 4);
-        gameService.startGame(game);
+        game = databaseTestHelpers.generateActiveGame("testgame", 4, "testuser");
         firstPlayer = game.getActivePlayer();
     }
 

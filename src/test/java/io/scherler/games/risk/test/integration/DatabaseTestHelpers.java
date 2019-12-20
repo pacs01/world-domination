@@ -1,12 +1,17 @@
 package io.scherler.games.risk.test.integration;
 
+import io.scherler.games.risk.LoadDatabase;
 import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
+import io.scherler.games.risk.entities.identity.UserAccountEntity;
+import io.scherler.games.risk.models.request.game.NewGame;
 import io.scherler.games.risk.models.request.identity.UserAccount;
 import io.scherler.games.risk.models.request.identity.UserRequest;
 import io.scherler.games.risk.models.response.IdentifiableResource;
+import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.PlayerService;
 import io.scherler.games.risk.services.identity.UserAccountService;
+import io.scherler.games.risk.services.map.MapService;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +23,8 @@ import org.springframework.stereotype.Service;
 public class DatabaseTestHelpers {
 
     private final UserAccountService userAccountService;
+    private final MapService mapService;
+    private final GameService gameService;
     private final PlayerService playerService;
     private static final String PACKAGE_DOMAIN;
 
@@ -28,9 +35,38 @@ public class DatabaseTestHelpers {
 
     public DatabaseTestHelpers(
         UserAccountService userAccountService,
+        MapService mapService, GameService gameService,
         PlayerService playerService) {
         this.userAccountService = userAccountService;
+        this.mapService = mapService;
+        this.gameService = gameService;
         this.playerService = playerService;
+    }
+
+    GameEntity generateActiveGame(String name, int numberOfPlayers, String username) {
+        val game = generateGameWithPlayers(name, numberOfPlayers, username);
+        return gameService.startGame(game);
+    }
+
+    GameEntity generateGameWithPlayers(String name, int numberOfPlayers, String username) {
+        val game = generateGame(name, numberOfPlayers, username);
+        generatePlayers(game, numberOfPlayers);
+        return game;
+    }
+
+    GameEntity generateGameWithMapCreator(String name, int numberOfPlayers) {
+        val creator = mapService.getMap(LoadDatabase.TEST_MAP_NAME).getCreator();
+        return generateGame(name, numberOfPlayers, creator);
+    }
+
+    GameEntity generateGame(String name, int numberOfPlayers, String username) {
+        val creator = userAccountService.create(new UserAccount(username));
+        return generateGame(name, numberOfPlayers, creator);
+    }
+
+    GameEntity generateGame(String name, int numberOfPlayers, UserAccountEntity creator) {
+        val newGame = new NewGame(name, numberOfPlayers, LoadDatabase.TEST_MAP_NAME);
+        return gameService.create(new UserRequest<>(newGame, creator));
     }
 
     List<PlayerEntity> generatePlayers(GameEntity game, int number) {

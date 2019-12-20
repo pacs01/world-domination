@@ -1,5 +1,6 @@
 package io.scherler.games.risk.test.unit.testdata;
 
+import io.scherler.games.risk.LoadDatabase;
 import io.scherler.games.risk.entities.identity.UserAccountEntity;
 import io.scherler.games.risk.entities.map.ContinentEntity;
 import io.scherler.games.risk.entities.map.MapEntity;
@@ -119,7 +120,7 @@ public class World {
     }
 
     private void generateMap() {
-        map = new MapEntity("helloworld", creator);
+        map = new MapEntity(LoadDatabase.TEST_MAP_NAME, creator);
     }
 
     private void generateContinents() {

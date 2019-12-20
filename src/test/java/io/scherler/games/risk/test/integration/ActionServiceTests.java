@@ -4,20 +4,15 @@ import io.scherler.games.risk.entities.game.GameEntity;
 import io.scherler.games.risk.entities.game.PlayerEntity;
 import io.scherler.games.risk.models.request.game.Deployment;
 import io.scherler.games.risk.models.request.game.Movement;
-import io.scherler.games.risk.models.request.game.NewGame;
 import io.scherler.games.risk.models.request.map.Territory;
-import io.scherler.games.risk.models.request.identity.UserAccount;
-import io.scherler.games.risk.models.request.identity.UserRequest;
 import io.scherler.games.risk.models.response.game.AttackResult;
 import io.scherler.games.risk.models.response.game.MovementInfo;
 import io.scherler.games.risk.models.response.game.PlayerInfo;
 import io.scherler.games.risk.models.response.map.TerritoryInfo;
 import io.scherler.games.risk.services.game.DiceService;
-import io.scherler.games.risk.services.game.GameService;
 import io.scherler.games.risk.services.game.OccupationService;
 import io.scherler.games.risk.services.game.PlayerService;
 import io.scherler.games.risk.services.game.action.ActionService;
-import io.scherler.games.risk.services.identity.UserAccountService;
 import java.util.Arrays;
 import java.util.Collections;
 import lombok.val;
@@ -44,16 +39,10 @@ class ActionServiceTests {
     private ActionService actionService;
 
     @Autowired
-    private GameService gameService;
-
-    @Autowired
     private PlayerService playerService;
 
     @MockBean
     private DiceService mockedDiceService;
-
-    @Autowired
-    private UserAccountService userAccountService;
 
     @Autowired
     private DatabaseTestHelpers databaseTestHelpers;
@@ -64,11 +53,7 @@ class ActionServiceTests {
 
     @BeforeEach
     void init() {
-        val creator = userAccountService.create(new UserAccount("testuser"));
-        val newGame = new NewGame("testgame", 2, "helloworld");
-        game = gameService.create(new UserRequest<>(newGame, creator));
-        databaseTestHelpers.generatePlayers(game, 2);
-        gameService.startGame(game);
+        game = databaseTestHelpers.generateActiveGame("testgame", 2, "testuser");
         firstPlayer = game.getActivePlayer();
         secondPlayer = playerService.getNextPlayer(game, firstPlayer.getId());
 

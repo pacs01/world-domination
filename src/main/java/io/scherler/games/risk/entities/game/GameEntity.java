@@ -32,8 +32,6 @@ import org.hibernate.annotations.NaturalId;
 @NoArgsConstructor
 public class GameEntity extends BaseEntity {
 
-    // todo: check @ToString(excludes...) on all entities
-
     @NaturalId
     @Column(nullable = false)
     @EqualsAndHashCode.Include

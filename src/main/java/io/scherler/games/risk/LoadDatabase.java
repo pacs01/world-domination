@@ -20,6 +20,8 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class LoadDatabase {
 
+    public static final String TEST_MAP_NAME = "helloworld";
+
     // todo move database initialization to Liquibase
     @Bean
     CommandLineRunner initDatabase(UserAccountRepository userAccountRepository,
@@ -33,7 +35,7 @@ public class LoadDatabase {
             userAccountRepository.save(userAccount);
 
             log.info("Creating map...");
-            val map = new MapEntity("helloworld", userAccount);
+            val map = new MapEntity(TEST_MAP_NAME, userAccount);
             mapRepository.save(map);
 
             log.info("Creating continents...");

@@ -22,7 +22,7 @@ import org.hibernate.annotations.NaturalId;
 @Entity
 @Table(name = "player", uniqueConstraints = @UniqueConstraint(columnNames = {"gameId",
     "userAccountId"}))
-@ToString(exclude = {"userAccount"})
+@ToString(exclude = {"occupations", "cards"})
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class PlayerEntity extends BaseGameEntity {
