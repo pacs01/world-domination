@@ -41,7 +41,12 @@ public class ContinentEntity extends BaseEntity {
     private Set<TerritoryEntity> territories = new HashSet<>();
 
     public ContinentEntity(MapEntity map, String name) {
-        this.map = map;
+        map.addContinent(this);
         this.name = name;
+    }
+
+    void addTerritory(TerritoryEntity territory) {
+        territories.add(territory);
+        territory.setContinent(this);
     }
 }

@@ -3,19 +3,26 @@ package io.scherler.games.risk.services.map;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.entities.repositories.map.TerritoryRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
+import io.scherler.games.risk.services.ReadonlyService;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TerritoryService {
+public class TerritoryService extends ReadonlyService<TerritoryEntity> {
 
     private final TerritoryRepository territoryRepository;
 
     public TerritoryService(TerritoryRepository territoryRepository) {
+        super(territoryRepository);
         this.territoryRepository = territoryRepository;
     }
 
-    public TerritoryEntity getTerritory(long mapId, String name) {
+    @Override
+    protected String getResourceName() {
+        return "Territory";
+    }
+
+    public TerritoryEntity getByName(long mapId, String name) {
         return territoryRepository.findByContinentMapIdAndName(mapId, name)
             .stream()
             .findFirst()

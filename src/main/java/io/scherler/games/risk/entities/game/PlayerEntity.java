@@ -47,11 +47,21 @@ public class PlayerEntity extends BaseGameEntity {
 
     public PlayerEntity(GameEntity game, UserAccountEntity userAccount, int position,
         PlayerColor color, int unitsToDeploy) {
-        this.game = game;
-        this.userAccount = userAccount;
+        game.addPlayer(this);
+        userAccount.addPlayer(this);
         this.position = position;
         this.color = color;
         this.unitsToDeploy = unitsToDeploy;
+    }
+
+    void addOccupation(OccupationEntity occupation) {
+        occupations.add(occupation);
+        occupation.setPlayer(this);
+    }
+
+    void addCard(CardEntity card) {
+        cards.add(card);
+        card.setPlayer(this);
     }
 
     public int reduceDeployableUnits(int numberOfUnits) {

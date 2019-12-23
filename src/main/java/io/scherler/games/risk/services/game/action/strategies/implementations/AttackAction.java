@@ -48,9 +48,9 @@ public class AttackAction extends TypedActionStrategy<Movement, AttackResult> {
     @Override
     protected void buildCustomActionContext(TypedActionContext<Movement> context) {
         source = territoryService
-            .getTerritory(context.getGame().getMap().getId(), context.getRequest().getSource());
+            .getByName(context.getGame().getMap().getId(), context.getRequest().getSource());
         target = territoryService
-            .getTerritory(context.getGame().getMap().getId(), context.getRequest().getName());
+            .getByName(context.getGame().getMap().getId(), context.getRequest().getName());
 
         sourceOccupation = occupationService
             .getOccupationByPlayer(context.getGame().getId(), context.getPlayer().getId(),

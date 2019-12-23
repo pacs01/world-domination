@@ -42,4 +42,19 @@ public class UserAccountEntity extends BaseEntity {
     public UserAccountEntity(String name) {
         this.name = name;
     }
+
+    public void addMap(MapEntity map) {
+        maps.add(map);
+        map.setCreator(this);
+    }
+
+    public void addGame(GameEntity game) {
+        games.add(game);
+        game.setCreator(this);
+    }
+
+    public void addPlayer(PlayerEntity player) {
+        players.add(player);
+        player.setUserAccount(this);
+    }
 }

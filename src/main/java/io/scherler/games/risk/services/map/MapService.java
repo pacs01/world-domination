@@ -5,11 +5,10 @@ import io.scherler.games.risk.entities.map.MapEntity;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.entities.repositories.map.MapRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
+import io.scherler.games.risk.models.request.identity.UserRequest;
 import io.scherler.games.risk.models.request.map.Continent;
 import io.scherler.games.risk.models.request.map.Map;
-import io.scherler.games.risk.models.request.identity.UserRequest;
 import io.scherler.games.risk.services.CrudService;
-import java.util.stream.Collectors;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +31,7 @@ public class MapService extends CrudService<MapEntity, UserRequest<Map>> {
     public MapEntity create(UserRequest<Map> request) {
         val map = request.getRequestObject();
         val newMap = new MapEntity(map.getName(), request.getUserAccount());
-        val continents = map.getContinents().stream().map(c -> createContinent(newMap, c))
-            .collect(Collectors.toSet());
-        newMap.setContinents(continents);
+        map.getContinents().forEach(c -> createContinent(newMap, c));
         return mapRepository.save(newMap);
     }
 
@@ -46,10 +43,7 @@ public class MapService extends CrudService<MapEntity, UserRequest<Map>> {
 
     private ContinentEntity createContinent(MapEntity map, Continent continent) {
         val continentEntity = new ContinentEntity(map, continent.getName());
-        val territories = continent.getTerritories().stream()
-            .map(t -> new TerritoryEntity(t.getName(), continentEntity))
-            .collect(Collectors.toSet());
-        continentEntity.setTerritories(territories);
+        continent.getTerritories().forEach(t -> new TerritoryEntity(t.getName(), continentEntity));
         return continentEntity;
     }
 

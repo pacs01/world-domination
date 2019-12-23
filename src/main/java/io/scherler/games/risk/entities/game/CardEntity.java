@@ -31,8 +31,8 @@ public class CardEntity extends BaseGameEntity {
     private PlayerEntity player;
 
     public CardEntity(GameEntity game, TerritoryEntity territory, PlayerEntity player) {
-        this.game = game;
-        this.player = player;
-        this.territory = territory;
+        game.addCard(this);
+        player.addCard(this);
+        territory.addCard(this);
     }
 }

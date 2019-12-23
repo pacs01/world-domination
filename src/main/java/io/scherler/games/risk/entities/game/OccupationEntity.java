@@ -43,9 +43,9 @@ public class OccupationEntity extends BaseGameEntity {
 
     public OccupationEntity(GameEntity game, TerritoryEntity territory, PlayerEntity player,
         int units, int currentRound) {
-        this.game = game;
-        this.territory = territory;
-        this.player = player;
+        game.addOccupation(this);
+        territory.addOccupation(this);
+        player.addOccupation(this);
         this.units = units;
         this.occupiedInRound = currentRound;
     }

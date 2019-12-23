@@ -5,7 +5,6 @@ import io.scherler.games.risk.entities.identity.UserAccountEntity;
 import io.scherler.games.risk.entities.map.MapEntity;
 import io.scherler.games.risk.models.GameState;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -67,8 +66,8 @@ public class GameEntity extends BaseEntity {
 
     public GameEntity(String name, UserAccountEntity creator, MapEntity map) {
         this.name = name;
-        this.creator = creator;
-        this.map = map;
+        creator.addGame(this);
+        map.addGame(this);
         this.state = GameState.INITIALISATION;
         round = 0;
     }
@@ -77,13 +76,19 @@ public class GameEntity extends BaseEntity {
         return ++round;
     }
 
-    public void addPlayers(List<PlayerEntity> players) {
-        players.forEach(this::addPlayer);
-    }
-
-    public void addPlayer(PlayerEntity player) {
+    void addPlayer(PlayerEntity player) {
         players.add(player);
         player.setGame(this);
+    }
+
+    void addOccupation(OccupationEntity occupation) {
+        occupations.add(occupation);
+        occupation.setGame(this);
+    }
+
+    void addCard(CardEntity card) {
+        cards.add(card);
+        card.setGame(this);
     }
 
     public void removePlayer(PlayerEntity player) {

@@ -43,7 +43,6 @@ public class PlayerService extends CrudService<PlayerEntity, UserRequest<GameEnt
         val userAccount = request.getUserAccount();
         val newPlayer = new PlayerEntity(game, userAccount, position,
             PlayerColor.values()[position], 10);
-        game.addPlayer(newPlayer);
 
         return entityRepository.save(newPlayer);
     }

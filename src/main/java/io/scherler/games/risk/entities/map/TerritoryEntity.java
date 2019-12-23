@@ -52,7 +52,17 @@ public class TerritoryEntity extends BaseEntity {
 
     public TerritoryEntity(String name, ContinentEntity continent) {
         this.name = name;
-        this.continent = continent;
+        continent.addTerritory(this);
+    }
+
+    public void addOccupation(OccupationEntity occupation) {
+        occupations.add(occupation);
+        occupation.setTerritory(this);
+    }
+
+    public void addCard(CardEntity card) {
+        cards.add(card);
+        card.setTerritory(this);
     }
 
     public void addAdjacentTerritories(TerritoryEntity... territoryEntities) {

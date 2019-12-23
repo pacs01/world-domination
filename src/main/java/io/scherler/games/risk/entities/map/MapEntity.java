@@ -47,6 +47,16 @@ public class MapEntity extends BaseEntity {
 
     public MapEntity(String name, UserAccountEntity creator) {
         this.name = name;
-        this.creator = creator;
+        creator.addMap(this);
+    }
+
+    public void addGame(GameEntity game) {
+        games.add(game);
+        game.setMap(this);
+    }
+
+    void addContinent(ContinentEntity continent) {
+        continents.add(continent);
+        continent.setMap(this);
     }
 }
