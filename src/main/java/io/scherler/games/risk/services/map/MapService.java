@@ -7,13 +7,13 @@ import io.scherler.games.risk.entities.repositories.map.MapRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.models.request.identity.UserRequest;
 import io.scherler.games.risk.models.request.map.Continent;
-import io.scherler.games.risk.models.request.map.Map;
+import io.scherler.games.risk.models.request.map.WorldMap;
 import io.scherler.games.risk.services.CrudService;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MapService extends CrudService<MapEntity, UserRequest<Map>> {
+public class MapService extends CrudService<MapEntity, UserRequest<WorldMap>> {
 
     private final MapRepository mapRepository;
 
@@ -28,7 +28,7 @@ public class MapService extends CrudService<MapEntity, UserRequest<Map>> {
     }
 
     @Override
-    public MapEntity create(UserRequest<Map> request) {
+    public MapEntity create(UserRequest<WorldMap> request) {
         val map = request.getRequestObject();
         val newMap = new MapEntity(map.getName(), request.getUserAccount());
         map.getContinents().forEach(c -> createContinent(newMap, c));

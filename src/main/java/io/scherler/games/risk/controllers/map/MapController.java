@@ -6,7 +6,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import io.scherler.games.risk.controllers.defaults.DefaultResourceAssembler;
 import io.scherler.games.risk.controllers.defaults.DefaultResourceController;
 import io.scherler.games.risk.models.request.identity.UserRequest;
-import io.scherler.games.risk.models.request.map.Map;
+import io.scherler.games.risk.models.request.map.WorldMap;
 import io.scherler.games.risk.models.response.map.MapInfo;
 import io.scherler.games.risk.services.identity.UserAccountService;
 import io.scherler.games.risk.services.map.MapService;
@@ -58,7 +58,7 @@ public class MapController implements DefaultResourceController<MapInfo> {
 
     @PostMapping
     public ResponseEntity<?> createNew(@PathVariable("userId") Long userId,
-        @Valid @RequestBody Map newMap) throws URISyntaxException {
+        @Valid @RequestBody WorldMap newMap) throws URISyntaxException {
         val userAccount = userAccountService.get(userId);
         val map = mapService.create(new UserRequest<>(newMap, userAccount));
         Resource<MapInfo> resource = resourceAssembler
