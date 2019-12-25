@@ -6,6 +6,7 @@ import io.scherler.games.risk.entities.repositories.map.TerritoryRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
 import io.scherler.games.risk.services.ReadonlyService;
 import java.util.List;
+import lombok.val;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,7 +25,8 @@ public class TerritoryService extends ReadonlyService<TerritoryEntity> {
     }
 
     public TerritoryEntity getByName(MapEntity map, String name) {
-        return territoryRepository.findByContinentMapIdAndName(map.getId(), name)
+        val naturalId = TerritoryEntity.buildNaturalId(name, map);
+        return territoryRepository.findByNaturalId(naturalId)
             .stream()
             .findFirst()
             .orElseThrow(() -> new ResourceNotFoundException("Territory",

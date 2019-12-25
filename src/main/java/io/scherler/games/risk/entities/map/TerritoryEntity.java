@@ -1,8 +1,10 @@
 package io.scherler.games.risk.entities.map;
 
 import io.scherler.games.risk.entities.BaseEntity;
+import io.scherler.games.risk.entities.BiCompositeNaturalIdentifier;
 import io.scherler.games.risk.entities.game.CardEntity;
 import io.scherler.games.risk.entities.game.OccupationEntity;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -58,6 +60,12 @@ public class TerritoryEntity extends BaseEntity {
         this.name = name;
         map.addTerritory(this);
         continent.addTerritory(this);
+    }
+
+    public static BiCompositeNaturalIdentifier<String, MapEntity> buildNaturalId(String name,
+        MapEntity map) {
+        return new BiCompositeNaturalIdentifier<>(new SimpleEntry<>("name", name),
+            new SimpleEntry<>("map", map));
     }
 
     public void addOccupation(OccupationEntity occupation) {

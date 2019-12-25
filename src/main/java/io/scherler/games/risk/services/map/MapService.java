@@ -35,9 +35,8 @@ public class MapService extends CrudService<MapEntity, UserRequest<Map>> {
         return mapRepository.save(newMap);
     }
 
-    // todo find by naturalId?
     public MapEntity getMap(String name) {
-        return mapRepository.findByName(name).stream().findFirst()
+        return mapRepository.findBySimpleNaturalId(name).stream().findFirst()
             .orElseThrow(() -> new ResourceNotFoundException("Map", "name = " + name));
     }
 
