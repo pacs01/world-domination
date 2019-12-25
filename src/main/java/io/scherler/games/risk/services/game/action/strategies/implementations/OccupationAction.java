@@ -31,7 +31,7 @@ public class OccupationAction extends TypedActionStrategy<Territory, TerritoryIn
     @Override
     protected void buildCustomActionContext(TypedActionContext<Territory> context) {
         target = territoryService
-            .getByName(context.getGame().getMap().getId(), context.getRequest().getName());
+            .getByName(context.getGame().getMap(), context.getRequest().getName());
     }
 
     @Override

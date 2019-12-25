@@ -32,7 +32,7 @@ public class DeploymentAction extends TypedActionStrategy<Deployment, TerritoryI
     @Override
     protected void buildCustomActionContext(TypedActionContext<Deployment> context) {
         target = territoryService
-            .getByName(context.getGame().getMap().getId(), context.getRequest().getName());
+            .getByName(context.getGame().getMap(), context.getRequest().getName());
 
         occupation = occupationService
             .getOccupationByPlayer(context.getGame().getId(), context.getPlayer().getId(),

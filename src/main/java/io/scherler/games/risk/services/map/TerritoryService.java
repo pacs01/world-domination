@@ -1,5 +1,6 @@
 package io.scherler.games.risk.services.map;
 
+import io.scherler.games.risk.entities.map.MapEntity;
 import io.scherler.games.risk.entities.map.TerritoryEntity;
 import io.scherler.games.risk.entities.repositories.map.TerritoryRepository;
 import io.scherler.games.risk.exceptions.ResourceNotFoundException;
@@ -22,12 +23,12 @@ public class TerritoryService extends ReadonlyService<TerritoryEntity> {
         return "Territory";
     }
 
-    public TerritoryEntity getByName(long mapId, String name) {
-        return territoryRepository.findByContinentMapIdAndName(mapId, name)
+    public TerritoryEntity getByName(MapEntity map, String name) {
+        return territoryRepository.findByContinentMapIdAndName(map.getId(), name)
             .stream()
             .findFirst()
             .orElseThrow(() -> new ResourceNotFoundException("Territory",
-                "continent_map_id = " + mapId + " and name = " + name));
+                "continent_map_id = " + map.getId() + " and name = " + name));
     }
 
     public List<TerritoryEntity> getRemainingTerritories(long mapId, List<Long> territoryIds) {

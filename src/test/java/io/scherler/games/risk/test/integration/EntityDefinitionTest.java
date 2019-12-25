@@ -58,7 +58,7 @@ class EntityDefinitionTest {
         actionService
             .occupy(new Territory(SOUTHERN_EUROPE), game.getId(), game.getActivePlayer().getId());
         card = new CardEntity(game,
-            territoryService.getByName(game.getMap().getId(), SOUTHERN_EUROPE),
+            territoryService.getByName(game.getMap(), SOUTHERN_EUROPE),
             game.getActivePlayer());
     }
 
@@ -79,7 +79,7 @@ class EntityDefinitionTest {
         Assertions.assertNotNull(card.getGame());
         Assertions.assertEquals(game, card.getGame());
         Assertions.assertNotNull(card.getTerritory());
-        Assertions.assertEquals(territoryService.getByName(game.getMap().getId(), SOUTHERN_EUROPE),
+        Assertions.assertEquals(territoryService.getByName(game.getMap(), SOUTHERN_EUROPE),
             card.getTerritory());
         Assertions.assertNotNull(card.getPlayer());
         Assertions.assertEquals(game.getActivePlayer(), card.getPlayer());
@@ -91,7 +91,7 @@ class EntityDefinitionTest {
         Assertions.assertNotNull(occupation.getGame());
         Assertions.assertEquals(game, occupation.getGame());
         Assertions.assertNotNull(occupation.getTerritory());
-        Assertions.assertEquals(territoryService.getByName(game.getMap().getId(), SOUTHERN_EUROPE),
+        Assertions.assertEquals(territoryService.getByName(game.getMap(), SOUTHERN_EUROPE),
             occupation.getTerritory());
         Assertions.assertNotNull(occupation.getPlayer());
         Assertions.assertEquals(game.getActivePlayer(), occupation.getPlayer());
@@ -135,7 +135,7 @@ class EntityDefinitionTest {
 
     @Test
     void testTerritoryCreation() {
-        val territory = territoryService.getByName(game.getMap().getId(), SOUTHERN_EUROPE);
+        val territory = territoryService.getByName(game.getMap(), SOUTHERN_EUROPE);
         Assertions.assertNotNull(territory.getContinent());
         Assertions.assertEquals(continentService.getByName(game.getMap().getId(), EUROPE),
             territory.getContinent());
@@ -159,6 +159,7 @@ class EntityDefinitionTest {
                 + "(userAccount=UserAccountEntity(name=testadmin), color=RED, position=0, "
                 + "unitsToDeploy=10)], occupations=[OccupationEntity(units=1, occupiedInRound=1)"
                 + "], cards=[CardEntity(territory=TerritoryEntity(name=Southern Europe, "
+                + "map=MapEntity(name=helloworld, creator=UserAccountEntity(name=testadmin)), "
                 + "continent=ContinentEntity(name=Europe, map=MapEntity(name=helloworld, "
                 + "creator=UserAccountEntity(name=testadmin)))), player=PlayerEntity"
                 + "(userAccount=UserAccountEntity(name=testadmin), color=RED, position=0, "
@@ -179,12 +180,15 @@ class EntityDefinitionTest {
             game.getMap().getContinents().iterator().next().toString());
 
         Assertions.assertEquals(
-            "TerritoryEntity(name=Southern Europe, continent=ContinentEntity(name=Europe, "
-                + "map=MapEntity(name=helloworld, creator=UserAccountEntity(name=testadmin))))",
-            territoryService.getByName(game.getMap().getId(), SOUTHERN_EUROPE).toString());
+            "TerritoryEntity(name=Southern Europe, map=MapEntity(name=helloworld, "
+                + "creator=UserAccountEntity(name=testadmin)), continent=ContinentEntity"
+                + "(name=Europe, map=MapEntity(name=helloworld, creator=UserAccountEntity"
+                + "(name=testadmin))))",
+            territoryService.getByName(game.getMap(), SOUTHERN_EUROPE).toString());
 
         Assertions.assertEquals(
-            "PlayerEntity(userAccount=UserAccountEntity(name=testadmin), color=RED, position=0, "
+            "PlayerEntity(userAccount=UserAccountEntity(name=testadmin), color=RED, "
+                + "position=0, "
                 + "unitsToDeploy=10)",
             game.getActivePlayer().toString());
 
@@ -192,10 +196,12 @@ class EntityDefinitionTest {
             game.getActivePlayer().getOccupations().iterator().next().toString());
 
         Assertions.assertEquals(
-            "CardEntity(territory=TerritoryEntity(name=Southern Europe, continent=ContinentEntity"
-                + "(name=Europe, map=MapEntity(name=helloworld, creator=UserAccountEntity"
-                + "(name=testadmin)))), player=PlayerEntity(userAccount=UserAccountEntity"
-                + "(name=testadmin), color=RED, position=0, unitsToDeploy=10))",
+            "CardEntity(territory=TerritoryEntity(name=Southern Europe, map=MapEntity"
+                + "(name=helloworld, creator=UserAccountEntity(name=testadmin)), "
+                + "continent=ContinentEntity(name=Europe, map=MapEntity(name=helloworld, "
+                + "creator=UserAccountEntity(name=testadmin)))), player=PlayerEntity"
+                + "(userAccount=UserAccountEntity(name=testadmin), color=RED, position=0, "
+                + "unitsToDeploy=10))",
             card.toString());
     }
 }

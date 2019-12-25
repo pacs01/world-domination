@@ -50,71 +50,73 @@ public class LoadDatabase {
             continentRepository.saveAll(continents);
 
             log.info("Creating territories...");
-            val alaska = new TerritoryEntity("Alaska", northAmerica);
-            val northwestTerritory = new TerritoryEntity("Northwest Territory", northAmerica);
-            val greenland = new TerritoryEntity("Greenland", northAmerica);
-            val alberta = new TerritoryEntity("Alberta", northAmerica);
-            val ontario = new TerritoryEntity("Ontario", northAmerica);
-            val quebec = new TerritoryEntity("Quebec", northAmerica);
-            val westernUnitedStates = new TerritoryEntity("Western United States", northAmerica);
-            val easternUnitedStates = new TerritoryEntity("Eastern United States", northAmerica);
-            val centralAmerica = new TerritoryEntity("Central America", northAmerica);
+            val alaska = new TerritoryEntity("Alaska", map, northAmerica);
+            val northwestTerritory = new TerritoryEntity("Northwest Territory", map, northAmerica);
+            val greenland = new TerritoryEntity("Greenland", map, northAmerica);
+            val alberta = new TerritoryEntity("Alberta", map, northAmerica);
+            val ontario = new TerritoryEntity("Ontario", map, northAmerica);
+            val quebec = new TerritoryEntity("Quebec", map, northAmerica);
+            val westernUnitedStates = new TerritoryEntity("Western United States", map,
+                northAmerica);
+            val easternUnitedStates = new TerritoryEntity("Eastern United States", map,
+                northAmerica);
+            val centralAmerica = new TerritoryEntity("Central America", map, northAmerica);
             List<TerritoryEntity> northAmericanCountries = Arrays
                 .asList(alaska, northwestTerritory, greenland, alberta, ontario, quebec,
                     westernUnitedStates, easternUnitedStates,
                     centralAmerica);
             territoryRepository.saveAll(northAmericanCountries);
 
-            val venezuela = new TerritoryEntity("Venezuela", southAmerica);
-            val peru = new TerritoryEntity("Peru", southAmerica);
-            val brazil = new TerritoryEntity("Brazil", southAmerica);
-            val argentina = new TerritoryEntity("Argentina", southAmerica);
+            val venezuela = new TerritoryEntity("Venezuela", map, southAmerica);
+            val peru = new TerritoryEntity("Peru", map, southAmerica);
+            val brazil = new TerritoryEntity("Brazil", map, southAmerica);
+            val argentina = new TerritoryEntity("Argentina", map, southAmerica);
             List<TerritoryEntity> southAmericanCountries = Arrays
                 .asList(venezuela, peru, brazil, argentina);
             territoryRepository.saveAll(southAmericanCountries);
 
-            val northAfrica = new TerritoryEntity("North Africa", africa);
-            val egypt = new TerritoryEntity("Egypt", africa);
-            val eastAfrica = new TerritoryEntity("East Africa", africa);
-            val congo = new TerritoryEntity("Congo", africa);
-            val southAfrica = new TerritoryEntity("South Africa", africa);
-            val madagascar = new TerritoryEntity("Madagascar", africa);
+            val northAfrica = new TerritoryEntity("North Africa", map, africa);
+            val egypt = new TerritoryEntity("Egypt", map, africa);
+            val eastAfrica = new TerritoryEntity("East Africa", map, africa);
+            val congo = new TerritoryEntity("Congo", map, africa);
+            val southAfrica = new TerritoryEntity("South Africa", map, africa);
+            val madagascar = new TerritoryEntity("Madagascar", map, africa);
             List<TerritoryEntity> africanCountries = Arrays
                 .asList(northAfrica, egypt, eastAfrica, congo, southAfrica, madagascar);
             territoryRepository.saveAll(africanCountries);
 
-            val iceland = new TerritoryEntity("Iceland", europe);
-            val scandinavia = new TerritoryEntity("Scandinavia", europe);
-            val ukraine = new TerritoryEntity("Ukraine", europe);
-            val greatBritain = new TerritoryEntity("Great Britain", europe);
-            val northernEurope = new TerritoryEntity("Northern Europe", europe);
-            val southernEurope = new TerritoryEntity("Southern Europe", europe);
-            val westernEurope = new TerritoryEntity("Western Europe", europe);
+            val iceland = new TerritoryEntity("Iceland", map, europe);
+            val scandinavia = new TerritoryEntity("Scandinavia", map, europe);
+            val ukraine = new TerritoryEntity("Ukraine", map, europe);
+            val greatBritain = new TerritoryEntity("Great Britain", map, europe);
+            val northernEurope = new TerritoryEntity("Northern Europe", map, europe);
+            val southernEurope = new TerritoryEntity("Southern Europe", map, europe);
+            val westernEurope = new TerritoryEntity("Western Europe", map, europe);
             List<TerritoryEntity> europeCountries = Arrays
                 .asList(iceland, scandinavia, ukraine, greatBritain, northernEurope, southernEurope,
                     westernEurope);
             territoryRepository.saveAll(europeCountries);
 
-            val indonesia = new TerritoryEntity("Indonesia", australia);
-            val newGuinea = new TerritoryEntity("New Guinea", australia);
-            val westernAustralia = new TerritoryEntity("Western Australia", australia);
-            val easternAustralia = new TerritoryEntity("Eastern Australia", australia);
+            val indonesia = new TerritoryEntity("Indonesia", map, australia);
+            val newGuinea = new TerritoryEntity("New Guinea", map, australia);
+            val westernAustralia = new TerritoryEntity("Western Australia", map, australia);
+            val easternAustralia = new TerritoryEntity("Eastern Australia", map, australia);
             List<TerritoryEntity> australianCountries = Arrays
                 .asList(indonesia, newGuinea, westernAustralia, easternAustralia);
             territoryRepository.saveAll(australianCountries);
 
-            val siam = new TerritoryEntity("Siam", asia);
-            val india = new TerritoryEntity("India", asia);
-            val china = new TerritoryEntity("China", asia);
-            val mongolia = new TerritoryEntity("Mongolia", asia);
-            val japan = new TerritoryEntity("Japan", asia);
-            val irkutsk = new TerritoryEntity("Irkutsk", asia);
-            val yakutsk = new TerritoryEntity("Yakutsk", asia);
-            val kamchatka = new TerritoryEntity("Kamchatka", asia);
-            val siberia = new TerritoryEntity("Siberia", asia);
-            val afghanistan = new TerritoryEntity("Afghanistan", asia);
-            val ural = new TerritoryEntity("Ural", asia);
-            val middleEast = new TerritoryEntity("Middle East", asia);
+            val siam = new TerritoryEntity("Siam", map, asia);
+            val india = new TerritoryEntity("India", map, asia);
+            val china = new TerritoryEntity("China", map, asia);
+            val mongolia = new TerritoryEntity("Mongolia", map, asia);
+            val japan = new TerritoryEntity("Japan", map, asia);
+            val irkutsk = new TerritoryEntity("Irkutsk", map, asia);
+            val yakutsk = new TerritoryEntity("Yakutsk", map, asia);
+            val kamchatka = new TerritoryEntity("Kamchatka", map, asia);
+            val siberia = new TerritoryEntity("Siberia", map, asia);
+            val afghanistan = new TerritoryEntity("Afghanistan", map, asia);
+            val ural = new TerritoryEntity("Ural", map, asia);
+            val middleEast = new TerritoryEntity("Middle East", map, asia);
             List<TerritoryEntity> asianCountries = Arrays
                 .asList(siam, india, china, mongolia, japan, irkutsk, yakutsk, kamchatka, siberia,
                     afghanistan, ural, middleEast);

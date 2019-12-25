@@ -134,69 +134,69 @@ public class World {
     }
 
     private void generateTerritories() {
-        alaska = new TerritoryEntity("Alaska", northAmerica);
-        northwestTerritory = new TerritoryEntity("Northwest Territory", northAmerica);
-        greenland = new TerritoryEntity("Greenland", northAmerica);
-        alberta = new TerritoryEntity("Alberta", northAmerica);
-        ontario = new TerritoryEntity("Ontario", northAmerica);
-        quebec = new TerritoryEntity("Quebec", northAmerica);
-        westernUnitedStates = new TerritoryEntity("Western United States", northAmerica);
-        easternUnitedStates = new TerritoryEntity("Eastern United States", northAmerica);
-        centralAmerica = new TerritoryEntity("Central America", northAmerica);
+        alaska = new TerritoryEntity("Alaska", map, northAmerica);
+        northwestTerritory = new TerritoryEntity("Northwest Territory", map, northAmerica);
+        greenland = new TerritoryEntity("Greenland", map, northAmerica);
+        alberta = new TerritoryEntity("Alberta", map, northAmerica);
+        ontario = new TerritoryEntity("Ontario", map, northAmerica);
+        quebec = new TerritoryEntity("Quebec", map, northAmerica);
+        westernUnitedStates = new TerritoryEntity("Western United States", map, northAmerica);
+        easternUnitedStates = new TerritoryEntity("Eastern United States", map, northAmerica);
+        centralAmerica = new TerritoryEntity("Central America", map, northAmerica);
         northAmericanCountries = Arrays
             .asList(alaska, northwestTerritory, greenland, alberta, ontario, quebec,
                 westernUnitedStates, easternUnitedStates, centralAmerica);
         northAmerica.setTerritories(new HashSet<>(northAmericanCountries));
 
-        venezuela = new TerritoryEntity("Venezuela", southAmerica);
-        peru = new TerritoryEntity("Peru", southAmerica);
-        brazil = new TerritoryEntity("Brazil", southAmerica);
-        argentina = new TerritoryEntity("Argentina", southAmerica);
+        venezuela = new TerritoryEntity("Venezuela", map, southAmerica);
+        peru = new TerritoryEntity("Peru", map, southAmerica);
+        brazil = new TerritoryEntity("Brazil", map, southAmerica);
+        argentina = new TerritoryEntity("Argentina", map, southAmerica);
         southAmericanCountries = Arrays.asList(venezuela, peru, brazil, argentina);
         southAmerica.setTerritories(new HashSet<>(southAmericanCountries));
 
-        northAfrica = new TerritoryEntity("North Africa", africa);
-        egypt = new TerritoryEntity("Egypt", africa);
-        eastAfrica = new TerritoryEntity("East Africa", africa);
-        congo = new TerritoryEntity("Congo", africa);
-        southAfrica = new TerritoryEntity("South Africa", africa);
-        madagascar = new TerritoryEntity("Madagascar", africa);
+        northAfrica = new TerritoryEntity("North Africa", map, africa);
+        egypt = new TerritoryEntity("Egypt", map, africa);
+        eastAfrica = new TerritoryEntity("East Africa", map, africa);
+        congo = new TerritoryEntity("Congo", map, africa);
+        southAfrica = new TerritoryEntity("South Africa", map, africa);
+        madagascar = new TerritoryEntity("Madagascar", map, africa);
         africanCountries = Arrays
             .asList(northAfrica, egypt, eastAfrica, congo, southAfrica, madagascar);
         africa.setTerritories(new HashSet<>(africanCountries));
 
-        iceland = new TerritoryEntity("Iceland", europe);
-        scandinavia = new TerritoryEntity("Scandinavia", europe);
-        ukraine = new TerritoryEntity("Ukraine", europe);
-        greatBritain = new TerritoryEntity("Great Britain", europe);
-        northernEurope = new TerritoryEntity("Northern Europe", europe);
-        southernEurope = new TerritoryEntity("Southern Europe", europe);
-        westernEurope = new TerritoryEntity("Western Europe", europe);
+        iceland = new TerritoryEntity("Iceland", map, europe);
+        scandinavia = new TerritoryEntity("Scandinavia", map, europe);
+        ukraine = new TerritoryEntity("Ukraine", map, europe);
+        greatBritain = new TerritoryEntity("Great Britain", map, europe);
+        northernEurope = new TerritoryEntity("Northern Europe", map, europe);
+        southernEurope = new TerritoryEntity("Southern Europe", map, europe);
+        westernEurope = new TerritoryEntity("Western Europe", map, europe);
         europeCountries = Arrays
             .asList(iceland, scandinavia, ukraine, greatBritain, northernEurope, southernEurope,
                 westernEurope);
         europe.setTerritories(new HashSet<>(europeCountries));
 
-        indonesia = new TerritoryEntity("Indonesia", australia);
-        newGuinea = new TerritoryEntity("New Guinea", australia);
-        westernAustralia = new TerritoryEntity("Western Australia", australia);
-        easternAustralia = new TerritoryEntity("Eastern Australia", australia);
+        indonesia = new TerritoryEntity("Indonesia", map, australia);
+        newGuinea = new TerritoryEntity("New Guinea", map, australia);
+        westernAustralia = new TerritoryEntity("Western Australia", map, australia);
+        easternAustralia = new TerritoryEntity("Eastern Australia", map, australia);
         australianCountries = Arrays
             .asList(indonesia, newGuinea, westernAustralia, easternAustralia);
         australia.setTerritories(new HashSet<>(australianCountries));
 
-        siam = new TerritoryEntity("Siam", asia);
-        india = new TerritoryEntity("India", asia);
-        china = new TerritoryEntity("China", asia);
-        mongolia = new TerritoryEntity("Mongolia", asia);
-        japan = new TerritoryEntity("Japan", asia);
-        irkutsk = new TerritoryEntity("Irkutsk", asia);
-        yakutsk = new TerritoryEntity("Yakutsk", asia);
-        kamchatka = new TerritoryEntity("Kamchatka", asia);
-        siberia = new TerritoryEntity("Siberia", asia);
-        afghanistan = new TerritoryEntity("Afghanistan", asia);
-        ural = new TerritoryEntity("Ural", asia);
-        middleEast = new TerritoryEntity("Middle East", asia);
+        siam = new TerritoryEntity("Siam", map, asia);
+        india = new TerritoryEntity("India", map, asia);
+        china = new TerritoryEntity("China", map, asia);
+        mongolia = new TerritoryEntity("Mongolia", map, asia);
+        japan = new TerritoryEntity("Japan", map, asia);
+        irkutsk = new TerritoryEntity("Irkutsk", map, asia);
+        yakutsk = new TerritoryEntity("Yakutsk", map, asia);
+        kamchatka = new TerritoryEntity("Kamchatka", map, asia);
+        siberia = new TerritoryEntity("Siberia", map, asia);
+        afghanistan = new TerritoryEntity("Afghanistan", map, asia);
+        ural = new TerritoryEntity("Ural", map, asia);
+        middleEast = new TerritoryEntity("Middle East", map, asia);
         asianCountries = Arrays
             .asList(siam, india, china, mongolia, japan, irkutsk, yakutsk, kamchatka, siberia,
                 afghanistan, ural, middleEast);

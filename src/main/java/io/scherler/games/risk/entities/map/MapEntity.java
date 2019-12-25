@@ -23,7 +23,7 @@ import org.hibernate.annotations.NaturalId;
 @Data
 @Entity
 @Table(name = "map", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "creatorId"}))
-@ToString(exclude = {"games", "continents"})
+@ToString(exclude = {"games", "continents", "territories"})
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class MapEntity extends BaseEntity {
@@ -33,7 +33,6 @@ public class MapEntity extends BaseEntity {
     @EqualsAndHashCode.Include
     private String name;
 
-    @NaturalId
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creatorId")
     @EqualsAndHashCode.Include
@@ -41,6 +40,9 @@ public class MapEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "map", cascade = CascadeType.ALL)
     private Set<ContinentEntity> continents = new HashSet<>();
+
+    @OneToMany(mappedBy = "map", cascade = CascadeType.ALL)
+    private Set<TerritoryEntity> territories = new HashSet<>();
 
     @OneToMany(mappedBy = "map", cascade = CascadeType.ALL)
     private Set<GameEntity> games = new HashSet<>();
@@ -58,5 +60,10 @@ public class MapEntity extends BaseEntity {
     void addContinent(ContinentEntity continent) {
         continents.add(continent);
         continent.setMap(this);
+    }
+
+    void addTerritory(TerritoryEntity territory) {
+        territories.add(territory);
+        territory.setMap(this);
     }
 }
