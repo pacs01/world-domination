@@ -9,7 +9,8 @@ public class BiCompositeNaturalIdentifier<F, S> implements NaturalIdentifiable {
 
     private HashMap<String, Object> ids = new HashMap<>();
 
-    public BiCompositeNaturalIdentifier(SimpleEntry<String, F> firstAttribute, SimpleEntry<String, S> secondAttribute) {
+    public BiCompositeNaturalIdentifier(SimpleEntry<String, F> firstAttribute,
+        SimpleEntry<String, S> secondAttribute) {
         ids.put(firstAttribute.getKey(), firstAttribute.getValue());
         ids.put(secondAttribute.getKey(), secondAttribute.getValue());
     }

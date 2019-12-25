@@ -42,7 +42,8 @@ public class MapService extends CrudService<MapEntity, UserRequest<WorldMap>> {
 
     private ContinentEntity createContinent(MapEntity map, Continent continent) {
         val continentEntity = new ContinentEntity(map, continent.getName());
-        continent.getTerritories().forEach(t -> new TerritoryEntity(t.getName(), map, continentEntity));
+        continent.getTerritories()
+            .forEach(t -> new TerritoryEntity(t.getName(), map, continentEntity));
         return continentEntity;
     }
 
