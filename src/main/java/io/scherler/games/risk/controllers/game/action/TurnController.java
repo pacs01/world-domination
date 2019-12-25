@@ -18,7 +18,7 @@ public class TurnController {
         this.actionService = actionService;
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> endTurn(@PathVariable("gameId") Long gameId,
         @PathVariable("playerId") Long playerId) {
         val turnResult = actionService.endTurn(gameId, playerId);

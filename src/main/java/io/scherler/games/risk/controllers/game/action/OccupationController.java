@@ -25,14 +25,14 @@ public class OccupationController {
         this.occupationService = occupationService;
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> occupy(@PathVariable("gameId") Long gameId,
         @PathVariable("playerId") Long playerId, @Valid @RequestBody Territory territory) {
         val occupationResult = actionService.occupy(territory, gameId, playerId);
         return ResponseEntity.ok().body(occupationResult); //todo add hateoas
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<?> getAll(@PathVariable("gameId") Long gameId) {
         val occupations = occupationService.getTerritoryInfos(gameId);
         return ResponseEntity.ok().body(occupations); //todo add hateoas

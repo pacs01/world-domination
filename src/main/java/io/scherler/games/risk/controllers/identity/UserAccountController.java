@@ -37,7 +37,8 @@ public class UserAccountController implements DefaultResourceController<UserInfo
         this.resourceAssembler = new DefaultResourceAssembler<>(this);
     }
 
-    @GetMapping()
+    @Override
+    @GetMapping
     public Resources<Resource<UserInfo>> getAll() {
         List<Resource<UserInfo>> userAccounts = userAccountService.getAll().stream()
             .map(UserInfo::from).map(resourceAssembler::toResource)
@@ -47,7 +48,13 @@ public class UserAccountController implements DefaultResourceController<UserInfo
             linkTo(methodOn(UserAccountController.class).getAll()).withSelfRel());
     }
 
-    @PostMapping()
+    @Override
+    @GetMapping("/{id}")
+    public Resource<UserInfo> getOne(@PathVariable Long id) {
+        return resourceAssembler.toResource(UserInfo.from(userAccountService.get(id)));
+    }
+
+    @PostMapping
     public ResponseEntity<?> createNew(@Valid @RequestBody UserAccount newUserAccount)
         throws URISyntaxException {
         val userAccount = userAccountService.create(newUserAccount);
@@ -55,11 +62,6 @@ public class UserAccountController implements DefaultResourceController<UserInfo
             .toResource(UserInfo.from(userAccount));
 
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
-    }
-
-    @GetMapping("/{id}")
-    public Resource<UserInfo> getOne(@PathVariable Long id) {
-        return resourceAssembler.toResource(UserInfo.from(userAccountService.get(id)));
     }
 
     @DeleteMapping("/{id}")

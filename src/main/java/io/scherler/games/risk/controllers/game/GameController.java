@@ -41,7 +41,8 @@ public class GameController implements DefaultResourceController<GameInfo> {
         this.resourceAssembler = new DefaultResourceAssembler<>(this);
     }
 
-    @GetMapping()
+    @Override
+    @GetMapping
     public Resources<Resource<GameInfo>> getAll() {
         val games = gameService.getAll().stream().map(GameInfo::from)
             .map(resourceAssembler::toResource).collect(Collectors.toList());
@@ -50,7 +51,13 @@ public class GameController implements DefaultResourceController<GameInfo> {
             linkTo(methodOn(GameController.class).getAll()).withSelfRel());
     }
 
-    @PostMapping()
+    @Override
+    @GetMapping("/{id}")
+    public Resource<GameInfo> getOne(@PathVariable Long id) {
+        return resourceAssembler.toResource(GameInfo.from(gameService.get(id)));
+    }
+
+    @PostMapping
     public ResponseEntity<?> createNew(@Valid @RequestBody NewGame newGame)
         throws URISyntaxException {
         val creator = userAccountService.get(1); //todo: load user from http authorization
@@ -59,11 +66,6 @@ public class GameController implements DefaultResourceController<GameInfo> {
             .toResource(GameInfo.from(game));
 
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
-    }
-
-    @GetMapping("/{id}")
-    public Resource<GameInfo> getOne(@PathVariable Long id) {
-        return resourceAssembler.toResource(GameInfo.from(gameService.get(id)));
     }
 
     @DeleteMapping("/{id}")

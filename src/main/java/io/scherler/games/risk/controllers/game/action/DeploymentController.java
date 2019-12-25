@@ -21,7 +21,7 @@ public class DeploymentController {
         this.actionService = actionService;
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> deploy(@PathVariable("gameId") Long gameId,
         @PathVariable("playerId") Long playerId, @Valid @RequestBody Deployment deployment) {
         val deploymentResult = actionService.deploy(deployment, gameId, playerId);

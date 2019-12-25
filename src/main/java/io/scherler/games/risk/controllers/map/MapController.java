@@ -41,7 +41,8 @@ public class MapController implements DefaultResourceController<MapInfo> {
         this.resourceAssembler = new DefaultResourceAssembler<>(this);
     }
 
-    @GetMapping()
+    @Override
+    @GetMapping
     public Resources<Resource<MapInfo>> getAll() {
         List<Resource<MapInfo>> maps = mapService.getAll().stream().map(MapInfo::from)
             .map(resourceAssembler::toResource).collect(Collectors.toList());
@@ -49,7 +50,13 @@ public class MapController implements DefaultResourceController<MapInfo> {
         return new Resources<>(maps, linkTo(methodOn(MapController.class).getAll()).withSelfRel());
     }
 
-    @PostMapping()
+    @Override
+    @GetMapping("/{id}")
+    public Resource<MapInfo> getOne(@PathVariable Long id) {
+        return resourceAssembler.toResource(MapInfo.from(mapService.get(id)));
+    }
+
+    @PostMapping
     public ResponseEntity<?> createNew(@PathVariable("userId") Long userId,
         @Valid @RequestBody Map newMap) throws URISyntaxException {
         val userAccount = userAccountService.get(userId);
@@ -58,11 +65,6 @@ public class MapController implements DefaultResourceController<MapInfo> {
             .toResource(MapInfo.from(map));
 
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
-    }
-
-    @GetMapping("/{id}")
-    public Resource<MapInfo> getOne(@PathVariable Long id) {
-        return resourceAssembler.toResource(MapInfo.from(mapService.get(id)));
     }
 
     @DeleteMapping("/{id}")

@@ -21,7 +21,7 @@ public class MovementController {
         this.actionService = actionService;
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> move(@PathVariable("gameId") Long gameId,
         @PathVariable("playerId") Long playerId, @Valid @RequestBody Movement movement) {
         val movementInfo = actionService.move(movement, gameId, playerId);

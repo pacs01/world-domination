@@ -21,7 +21,7 @@ public class AttackController {
         this.actionService = actionService;
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> attack(@PathVariable("gameId") Long gameId,
         @PathVariable("playerId") Long playerId, @Valid @RequestBody Movement movement) {
         val attackInfo = actionService.attack(movement, gameId, playerId);

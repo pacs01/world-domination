@@ -42,6 +42,7 @@ public class PlayerController implements NestedResourceController<PlayerInfo> {
         this.resourceAssembler = new NestedResourceAssembler<>(this);
     }
 
+    @Override
     @GetMapping
     public Resources<Resource<PlayerInfo>> getAll(@PathVariable("gameId") Long gameId) {
         val players = playerService.getAllByGameId(gameId).stream().map(PlayerInfo::from)
@@ -51,6 +52,7 @@ public class PlayerController implements NestedResourceController<PlayerInfo> {
             linkTo(methodOn(GameController.class).getAll()).withSelfRel());
     }
 
+    @Override
     @GetMapping("/{playerId}")
     public Resource<PlayerInfo> getOne(@PathVariable("gameId") Long gameId,
         @PathVariable Long playerId) {
@@ -58,15 +60,7 @@ public class PlayerController implements NestedResourceController<PlayerInfo> {
             .toResource(PlayerInfo.from(playerService.getOneByIdAndGameId(playerId, gameId)));
     }
 
-    @DeleteMapping("/{playerId}")
-    public ResponseEntity<?> delete(@PathVariable("gameId") Long gameId,
-        @PathVariable Long playerId) {
-        playerService.delete(playerId);
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> createNew(@PathVariable("gameId") Long gameId)
         throws URISyntaxException {
         val userAccount = userAccountService.get(1); //todo: load user from http authorization
@@ -75,5 +69,13 @@ public class PlayerController implements NestedResourceController<PlayerInfo> {
         Resource<PlayerInfo> resource = resourceAssembler.toResource(PlayerInfo.from(player));
 
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
+    }
+
+    @DeleteMapping("/{playerId}")
+    public ResponseEntity<?> delete(@PathVariable("gameId") Long gameId,
+        @PathVariable Long playerId) {
+        playerService.delete(playerId);
+
+        return ResponseEntity.noContent().build();
     }
 }
