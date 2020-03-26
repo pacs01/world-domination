@@ -1,10 +1,10 @@
 package io.scherler.games.worlddomination.test.unit;
 
-import static io.scherler.games.worlddomination.test.unit.testdata.World.Territories.ALASKA;
-import static io.scherler.games.worlddomination.test.unit.testdata.World.Territories.ALBERTA;
-import static io.scherler.games.worlddomination.test.unit.testdata.World.Territories.GREENLAND;
-import static io.scherler.games.worlddomination.test.unit.testdata.World.Territories.NORTHWEST_TERRITORY;
-import static io.scherler.games.worlddomination.test.unit.testdata.World.Territories.ONTARIO;
+import static io.scherler.games.worlddomination.test.unit.testdata.map.Territories.ALASKA;
+import static io.scherler.games.worlddomination.test.unit.testdata.map.Territories.ALBERTA;
+import static io.scherler.games.worlddomination.test.unit.testdata.map.Territories.GREENLAND;
+import static io.scherler.games.worlddomination.test.unit.testdata.map.Territories.NORTHWEST_TERRITORY;
+import static io.scherler.games.worlddomination.test.unit.testdata.map.Territories.ONTARIO;
 
 import io.scherler.games.worlddomination.entities.repositories.map.TerritoryRepository;
 import io.scherler.games.worlddomination.services.map.TerritoryService;

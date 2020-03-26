@@ -1,20 +1,19 @@
 package io.scherler.games.worlddomination.test.unit;
 
-import static io.scherler.games.worlddomination.test.unit.testdata.Game.Players.PLAYER_ONE;
-import static io.scherler.games.worlddomination.test.unit.testdata.World.Territories.ALASKA;
-import static io.scherler.games.worlddomination.test.unit.testdata.World.Territories.ARGENTINA;
-import static io.scherler.games.worlddomination.test.unit.testdata.World.Territories.EASTERN_UNITED_STATES;
-import static io.scherler.games.worlddomination.test.unit.testdata.World.Territories.ICELAND;
-import static io.scherler.games.worlddomination.test.unit.testdata.World.Territories.PERU;
-import static io.scherler.games.worlddomination.test.unit.testdata.World.Territories.WESTERN_EUROPE;
-import static io.scherler.games.worlddomination.test.unit.testdata.World.Territories.WESTERN_UNITED_STATES;
+import static io.scherler.games.worlddomination.test.unit.testdata.game.Players.PLAYER_ONE;
+import static io.scherler.games.worlddomination.test.unit.testdata.map.Territories.ALASKA;
+import static io.scherler.games.worlddomination.test.unit.testdata.map.Territories.ARGENTINA;
+import static io.scherler.games.worlddomination.test.unit.testdata.map.Territories.EASTERN_UNITED_STATES;
+import static io.scherler.games.worlddomination.test.unit.testdata.map.Territories.ICELAND;
+import static io.scherler.games.worlddomination.test.unit.testdata.map.Territories.PERU;
+import static io.scherler.games.worlddomination.test.unit.testdata.map.Territories.WESTERN_EUROPE;
+import static io.scherler.games.worlddomination.test.unit.testdata.map.Territories.WESTERN_UNITED_STATES;
 
 import io.scherler.games.worlddomination.entities.game.OccupationEntity;
 import io.scherler.games.worlddomination.entities.map.TerritoryEntity;
 import io.scherler.games.worlddomination.entities.repositories.map.TerritoryRepository;
 import io.scherler.games.worlddomination.services.map.TerritoryService;
-import io.scherler.games.worlddomination.test.unit.testdata.Game.Occupations;
-import io.scherler.games.worlddomination.test.unit.testdata.Game.Players;
+import io.scherler.games.worlddomination.test.unit.testdata.game.Occupations;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
